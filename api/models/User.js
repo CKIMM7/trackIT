@@ -68,17 +68,6 @@ module.exports = class User {
 
     // removeHabit (id) {}
 
-    static findByEmail (email) {
-        return new Promise (async (resolve, reject) => {
-            try {
-                const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
-                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
-                resolve(user);
-            } catch (err) {
-                reject("Error retrieving user")
-            }
-        })
-    }
 
 
     static async login(email, password){
@@ -90,7 +79,10 @@ module.exports = class User {
                 console.log(user);
         
                 if(!user){ throw new Error('No user with this email') }
-                const authed = bcrypt.compare(password, user.passwordDigest)
+
+                const authed = await bcrypt.compare(password, user.password)
+
+
                 if (!!authed){
                     const payload = {
                         user: user.username
@@ -103,10 +95,15 @@ module.exports = class User {
                         expiresIn: 60
                     }
         
-                    const token = await jwt.sign(payload, secret, options)
+
+                  //  const token = await jwt.sign(payload, secret, options)
+
+                    const token = jwt.sign(payload, secret, options)
+
+
                     resolve(token)
                 } else {
-                    throw new Error('User could not be authenticated')  
+                    throw new Error('Wrong password') 
                 }
             } catch (err) {
                 reject(err)
@@ -129,21 +126,44 @@ module.exports = class User {
         })
     }
 
-    static async signup(password, email){
+
+    static findByEmail (email) {
+
 
         return new Promise (async (resolve, reject) => {
-
             try {
-                const salt = await bcrypt.genSalt(12);
-                const hashed = await bcrypt.hash(password, salt)
-                const newUser = await User.create(email, hashed)
-                resolve(newUser);
 
+                const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
+                let user = new User(result.rows[0]);
+                console.log(user);
+                resolve(user);
+                
             } catch (err) {
-                reject(err);
+                console.log(err)
+                reject(err)
             }
-
         })
+    }
+
+    static async signup(name, password, email){
+
+            return new Promise (async (resolve, reject) => {
+
+                try {
+                    const salt = await bcrypt.genSalt(12);
+                    const hashed = await bcrypt.hash(password, salt)
+                    const newUser = await User.create(name, email, hashed)
+                    console.log(hashed)
+    
+                    resolve(newUser);
+    
+    
+                } catch (err) {
+                    console.log(err)
+                    reject(err);
+                }
+    
+            })
     }
 
     update(data){

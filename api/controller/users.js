@@ -62,17 +62,33 @@ const login = async (req, res) => {
     //console.log(req.body)
     try {
         const user = await Users.login(req.body.email, req.body.password)
+
         res.status(200).json(user)
     } catch(err) {
-        res.status(404).json({err})
+        console.log(err)
+        res.status(404).json('error')
     }
 }
 
 const signup = async (req, res) => {
-    //console.log(req.body)
+
     try {
-        const user = await Users.signup(req.body.name, req.body.password, req.body.email)
-        res.status(201).json(user)
+        let userExists = true;
+        const findUser = await Users.findByEmail(req.body.email)
+        .then(data => console.log(data))
+        .catch(err => {
+            console.log(err)
+            console.log('creaing new user')
+            userExists = false
+        })
+
+        if(!userExists) {
+            const signUp = await Users.signup(
+                req.body.name,
+                req.body.password,
+                req.body.email)
+        }
+
     } catch(err) {
         res.status(404).json({err})
     }
