@@ -11,6 +11,10 @@
   --transition: 0.2s ease-in;
 }
 
+html, body {
+    height: 100%
+}
+
 /* Smooth scroll effect */
 html {
   scroll-behavior: smooth;
@@ -65,6 +69,49 @@ a {
 a:hover {
   color: var(--secondary-color);
 } 
+
+main {
+    background-color: grey;
+    height: fit-content;
+    margin: 5%;
+    height: 70%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.habit {
+    display: flex;
+    background-color: slategrey;
+    padding: 20px;
+    justify-content: space-around;
+}
+
+.habit p {
+    margin: 0 10px;
+}
+
+.habit-section {
+    background-color: #504f4f;
+    padding: 15px;
+}
+
+#stats-section {
+    background-color: #504f4f;
+    padding: 15px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.stats p {
+    margin: 0 10px;
+}
+
+.stats {
+}
+
 /* 
 @media screen and (max-width: 900px) {
   ul.sidenav {
