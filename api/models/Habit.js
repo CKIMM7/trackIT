@@ -39,9 +39,14 @@ module.exports = class Habit {
     static create (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date} = data;
+                const { name, desc, freq, start_date, user_id} = data;
                 const result = await db.query(`INSERT INTO habits (name, description, frequency, start_date, last_completed, streak) VALUES ($1, $2, $3, $4, null, null)`, [name, desc, freq, start_date])
-                resolve(result.rows[0]);
+                
+                console.log(result.rows[0])
+
+                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2)`, [user_id, result.rows[0].id])
+
+                resolve(result2.rows[0]);
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")
@@ -77,8 +82,7 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query(`DELETE FROM habits WHERE id = $1;`, [id])
-                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
-                resolve(habit);
+                resolve("Habit was deleted");
             } catch (err) {
                 reject("Error deleting habit")
             }
