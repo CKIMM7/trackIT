@@ -81,8 +81,12 @@ async function update (e, category) {
     }
 }
 
-async function login (e, input) {
-    e.preventDefault();
+async function login () {
+
+    let input = { email: 'test@gmail.com',
+    password: 'test'
+  }
+
     try {
         const options = {
             method: 'POST',
@@ -90,26 +94,28 @@ async function login (e, input) {
             body: JSON.stringify(input)
         }
         
-        const response = await fetch(`https://trackit-sillicon-alley.herokuapp.com/users/login`, options);
+        const response = await fetch(`http://localhost:3000/users/login`, options);
         const token = await response.json();
+        console.log(token)
 
-
-        if(token) {
+        if(token === 'error') {
             console.log('redirect the user to the homepage')
-            //windows.location.href = localhost:3000/
-            localStorage.setItem('userToken', token)
         } else {
-            throw Error(err) 
+            console.log('logged in')
+            localStorage.setItem('userToken', token)
+            // window.location.href = 'https://trackit-sillicon-alley.herokuapp.com/';
         }
     } catch (err) {
-        console.warn(err);
+        console.log(err);
     }
 }
 
-async function signup (password, email) {
-    e.preventDefault();
+//login();
 
-    const signUpData = { password, email}
+async function signup (name, password, email) {
+    //e.preventDefault();
+
+    const signUpData = { name, password, email}
     try {
         const options = {
             method: 'POST',
@@ -117,16 +123,20 @@ async function signup (password, email) {
             body: JSON.stringify(signUpData)
         }
         
-        const response = await fetch(`https://trackit-sillicon-alley.herokuapp.com/users/singup`, options);
+        const response = await fetch(`http://localhost:3000/users/signup`, options);
         const user = await response.json();
+        console.log(user)
 
-        if(user) { 
-            console.log('redirect the user to the homepage')
+        if(user.err) { 
+            console.log('you need to sign up again && do someting');
+            console.log(user);
             //windows.location.href = localhost:3000/
         } else {
-            return;
+            console.log('you are signed in')
         } 
     } catch (err) {
         console.warn(err);
     }
 }
+
+signup('newUser', `password`, `aaa@hotmail.com`)
