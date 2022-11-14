@@ -33,7 +33,7 @@ module.exports = class User {
         })
     }
 
-    static findHabits () {
+    get getHabits () {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT users.name AS user, habits.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habits ON habits.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
@@ -72,7 +72,7 @@ module.exports = class User {
 
     }
 
-    update(){
+    update(data){
         return new Promise (async (resolve, reject) => {
             try {
                 const { id, name } = data;
