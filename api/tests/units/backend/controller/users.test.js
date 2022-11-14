@@ -25,8 +25,11 @@ describe('Users controller', () => {
     })
 
     describe('getUser', () => {
-        test('get a user by id', async () => {
-            
+        test('return a user by id with a 200 status code', async () => {
+            const testData = [];
+
+            jest.spyOn(User, 'getUser', 'get')
+                .mockResolvedValue(testData)
         })
     })
 
