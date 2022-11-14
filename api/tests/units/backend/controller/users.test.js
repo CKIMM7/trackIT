@@ -26,11 +26,104 @@ describe('Users controller', () => {
 
     describe('getUser', () => {
         test('return a user by id with a 200 status code', async () => {
-            const testData = [];
+            const testData = {id: 1, email: 'test1@mail.com'};
+            const mockReq = { params: { id: 1 } }
 
-            jest.spyOn(User, 'getUser', 'get')
+            jest.spyOn(User, 'getUser')
                 .mockResolvedValue(testData)
+
+            await usersController.getUser(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(testData);
         })
     })
+
+    // error here <<<<<<<
+    describe.skip('create', () => {
+        test('create a new user with a 201 status code', async() => {
+            const testData = {name: 'user1', email: 'test1@mail.com', password: 'pass1'};
+            const mockReq = { body: testData }
+            
+            jest.spyOn(User, 'create')
+                .mockResolvedValue(testData);
+
+            await usersController.create(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(201);
+            expect(mockJson).toHaveBeenCalledWith(new User(testData));
+        })
+    })
+
+    // err: not a function?  <<<<<<
+    describe('update', () => {
+        test('update users info with a 200 status code', async () => {
+            const testData = { id: 1, name: 'user1' };
+            const mockReq = { body: testData };
+
+            jest.spyOn(User, 'update')
+                .mockResolvedValue(testData);
+            await usersController.update(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(testData);
+        })
+    })
+
+    // err: not a function? <<<<<
+    describe('destroy', () => {
+        test('delete a user with a 204 status code', async() => {
+            jest.spyOn(User.prototype, 'delete')
+                .mockResolvedValue("User was deleted");
+            
+            const mockReq = { params: { id: 1 } }
+            await usersController.delete(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(204);
+        })
+    })
+
+    describe('login', () => {
+        test('login user with a 200 status code', async() => {
+            const testData = { email: 'test1@mail.com', password: 'pass1' };
+            const mockReq = { body: testData };
+
+            jest.spyOn(User, 'login')
+                .mockResolvedValue(testData);
+                
+            await usersController.update(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(new User(testData));
+        })
+    })
+
+    describe('signup', () => {
+        test('signup new user with a 201 status code', async() => {
+            const testData = { name: 'user1', email: 'test1@mail.com', password: 'pass1' };
+            const mockReq = { body: testData };
+
+            jest.spyOn(User, 'signup')
+                .mockResolvedValue(testData);
+
+            await usersController.update(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(201);
+            expect(mockJson).toHaveBeenCalledWith(new User(testData)); 
+        })
+
+        test.skip('password has been hashed', () => {
+
+        })
+    })
+
+    // still need to edit <<<<<<<<
+    describe.skip('getHabits', () => {
+        test('returns a list of users habits with a 200 status code', async() => {
+            const testData = [];
+
+            jest.spyOn(User, 'getHabits')
+                .mockResolvedValue(testData);
+            await usersController.getHabits(null, mockRes)
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(testData);
+        } )
+    })
+
+
 
 })

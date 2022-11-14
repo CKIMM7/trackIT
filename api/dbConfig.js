@@ -24,23 +24,23 @@ const client = new Client({
 })
 
 
-client.connect(function(err) {
-    if (err) throw err;
-    console.log("Postgres Client Connected!");
-  });  
+// client.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Postgres Client Connected!");
+//   });  
 
 // const seeds = fs.readFileSync(__dirname + '/dev_seeds.sql').toString();
 // pool.query(seeds, () => console.log('Dev database seeded'));
 
-pool.query(`SELECT * FROM Users;`, (err, res) => {
-  if (err) {
-      console.log("Error - Failed to select all from Users");
-      console.log(err);
-  }
-  else{
-      console.log(res.rows);
-  }
-});
+// pool.query(`SELECT * FROM Users;`, (err, res) => {
+//   if (err) {
+//       console.log("Error - Failed to select all from Users");
+//       console.log(err);
+//   }
+//   else{
+//       console.log(res.rows);
+//   }
+// });
 
 
 module.exports = pool;
