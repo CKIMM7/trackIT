@@ -11,8 +11,8 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.user()
-        res.json()
+        const user = await User.user(parseInt(req.params.id))
+        res.json(user)
     } catch(err){
         res.status(404).json({err})
     }
@@ -31,6 +31,7 @@ const update = async (req, res) => {
     try {
         const user = await Users.findById(parseInt(req.params.id))
         const updatedUser = await user.update(req.body.name)
+        res.json(updatedUser)
     } catch(err){
         res.status(500).json({err})
     }
