@@ -94,7 +94,7 @@ main {
     border-radius: 10px;
 }
 
-.habit-section h2 {
+.habit-section header {
     padding: 10px;
     border-bottom: 1px solid white;
 }
@@ -112,7 +112,7 @@ main {
 #stats-section {
     background-color: #504f4f;
     padding: 15px;
-    height: 250px;
+    /* height: 250px; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -126,7 +126,7 @@ main {
 
 #add-habit {
     align-self: flex-end;
-    justify-self: center;
+
 }
 
 /* 
