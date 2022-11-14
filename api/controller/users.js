@@ -57,8 +57,9 @@ const login = async (req, res) => {
 }
 
 const signup = async (req, res) => {
+    //console.log(req.body)
     try {
-        const user = await Users.signup(req.body.password, req.body.email)
+        const user = await Users.signup(req.body.name, req.body.password, req.body.email)
         res.json(user)
     } catch(err) {
         res.status(404).json({err})

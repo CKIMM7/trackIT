@@ -1,6 +1,7 @@
 const db = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const SQL = require('sql-template-strings');
 
 module.exports = class User {
     constructor(data){
@@ -114,27 +115,33 @@ module.exports = class User {
     }
 
 
-    static create(email, password){
+    static create(name, email, password){
+        console.log(name, email, password)
+
         return new Promise(async (res, rej) => {
             try {
-                let result = await db.run(SQL`INSERT INTO users (email, password)
-                VALUES (${email}, ${password}) RETURNING *;`);
+                let result = await db.query(SQL`INSERT INTO users (name, email, password)
+                VALUES (${name}, ${email}, ${password}) RETURNING *;`);
                 let user = new User(result.rows[0]);
                 res(user)
             } catch (err) {
-                rej(`Error creating user: ${err}`)
+                rej(`${err}`)
             }
         })
     }
 
-    static async signup(password, email){
+    static async signup(name, password, email){
+        //console.log(password, email)
 
         return new Promise (async (resolve, reject) => {
 
             try {
                 const salt = await bcrypt.genSalt(12);
                 const hashed = await bcrypt.hash(password, salt)
-                const newUser = await User.create(email, hashed)
+                const newUser = await User.create(name, email, hashed)
+
+                console.log(hashed)
+
                 resolve(newUser);
 
             } catch (err) {
