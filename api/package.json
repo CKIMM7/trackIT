@@ -3,10 +3,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "seedDev": "node seedDev.js",
-    "test": "jest --watchAll",
-    "unitTests": "jest --watchAll",
-    "coverage": "jest --coverage"
+    "test": "jest --setupFiles ./tests/setup/config.js --watchAll --detectOpenHandles --runInBand --verbose",
+    "unitTests": "jest --testPathPattern=/units/ --watchAll --verbose",
+    "coverage": "jest --testPathPattern=/units/ --coverage"
   },
   "jest": {
     "testEnvironment": "node",
@@ -24,8 +23,10 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "sql-template-strings": "^2.2.2"
   }
 }

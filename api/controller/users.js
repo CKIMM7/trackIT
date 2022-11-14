@@ -12,7 +12,7 @@ const displayAll = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const user = await User.user(parseInt(req.params.id))
-        res.json(user)
+        res.status(200).json(user)
     } catch(err){
         res.status(404).json({err})
     }
@@ -20,8 +20,8 @@ const getUser = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const users = await Users.create(req.body.email, req.body.password)
-        res.json(users)
+        const users = await Users.create(req.body.name, req.body.email, req.body.password)
+        res.status(201).json(users)
     } catch(err) {
         res.status(404).json({err})
     }
@@ -31,7 +31,7 @@ const update = async (req, res) => {
     try {
         const user = await Users.findById(parseInt(req.params.id))
         const updatedUser = await user.update(req.body.id, req.body.name)
-        res.json(updatedUser)
+        res.status(200).json(updatedUser)
     } catch(err){
         res.status(500).json({err})
     }
@@ -48,18 +48,20 @@ const destroy = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    //console.log(req.body)
     try {
         const user = await Users.login(req.body.email, req.body.password)
-        res.json(user)
+        res.status(200).json(user)
     } catch(err) {
         res.status(404).json({err})
     }
 }
 
 const signup = async (req, res) => {
+    //console.log(req.body)
     try {
-        const user = await Users.signup(req.body.password, req.body.email)
-        res.json(user)
+        const user = await Users.signup(req.body.name, req.body.password, req.body.email)
+        res.status(201).json(user)
     } catch(err) {
         res.status(404).json({err})
     }
