@@ -3,6 +3,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "seedDev": "node seedDev.js",
     "test": "jest --watchAll",
     "unitTests": "jest --watchAll",
     "coverage": "jest --coverage"
