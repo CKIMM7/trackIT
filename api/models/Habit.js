@@ -1,0 +1,87 @@
+const db = require('../dbConfig');
+
+module.exports = class Habit {
+    constructor(data){
+        this.id = data.id;
+        this.name = data.name;
+        this.desc = data.desc;
+        this.freq = data.freq;
+        this.start_date = data.start_date;
+        this.last_completed = data.last_completed;
+        this.streak = data.streak;
+        this.completed = data.completed;
+    }
+
+    static get all(){
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = await db.query('SELECT * FROM habits;')
+                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
+                resolve(habits);
+            } catch (err) {
+                reject("Error retrieving habits")
+            }
+        })
+    }
+
+    static findHabit(id){
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = await db.query(`SELECT * FROM habits WHERE id = $1;`, [id])
+                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
+                resolve(habit);
+            } catch (err) {
+                reject("Error retrieving habit")
+            }
+        })
+    }
+
+    static create (data) {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const { name, desc, freq, start_date} = data;
+                const result = await db.query(`INSERT INTO habits (name, description, frequency, start_date, last_completed, streak) VALUES ($1, $2, $3, $4, null, null)`, [name, desc, freq, start_date])
+                resolve(result.rows[0]);
+            } catch (err) {
+                console.log(err)
+                reject("Error creating habit")
+            }
+        })
+    }
+
+    // markComplete () {}
+
+    // setFrequency () {}
+
+    // setStartDate () {}
+
+    // setLastCompleted () {}
+
+    // setStreak () {}
+
+    // setCompleted () {}
+
+    update (data) {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const { name, desc, freq, start_date, last_completed, streak, id } = data;
+                const result = await db.query(`UPDATE habits SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6 WHERE id = $7`, [name, desc, freq, start_date, last_completed, streak, id])
+                resolve(result.rows[0]);
+            } catch (err) {
+                reject("Error updating habit")
+            }
+        })
+    }
+
+    delete (id) {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = await db.query(`DELETE FROM habits WHERE id = $1;`, [id])
+                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
+                resolve(habit);
+            } catch (err) {
+                reject("Error deleting habit")
+            }
+        })
+    }
+}
