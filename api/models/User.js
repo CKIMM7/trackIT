@@ -1,4 +1,6 @@
 const db = require('../dbConfig');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = class User {
     constructor(data){
@@ -64,12 +66,82 @@ module.exports = class User {
 
     // removeHabit (id) {}
 
-    static async login(){
-
+    static findByEmail (email) {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
+                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
+                resolve(user);
+            } catch (err) {
+                reject("Error retrieving user")
+            }
+        })
     }
 
-    static async signup(){
 
+    static async login(email, password){
+        
+        return new Promise (async (resolve, reject) => {
+
+            try {
+                const user = await User.findByEmail(email)
+                console.log(user);
+        
+                if(!user){ throw new Error('No user with this email') }
+                const authed = bcrypt.compare(password, user.passwordDigest)
+                if (!!authed){
+                    const payload = {
+                        user: user.username
+                    };
+        
+                    const secret = 'some_secret'; //load from .env files
+                    console.log(secret);
+        
+                    const options = {
+                        expiresIn: 60
+                    }
+        
+                    const token = await jwt.sign(payload, secret, options)
+                    resolve(token)
+                } else {
+                    throw new Error('User could not be authenticated')  
+                }
+            } catch (err) {
+                reject(err)
+            }
+
+        })
+    }
+
+
+    static create(email, password){
+        return new Promise(async (res, rej) => {
+            try {
+                let result = await db.run(SQL`INSERT INTO users (email, password)
+                VALUES (${email}, ${password}) RETURNING *;`);
+                let user = new User(result.rows[0]);
+                res(user)
+            } catch (err) {
+                rej(`Error creating user: ${err}`)
+            }
+        })
+    }
+
+    static async signup(password, userInfo){
+
+        return new Promise (async (resolve, reject) => {
+
+            try {
+                const salt = await bcrypt.genSalt(12);
+                const hashed = await bcrypt.hash(password, salt)
+                const newUser = await User.create(email, hashed)
+                resolve(newUser);
+
+            } catch (err) {
+                reject(err);
+            }
+
+        })
     }
 
     update(){
