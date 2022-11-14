@@ -12,7 +12,7 @@ const displayAll = async (req, res) => {
 const getHabit = async (req, res) => {
     try {
         const habit = await Habit.findHabit(parseInt(req.params.id))
-        res.json()
+        res.json(habit)
     } catch(err){
         res.status(404).json({err})
     }
