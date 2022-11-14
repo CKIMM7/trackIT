@@ -11,8 +11,8 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.user()
-        res.json()
+        const user = await User.user(parseInt(req.params.id))
+        res.json(user)
     } catch(err){
         res.status(404).json({err})
     }
@@ -30,7 +30,8 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         const user = await Users.findById(parseInt(req.params.id))
-        const updatedUser = await user.update(req.body.name)
+        const updatedUser = await user.update(req.body.id, req.body.name)
+        res.json(updatedUser)
     } catch(err){
         res.status(500).json({err})
     }
@@ -38,7 +39,6 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        // get the cat first by id then destroy
         const user = await Users.findById(parseInt(req.params.id))
         await user.destroy()
         res.status(204).json('User deleted')
@@ -49,17 +49,19 @@ const destroy = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-
-    } catch(err){
-
+        const user = await Users.login(req.body.email, req.body.password)
+        res.json(user)
+    } catch(err) {
+        res.status(404).json({err})
     }
 }
 
 const signup = async (req, res) => {
     try {
-
-    } catch(err){
-        
+        const user = await Users.signup(req.body.password, req.body.email)
+        res.json(user)
+    } catch(err) {
+        res.status(404).json({err})
     }
 }
 
@@ -71,4 +73,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, create, update, destroy }
+module.exports = { displayAll, getUser, create, update, destroy, login, signup }

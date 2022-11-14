@@ -81,6 +81,52 @@ async function update (e, category) {
     }
 }
 
-async function login () {}
+async function login (e, input) {
+    e.preventDefault();
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(input)
+        }
+        
+        const response = await fetch(`http://localhost:3000/users/login`, options);
+        const token = await response.json();
 
-async function signup () {}
+
+        if(token) {
+            console.log('redirect the user to the homepage')
+            //windows.location.href = localhost:3000/
+            localStorage.setItem('userToken', token)
+        } else {
+            throw Error(err) 
+        }
+    } catch (err) {
+        console.warn(err);
+    }
+}
+
+async function signup (password, email) {
+    e.preventDefault();
+
+    const signUpData = { password, email}
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(signUpData)
+        }
+        
+        const response = await fetch(`http://localhost:3000/users/singup`, options);
+        const user = await response.json();
+
+        if(user) { 
+            console.log('redirect the user to the homepage')
+            //windows.location.href = localhost:3000/
+        } else {
+            return;
+        } 
+    } catch (err) {
+        console.warn(err);
+    }
+}
