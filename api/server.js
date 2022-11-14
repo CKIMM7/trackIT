@@ -6,7 +6,7 @@ server.use(cors());
 server.use(express.json());
 
 const userRoutes = require('./routes/users')
-const userRoutes = require('./routes/habits')
+const habitRoutes = require('./routes/habits')
 server.use('/users', userRoutes)
 server.use('/habits', habitRoutes)
 

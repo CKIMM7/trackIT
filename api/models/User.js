@@ -71,7 +71,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
-                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
+                let user = new User(result.rows[0]);
                 resolve(user);
             } catch (err) {
                 reject("Error retrieving user")
@@ -86,23 +86,29 @@ module.exports = class User {
 
             try {
                 const user = await User.findByEmail(email)
+                console.log(`user`);
                 console.log(user);
-        
+
                 if(!user){ throw new Error('No user with this email') }
-                const authed = bcrypt.compare(password, user.passwordDigest)
+
+                const authed = await bcrypt.compare(password, user.password)
+                console.log(`authed`);
+                //console.log(authed);
+
                 if (!!authed){
                     const payload = {
                         user: user.username
                     };
         
                     const secret = 'some_secret'; //load from .env files
-                    console.log(secret);
         
                     const options = {
                         expiresIn: 60
                     }
         
                     const token = await jwt.sign(payload, secret, options)
+                    console.log(`token`);
+                    console.log(token);
                     resolve(token)
                 } else {
                     throw new Error('User could not be authenticated')  

@@ -48,6 +48,7 @@ const destroy = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    //console.log(req.body)
     try {
         const user = await Users.login(req.body.email, req.body.password)
         res.json(user)
