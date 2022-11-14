@@ -44,7 +44,7 @@ module.exports = class Habit {
                 
                 console.log(result.rows[0])
 
-                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2);`, [user_id, result.rows[0].id])
+                const result2 = await db.query(`INSERT INTO user_habit (user_id, habit_id) VALUES ($1, $2);`, [user_id, result.rows[0].id])
 
                 resolve(result2.rows[0]);
             } catch (err) {
