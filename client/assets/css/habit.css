@@ -79,7 +79,7 @@ main {
     height: fit-content;
     margin: 5%;
     height: 70%;
-    display: flex;
+    display: grid;
     justify-content: space-around;
     align-items: center;
     border-radius: 10px;

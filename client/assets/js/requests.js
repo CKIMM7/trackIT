@@ -70,7 +70,7 @@ async function update (e, category) {
     e.preventDefault();
     try {
         const options = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
         }
@@ -91,7 +91,7 @@ async function updateData (data, category) {
     // e.preventDefault();
     try {
         const options = {
-            method: 'PUT',
+            method: 'PATCH',
             headers: { "Content-Type": "application/json" },
             body: data
         }
@@ -157,5 +157,3 @@ async function signup (password, email) {
         console.warn(err);
     }
 }
-
-getItem('users',2)

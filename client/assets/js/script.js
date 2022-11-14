@@ -3,9 +3,24 @@ const toDoSection = document.querySelector('#todo-section')
 const completedSection = document.querySelector('#completed-section')
 const longestStreakSection = document.querySelector('#longest-streak')
 const deadlinesSection = document.querySelector('#deadlines')
+const habitForm = document.querySelector('#habit-form')
+const addHabitBtn = document.querySelector('#add-habit')
+
+
+habitForm.addEventListener('submit', postHabit)
+addHabitBtn.addEventListener('click', showForm)
+
+function showForm (e) {
+    e.preventDefault()
+    habitForm.style.display = 'block';
+}
+
+async function addHabit () {
+
+}
 
 async function display () {
-    const habits = await getUserHabits(1)
+    const habits = await getUserHabits(2)
     console.log("Client")
     console.log(habits)
     await checkList(habits)
