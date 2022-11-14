@@ -1,4 +1,4 @@
-const Users = require('../models/User');
+const User = require('../models/User');
 
 const displayAll = async (req, res) => {
     try {
@@ -11,9 +11,20 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await Users.getUser(parseInt(req.params.id))
+        const user = await User.getUser(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
+        console.log(err)
+        res.status(404).json({err})
+    }
+}
+
+const getHabits = async (req, res) => {
+    try {
+        const user = await User.getHabits(parseInt(req.params.id))
+        res.status(200).json(user)
+    } catch(err){
+        console.log(err)
         res.status(404).json({err})
     }
 }
@@ -91,4 +102,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, create, update, destroy, login, signup }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup }
