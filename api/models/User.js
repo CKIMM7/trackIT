@@ -127,7 +127,7 @@ module.exports = class User {
         })
     }
 
-    static async signup(password, userInfo){
+    static async signup(password, email){
 
         return new Promise (async (resolve, reject) => {
 

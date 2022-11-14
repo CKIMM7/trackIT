@@ -49,17 +49,19 @@ const destroy = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-
-    } catch(err){
-
+        const user = await Users.login(req.body.email, req.body.password)
+        res.json(user)
+    } catch(err) {
+        res.status(404).json({err})
     }
 }
 
 const signup = async (req, res) => {
     try {
-
-    } catch(err){
-        
+        const user = await Users.signup(req.body.password, req.body.email)
+        res.json(user)
+    } catch(err) {
+        res.status(404).json({err})
     }
 }
 
@@ -71,4 +73,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, create, update, destroy }
+module.exports = { displayAll, getUser, create, update, destroy, login, signup }
