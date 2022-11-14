@@ -15,5 +15,5 @@ INSERT INTO habit (name, description, frequency, start_date, last_completed, str
 VALUES
     ( 'Drink h20 a day', null, 1, '2022-11-01', null, 3, false ),
     ( 'Gym', 'Hit 7 stones', 3, '2022-10-01', null, 5, false ),
-    ( 'Read chapter a day', null, 1, '2022-09-30', '2022-10-26', 3, true ).
+    ( 'Read chapter a day', null, 1, '2022-09-30', '2022-10-26', 3, true ),
     ( 'No caffiene =v=', null, 2, '2022-09-30', null, null, false );
