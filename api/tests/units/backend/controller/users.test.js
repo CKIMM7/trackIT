@@ -1,6 +1,5 @@
-const { describe, default: test } = require('node:test');
-const usersController = require('../../../api/controller/users');
-const User = require('../../../api/models/User');
+const usersController = require('../../../controller/users');
+const User = require('../../../models/User');
 
 const mockSend = jest.fn();
 const mockJson = jest.fn();

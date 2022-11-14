@@ -1,7 +1,7 @@
 const request = require('supertest');
 const fs = require("fs");
 const { Pool } = require('pg');
-const app = require('../../api/server');
+const app = require('../../server');
 
 // reads a file and returns as string
 const testSeed = fs.readFileSync(__dirname + '/test_seeds.sql').toString();
