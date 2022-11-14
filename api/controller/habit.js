@@ -48,4 +48,52 @@ const destroy = async (req, res) => {
     }
 }
 
+const markComplete = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
+const setFrequency = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
+const setStartDate = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
+const setLastCompleted = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
+const setStreak = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
+const setCompleted = async (req, res) => {
+    try {
+
+    } catch(err){
+        
+    }
+}
+
 module.exports = { displayAll, getHabit, create, update, destroy }
