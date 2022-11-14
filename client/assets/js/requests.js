@@ -18,6 +18,17 @@ async function getItem(category, id) {
     }
 }
 
+async function getUserHabits (id) {
+    try {
+        const response = await fetch(`http://localhost:3000/users/${id}/habits`);
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.log(err)
+        console.warn(err);
+    }
+}
+
 async function postHabit(e){
     e.preventDefault();
     try {
@@ -48,3 +59,28 @@ async function deleteHabit(id){
         console.warn(err);
     }
 }
+
+async function update (e, category) {
+    e.preventDefault();
+    try {
+        const options = {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+        }
+        
+        const response = await fetch(`http://localhost:3000/${category}/${id}`, options);
+        const { id, err } = await response.json();
+        if(err) { 
+            throw Error(err) 
+        } else {
+            // window.location.hash = `#books/${id}`
+        }
+    } catch (err) {
+        console.warn(err);
+    }
+}
+
+async function login () {}
+
+async function signup () {}
