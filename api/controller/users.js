@@ -11,7 +11,7 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.user(parseInt(req.params.id))
+        const user = await Users.getUser(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         res.status(404).json({err})

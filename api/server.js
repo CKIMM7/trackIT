@@ -10,6 +10,6 @@ const habitRoutes = require('./routes/habits')
 server.use('/users', userRoutes)
 server.use('/habits', habitRoutes)
 
-server.get('/', (req, res) => res.send('Hello world!'))
+server.get('/', (req, res) => res.send('Hello world! 0.2'))
 
 module.exports = server
