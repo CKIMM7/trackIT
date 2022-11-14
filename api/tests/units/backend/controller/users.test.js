@@ -1,5 +1,5 @@
-const usersController = require('../../../controller/users');
-const User = require('../../../models/User');
+const usersController = require('../../../../controller/users');
+const User = require('../../../../models/User');
 
 const mockSend = jest.fn();
 const mockJson = jest.fn();
@@ -12,14 +12,22 @@ describe('Users controller', () => {
 
     describe('displayAll', () => {
         test('it returns all users with a 200 status code', async () =>{
+            const testData = ['user1', 'user2', 'user3'];
+
+            // (object, methodName, accessType?)
             jest.spyOn(User, 'all', 'get')
-                 .mockResolvedValue(['user1', 'user2', 'user3']);
-            await usersController.index(null, mockRes);
+                 .mockResolvedValue(testData);
+            await usersController.displayAll(null, mockRes);
+
             expect(mockStatus).toHaveBeenCalledWith(200);
-            expect(mockJson).toHaveBeenCalledWith(['user1', 'user2', 'user3']);
+            expect(mockJson).toHaveBeenCalledWith(testData);
         })
     })
 
-    
+    describe('getUser', () => {
+        test('get a user by id', async () => {
+            
+        })
+    })
 
 })
