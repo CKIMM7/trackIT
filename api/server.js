@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.use(cookieParser());
 
 const userRoutes = require('./routes/users')
 const habitRoutes = require('./routes/habits')

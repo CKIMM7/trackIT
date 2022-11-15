@@ -1,6 +1,7 @@
 const db = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const SQL = require('sql-template-strings');
 
 module.exports = class User {
     constructor(data){
@@ -82,26 +83,22 @@ module.exports = class User {
 
                 const authed = await bcrypt.compare(password, user.password)
 
-
+                //if user authenticates successfully
                 if (!!authed){
-                    const payload = {
-                        user: user.username
-                    };
-        
+                    const payload = { user: email };
+                    console.log(payload)
                     const secret = 'some_secret'; //load from .env files
-                    console.log(secret);
+                    const options = {expiresIn: 60}
         
-                    const options = {
-                        expiresIn: 60
-                    }
-        
-
-                  //  const token = await jwt.sign(payload, secret, options)
-
-                    const token = jwt.sign(payload, secret, options)
-
-
-                    resolve(token)
+                    const token = jwt.sign(payload, secret, options, (err, token) => {
+                        if(err){ 
+                            throw new Error('No user with this email')
+                         }
+                        else {
+                            resolve(token)
+                        }
+                    })
+ 
                 } else {
                     throw new Error('Wrong password') 
                 }
@@ -109,20 +106,6 @@ module.exports = class User {
                 reject(err)
             }
 
-        })
-    }
-
-
-    static create(email, password){
-        return new Promise(async (res, rej) => {
-            try {
-                let result = await db.run(SQL`INSERT INTO users (email, password)
-                VALUES (${email}, ${password}) RETURNING *;`);
-                let user = new User(result.rows[0]);
-                res(user)
-            } catch (err) {
-                rej(`Error creating user: ${err}`)
-            }
         })
     }
 
@@ -135,7 +118,7 @@ module.exports = class User {
 
                 const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
                 let user = new User(result.rows[0]);
-                console.log(user);
+                //console.log(user);
                 resolve(user);
                 
             } catch (err) {
@@ -145,7 +128,21 @@ module.exports = class User {
         })
     }
 
+    static create(name, email, password){
+        return new Promise(async (res, rej) => {
+            try {
+                let result = await db.query(SQL`INSERT INTO users (name, email, password)
+                VALUES (${name}, ${email}, ${password}) RETURNING *;`);
+                let user = new User(result.rows[0]);
+                res(user)
+            } catch (err) {
+                rej(`Error creating user: ${err}`)
+            }
+        })
+    }
+
     static async signup(name, password, email){
+        console.log(name, password, email);
 
             return new Promise (async (resolve, reject) => {
 
