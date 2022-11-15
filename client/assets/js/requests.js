@@ -90,26 +90,26 @@ async function update (category, data) {
     }
 }
 
-async function updateData (data, category) {
-    // e.preventDefault();
-    try {
-        const options = {
-            method: 'PATCH',
-            headers: { "Content-Type": "application/json" },
-            body: data
-        }
+// async function updateData (data, category) {
+//     // e.preventDefault();
+//     try {
+//         const options = {
+//             method: 'PATCH',
+//             headers: { "Content-Type": "application/json" },
+//             body: data
+//         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
-        const { id, err } = await response.json();
-        if(err) { 
-            throw Error(err) 
-        } else {
-            // window.location.hash = `#books/${id}`
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-}
+//         const response = await fetch(`${url}/${category}/${id}`, options);
+//         const { id, err } = await response.json();
+//         if(err) { 
+//             throw Error(err) 
+//         } else {
+//             // window.location.hash = `#books/${id}`
+//         }
+//     } catch (err) {
+//         console.warn(err);
+//     }
+// }
 
 async function login () {
 

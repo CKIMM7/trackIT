@@ -17,10 +17,10 @@ const updateBtn = document.querySelector('#update-btn')
 const user_id = 2
 const habit_id = 2
 
-// habitForm.addEventListener('submit', addHabit)
-// addHabitBtn.addEventListener('click', showForm)
-editHabitBtn.addEventListener('click', showHabitForm)
-updateBtn.addEventListener('click', updateHabit)
+addHabitForm.addEventListener('submit', addHabit)
+addHabitBtn.addEventListener('click', showForm)
+// editHabitBtn.addEventListener('click', showHabitForm)
+// updateBtn.addEventListener('click', updateHabit)
 
 function showForm (e) {
     e.preventDefault()
@@ -70,16 +70,20 @@ async function display () {
 }
 
 async function changeColumn (habit_id) {
-    const data = getUser(user_id)
+    const data = await getItem('habits', habit_id)
+
+    if (data.completed === false) data.last_completed = new Date()   
     data.completed = !data.completed
-    updateData('users', data)
+
+    await update('habits', data)
+    location.reload()
 }
 
 async function checkList (data) {
     for(let i = 0; i < data.length; i++){
         const div = document.createElement('div')
         div.className = 'habit'
-        div.id = i
+        div.id = data[i].id
         const name = document.createElement('p')
         name.textContent = data[i].name
         const fire_icon = document.createElement('i')
@@ -90,6 +94,8 @@ async function checkList (data) {
         div.append(fire_icon)
         div.append(streak)
         data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
+
+        div.addEventListener('click', () => {changeColumn(div.id)})
     }
 }
 
@@ -113,4 +119,4 @@ async function longestStreak (data) {
 
 async function deadlines () {}
 
-// display()
+display()
