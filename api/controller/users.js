@@ -1,6 +1,19 @@
 const Users = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+const currentUser = async (req, res) => {
+    console.log(req.cookies.access_token);
+    try {
+    
+    const user = { cookie: req.cookies.access_token,
+                       id: req.id,
+                    email: req.email }
+        req.send(user)
+    } catch (err) {
+        res.send(err)
+    }
+}
+
 const displayAll = async (req, res) => {
     console.log(req.cookies.access_token);
     try {
@@ -96,11 +109,11 @@ const authorization = async (req, res, next) => {
     }
 
     try {
-    console.log(`verify token if it works move onto the next`)
-    const data = await jwt.verify(token, "some_secret");
-    console.log('jws:data')
-    req.id = data.id;
-    req.email = data.email;
+        console.log(`verify token if it works move onto the next`)
+        const data = await jwt.verify(token, "some_secret");
+        console.log('jws:data')
+        req.id = data.id;
+        req.email = data.email;
     console.log(req.id, req.email);
 
     return next();
@@ -148,4 +161,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization, currentUser }
