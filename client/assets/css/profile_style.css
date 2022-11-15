@@ -88,6 +88,15 @@ main {
 /*  */
 
 #profile-name {
-    /* border: 1px blue solid; */
-    align-self: flex-start;
+  /* border: 1px blue solid; */
+  align-self: flex-start;
 }
+
+#edit-profile {
+  display: none;
+}
+
+#change-pass {
+  display: none;
+}
+
