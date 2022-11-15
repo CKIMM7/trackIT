@@ -13,16 +13,25 @@ const freqInput = document.querySelector('#freq')
 const deleteHabitBtn = document.querySelector('#delete-btn')
 
 const user_id = 2
-const habit_id = 7
+const habit_id = 4
 
 // habitForm.addEventListener('submit', addHabit)
 // addHabitBtn.addEventListener('click', showForm)
-editHabitBtn.addEventListener('click', showForm)
+editHabitBtn.addEventListener('click', showHabitForm)
 deleteHabitBtn.addEventListener('click', () => {deleteHabit(habit_id); console.log('clicked')})
 
 function showForm (e) {
     e.preventDefault()
     habitForm.style.display = 'block';
+}
+
+async function showHabitForm (e) {
+    e.preventDefault()
+    showForm(e)
+    const data = await getItem('habits',habit_id)
+    titleInput.value = data.name
+    descInput.value = data.desc
+    freqInput.value = data.freq
 }
 
 async function addHabit (e) {
