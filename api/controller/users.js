@@ -105,7 +105,7 @@ const authorization = async (req, res, next) => {
     console.log(token);
     //if no token, send a 403 msg
     if (!token) {
-        return res.redirect('http://localhost:3000/');
+        return res.redirect('https://trackit-sillicon-alley.netlify.app/');
     }
 
     try {
@@ -121,7 +121,7 @@ const authorization = async (req, res, next) => {
     
     } catch {
         console.log('auth')
-        return res.redirect('http://localhost:3000/');
+        return res.redirect('https://trackit-sillicon-alley.netlify.app/');
     }
   };
 
