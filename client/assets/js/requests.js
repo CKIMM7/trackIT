@@ -166,4 +166,18 @@ async function signup (name, password, email) {
     }
 }
 
+async function passwordCheck(oldPass, newPass){
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({oldPass, newPass})
+        }
+        const response = await fetch(`${url}/users/passwordcheck`, options);
+        await response.json();
+    } catch(err){
+        console.warn(err)
+    }
+}
+
 //signup('newUser', `password`, `444@hotmail.com`)

@@ -1,15 +1,25 @@
-const main = document.querySelector('main')
 const editBtn = document.querySelector('#edit-btn');
 const settingsBtn = document.querySelector('#settings-btn');
 
 const editProfSection = document.querySelector('#edit-profile');
 const settingsSection = document.querySelector('#settings');
 
-const submitBtn = document.querySelector('#edit-profile > submit');
+// edit profile & settings btns
+const editSubmitBtn = document.querySelector('#edit-profile > #submit-name');
+const saveBtn = document.querySelector('#settings > #save');
+
+// edit profile & settings var
+const nameInput = document.querySelector('#edit-name');
+const emailInput = document.querySelector('#edit-email');
+const oldPassInput = document.querySelector('#oldPass');
+const newPassInput = document.querySelector('#newPass');
+const samePassInput = document.querySelector('#samePass');
 
 editBtn.addEventListener('click', showProfileForm);
-settingsBtn.addEventListener('click', settings);
-// submitBtn.addEventListener('submit', updateProfile);
+settingsBtn.addEventListener('click', showSettings);
+
+editSubmitBtn.addEventListener('submit', updateProfile);
+saveBtn.addEventListener('click', addNewSettings);
 
 const userId = 1;
 
@@ -19,19 +29,14 @@ function editProfile(e){
 }
 
 async function showProfileForm(e){
-    const nameInput = document.querySelector('#edit-name');
-    // const emailInput = document.querySelector('#edit-email');
-
     const data = await getItem('users', userId)
-    console.log(data)
-    console.log('asdasd')
     nameInput.value = data.name
     editProfile(e)
 }
-
+// when submit pressed update name
 async function updateProfile (e) {
-    // when submit pressed update name
-    
+    e.preventDefault()
+    // update('habits', data)
 }
 
 function settings(e){
@@ -39,8 +44,33 @@ function settings(e){
     settingsSection.style.display = 'block';
 }
 
-async function checkPass(){
+async function showSettings(e){
+    const data = await getItem('users', userId);
+    emailInput.value = data.email;
+    settings(e);
+}
+
+async function addNewSettings(e){
+    e.preventDefault()
+    console.log('click')
+
+    const result = await passwordCheck(oldPassInput, samePassInput)
+    console.log(result)
     
+    // if(result) {
+
+    // }
+    // need check pass before pass below
+
+    // data = {
+    //     user_id: userId,
+    //     email: emailInput.value,
+    //     password: newPassInput.value
+    // }
+
+    // console.log('click')
+
+    // update('users', data)
 }
 
 /* use passwordCheck from User class. if return true change pass

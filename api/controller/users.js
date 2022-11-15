@@ -139,12 +139,4 @@ const checkPassword = async (req, res) => {
     }
 }
 
-const editInfo = async (req, res) => {
-    try {
-
-    } catch(err){
-        
-    }
-}
-
 module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization }
