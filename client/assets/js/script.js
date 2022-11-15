@@ -85,15 +85,15 @@ async function display () {
 //     }
 // }
 
-async function changeColumn (habit_id) {
-    const data = await getItem('habits', habit_id)
+// async function changeColumn (habit_id) {
+//     const data = await getItem('habits', habit_id)
 
-    if (data.completed === false) data.last_completed = new Date()   
-    data.completed = !data.completed
+//     if (data.completed === false) data.last_completed = new Date()   
+//     data.completed = !data.completed
 
-    await update('habits', data)
-    location.reload()
-}
+//     await update('habits', data)
+//     location.reload()
+// }
 
 async function checkList (data) {
     for(let i = 0; i < data.length; i++){

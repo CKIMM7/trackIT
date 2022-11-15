@@ -61,6 +61,10 @@ function formatDate (date) {
     return `${hour}:${minute} ${day}/${month}/${year}`
 }
 
+// function change (id, increase) {
+//     const habit = getItem('habits', id)
+//     if (current_count increase)
+// }
 
 async function display () {
     const habit = await getItem('habits',habit_id)
