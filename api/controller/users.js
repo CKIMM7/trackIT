@@ -1,6 +1,21 @@
 const Users = require('../models/User');
+const jwt = require('jsonwebtoken');
+
+const currentUser = async (req, res) => {
+    console.log(req.cookies.access_token);
+    try {
+    
+    const user = { cookie: req.cookies.access_token,
+                       id: req.id,
+                    email: req.email }
+        req.send(user)
+    } catch (err) {
+        res.send(err)
+    }
+}
 
 const displayAll = async (req, res) => {
+    console.log(req.cookies.access_token);
     try {
         const users = await Users.all;
         res.status(200).json(users);
@@ -62,15 +77,20 @@ const login = async (req, res) => {
     //console.log(req.body)
     try {
         const user = await Users.login(req.body.email, req.body.password)
+        console.log('token')
+        console.log(user)
 
-        // res.status(200).json(user)
+        // const data = await jwt.verify(user, "some_secret")
+        //     console.log('jws:data')
+        //     console.log(data)
     res
     .cookie("access_token", user, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     })
     .status(200)
-    .json({ message: "Logged in successfully 😊 👌" });
+    .json({ message: "Logged in successfully 😊 👌",
+            user: user });
 
     } catch(err) {
         console.log(err)
@@ -81,6 +101,7 @@ const login = async (req, res) => {
 const authorization = async (req, res, next) => {
 
     const token = req.cookies.access_token;
+    console.log(`token`);
     console.log(token);
     //if no token, send a 403 msg
     if (!token) {
@@ -88,11 +109,13 @@ const authorization = async (req, res, next) => {
     }
 
     try {
-    console.log(`verify token if it works move onto the next`)
-    const data = jwt.verify(token, "some_secret");
-    console.log(data)
-    req.userId = data.id;
-    req.userRole = data.role;
+        console.log(`verify token if it works move onto the next`)
+        const data = await jwt.verify(token, "some_secret");
+        console.log('jws:data')
+        req.id = data.id;
+        req.email = data.email;
+    console.log(req.id, req.email);
+
     return next();
     
     } catch {
@@ -138,4 +161,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization, currentUser }
