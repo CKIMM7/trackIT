@@ -17,10 +17,10 @@ const updateBtn = document.querySelector('#update-btn')
 const user_id = 2
 const habit_id = 2
 
-// addHabitForm.addEventListener('submit', addHabit)
-// addHabitBtn.addEventListener('click', showForm)
-editHabitBtn.addEventListener('click', showHabitForm)
-updateBtn.addEventListener('click', updateHabit)
+addHabitForm.addEventListener('submit', addHabit)
+addHabitBtn.addEventListener('click', showForm)
+// editHabitBtn.addEventListener('click', showHabitForm)
+// updateBtn.addEventListener('click', updateHabit)
 
 function showForm (e) {
     e.preventDefault()
@@ -69,15 +69,31 @@ async function display () {
     
 }
 
-async function changeColumn (habit_id) {
-    const data = await getItem('habits', habit_id)
+// async function streakCheck () {
+//     if(new Date () < (lastcompleted + freq)) {}
+//     else streak = 0
+// }
 
-    if (data.completed === false) data.last_completed = new Date()   
-    data.completed = !data.completed
+// async function pseudo () {
+//     const lastcompleted;
+//     if (habit.last_completed) lastcompleted = habit.last_completed
+//     else lastcompleted = start_date
+//     if(new Date () < (lastcompleted + freq)) {
+//         streak + 1
+//         completed = !completed
+//         lastcompleted = today
+//     }
+// }
 
-    await update('habits', data)
-    location.reload()
-}
+// async function changeColumn (habit_id) {
+//     const data = await getItem('habits', habit_id)
+
+//     if (data.completed === false) data.last_completed = new Date()   
+//     data.completed = !data.completed
+
+//     await update('habits', data)
+//     location.reload()
+// }
 
 async function checkList (data) {
     for(let i = 0; i < data.length; i++){
@@ -93,7 +109,7 @@ async function checkList (data) {
         div.append(name)
         div.append(fire_icon)
         div.append(streak)
-        // data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
+        data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
 
         div.addEventListener('click', () => {changeColumn(div.id)})
     }
@@ -114,7 +130,7 @@ async function longestStreak (data) {
     div.append(name)
     div.append(fire_icon)
     div.append(streak)
-    // longestStreakSection.append(div)
+    longestStreakSection.append(div)
 }
 
 async function deadlines () {}
