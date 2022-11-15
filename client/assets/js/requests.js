@@ -59,8 +59,9 @@ async function postHabit(data){
 
 async function deleteHabit(id){
     try {
+        console.log(`Deleting ${id}`)
         const options = { method: 'DELETE' }
-        await fetch(`${url}/${url}habits/${id}`, options);
+        await fetch(`${url}/habits/${id}`, options);
         // window.location.hash = `#books`
     } catch (err) {
         console.warn(err);

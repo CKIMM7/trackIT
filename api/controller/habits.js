@@ -40,11 +40,14 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        // get the cat first by id then destroy
-        const habit = await Habit.findById(parseInt(req.params.id))
-        await habit.destroy()
+        console.log('Hey')
+        const habit = await Habit.findHabit(parseInt(req.params.id))
+        console.log(habit)
+        const resp = await habit.delete()
+        
         res.status(204).json('Habit deleted')
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }

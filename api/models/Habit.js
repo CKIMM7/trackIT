@@ -4,8 +4,8 @@ module.exports = class Habit {
     constructor(data){
         this.id = data.id;
         this.name = data.name;
-        this.desc = data.desc;
-        this.freq = data.freq;
+        this.desc = data.description;
+        this.freq = data.frequency;
         this.start_date = data.start_date;
         this.last_completed = data.last_completed;
         this.streak = data.streak;
@@ -29,9 +29,10 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query(`SELECT * FROM habit WHERE id = $1;`, [id])
-                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data,start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed}))
-                resolve(habit);
+                const habit = new Habit(result.rows[0])
+                resolve(habit)
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habit")
             }
         })
@@ -81,10 +82,11 @@ module.exports = class Habit {
         })
     }
 
-    delete (id) {
+    delete () {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [id])
+                console.log(`Server delete ${this.id}`)
+                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [this.id])
                 resolve("Habit was deleted");
             } catch (err) {
                 reject("Error deleting habit")
