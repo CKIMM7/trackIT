@@ -46,10 +46,10 @@ async function updateProfile (e) {
     e.preventDefault()
     console.log('save click')
     const data = await getItem('users', userId);
-    // data.id = userId;
     data.name = nameInput.value;
-    // data.email = emailInput.value;
-    console.log(`dt: ${data.name}, ${data.email}, ${data.id}`);
+    // data.password = emailInput.value;
+    // need to input pass as well cuz update expects pass?
+    console.log(`dt: ${data.name}, ${data.email}, ${data.password}`);
     update('users', data); //<<< err
 }
 
