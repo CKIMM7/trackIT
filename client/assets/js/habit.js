@@ -10,6 +10,7 @@ const title = document.querySelector('#title')
 const desc = document.querySelector('#desc')
 const freq = document.querySelector('#freq')
 const deadline = document.querySelector('#next-deadline')
+const streak = document.querySelector('#streak')
 
 const user_id = 2
 const habit_id = 2
@@ -37,10 +38,29 @@ async function updateHabit (e) {
     update('habits', data)
 }
 
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
 async function nextDeadline (date) {
     console.log(date)
-    console.log(Date(date))
+    console.log(addDays(new Date(), 5))
+    if(addDays(new Date(), 4) < addDays(new Date(), 1909840)) console.log('Its before')
+    else console.log('Fail')
 }
+
+function formatDate (date) {
+    let year = date.getFullYear().toString()
+    let month = (date.getMonth() + 1).toString()
+    let day = date.getDate().toString()
+    let hour = date.getHours().toString()
+    let minute = date.getMinutes().toString()
+ 
+    return `${hour}:${minute} ${day}/${month}/${year}`
+}
+
 
 async function display () {
     const habit = await getItem('habits',habit_id)
@@ -48,7 +68,9 @@ async function display () {
     title.textContent = habit.name
     desc.textContent = habit.desc
     freq.textContent = habit.freq
-    await nextDeadline(habit.start_date)
+    deadline.textContent = formatDate(await addDays(new Date(), habit.freq))
+    streak.textContent = habit.streak
+    nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
 }
