@@ -5,22 +5,19 @@ const completedSection = document.querySelector('#completed-section')
 const longestStreakSection = document.querySelector('#longest-streak')
 const deadlinesSection = document.querySelector('#deadlines')
 const addHabitForm = document.querySelector('#add-habit-form')
-const editHabitForm = document.querySelector('#edit-habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
-const editHabitBtn = document.querySelector('#edit-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
 const deleteHabitBtn = document.querySelector('#delete-btn')
-const updateBtn = document.querySelector('#update-btn')
+
 
 const user_id = 2
 const habit_id = 2
 
 addHabitForm.addEventListener('submit', addHabit)
 addHabitBtn.addEventListener('click', showForm)
-// editHabitBtn.addEventListener('click', showHabitForm)
-// updateBtn.addEventListener('click', updateHabit)
+
 
 function showForm (e) {
     e.preventDefault()
@@ -111,7 +108,7 @@ async function checkList (data) {
         div.append(streak)
         data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
 
-        div.addEventListener('click', () => {changeColumn(div.id)})
+        // div.addEventListener('click', () => {changeColumn(div.id)})
     }
 }
 
