@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const Users = require('../models/User');
 
 const displayAll = async (req, res) => {
     try {
@@ -11,7 +11,7 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.getUser(parseInt(req.params.id))
+        const user = await Users.getUser(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
 
 const getHabits = async (req, res) => {
     try {
-        const user = await User.getHabits(parseInt(req.params.id))
+        const user = await Users.getHabits(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -63,19 +63,51 @@ const login = async (req, res) => {
     try {
         const user = await Users.login(req.body.email, req.body.password)
 
-        res.status(200).json(user)
+        // res.status(200).json(user)
+    res
+    .cookie("access_token", user, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ message: "Logged in successfully 😊 👌" });
+
     } catch(err) {
         console.log(err)
         res.status(404).json('error')
     }
 }
 
+const authorization = async (req, res, next) => {
+
+    const token = req.cookies.access_token;
+    console.log(token);
+    //if no token, send a 403 msg
+    if (!token) {
+      return res.sendStatus(403);
+    }
+
+    try {
+    console.log(`verify token if it works move onto the next`)
+    const data = jwt.verify(token, "some_secret");
+    console.log(data)
+    req.userId = data.id;
+    req.userRole = data.role;
+    return next();
+    
+    } catch {
+        return res.sendStatus(403);
+    }
+  };
+
 const signup = async (req, res) => {
 
     try {
         let userExists = true;
         const findUser = await Users.findByEmail(req.body.email)
-        .then(data => console.log(data))
+        .then(data => { 
+            console.log(data)
+        })
         .catch(err => {
             console.log(err)
             console.log('creaing new user')
@@ -83,12 +115,16 @@ const signup = async (req, res) => {
         })
 
         if(!userExists) {
-            const signUp = await Users.signup(
+            const newUser = await Users.signup(
                 req.body.name,
                 req.body.password,
                 req.body.email)
+
+        res.status(200).json(newUser);
         }
 
+        res.status(200).json(findUser);
+        
     } catch(err) {
         res.status(404).json({err})
     }
@@ -102,4 +138,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization }
