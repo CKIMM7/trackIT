@@ -4,16 +4,16 @@ body {
     overflow-x: hidden;
     height: 100%;
     background-image: linear-gradient(to right, #FF9292,#FFE699);
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat; */
 }
 
 input, textarea {
-    background-color: var(--colour-four);
-    border-radius: 50px !important;
+    background-color: #fff;
+    /* border-radius: 50px !important; */
     padding: 12px 15px 12px 15px !important;
     width: 100%;
     box-sizing: border-box;
-    border: none !important;
+    /* border: none !important; */
     border: 1px solid #FFCCD2 !important;
     font-size: 16px !important;
     color: #000 !important;
@@ -37,23 +37,27 @@ button:focus {
 }
 
 .card {
-    border-radius: 0;
-    border: none;
+    /* border-top-left-radius: 20%; */
+    /* border: none; */
+    border-radius: 15px 15px 15px 15px !important;
 }
 
 .card1 {
     width: 50%;
     padding: 40px 30px 10px 30px;
+    border-style: solid;
+    border-radius: 15px 0 0 15px !important;
+    
+   
 }
 
 .card2 {
     width: 50%;
-    background-image: linear-gradient(to right, #ffe699, #FF9292);
-}
-
-#logo {
-    width: 70px;
-    height: 60px;
+    background-image: linear-gradient(to right, #FFF9B6, #FF9292);
+    /* border-radius: 100%; */
+    /* border-style: solid; */
+    border-radius: 0px 15px 15px 0px !important;
+    
 }
 
 .heading {
@@ -61,7 +65,7 @@ button:focus {
 }
 
 ::placeholder {
-    color: #000 !important;
+    color: grey !important;
     opacity: 1;
 }
 
@@ -86,7 +90,6 @@ button:focus {
 .btn-color {
     border-radius: 50px;
     color: #fff;
-    /* background-image: linear-gradient(to right, #FFE699, #ff9292); */
     background-color: #fff;
     padding: 15px;
     cursor: pointer;
@@ -131,13 +134,18 @@ a:hover {
 }
 
 @media screen and (max-width: 992px) {
+    /* .card {
+        border-radius: 0px 0px 15px 15px !important;
+    } */
     .card1 {
         width: 100%;
         padding: 40px 30px 10px 30px;
+        border-radius: 0px 0px 15px 15px !important;
     }
 
     .card2 {
         width: 100%;
+        border-radius: 15px 15px 0 0 !important;
     }
 
     .right {
