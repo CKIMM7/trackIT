@@ -1,3 +1,4 @@
+
 const main = document.querySelector('main')
 const toDoSection = document.querySelector('#todo-section')
 const completedSection = document.querySelector('#completed-section')
@@ -5,9 +6,13 @@ const longestStreakSection = document.querySelector('#longest-streak')
 const deadlinesSection = document.querySelector('#deadlines')
 const habitForm = document.querySelector('#habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
+const titleInput = document.querySelector('#title')
+const descInput = document.querySelector('#desc')
+const freqInput = document.querySelector('#freq')
 
+const user_id = 2
 
-habitForm.addEventListener('submit', postHabit)
+habitForm.addEventListener('submit', addHabit)
 addHabitBtn.addEventListener('click', showForm)
 
 function showForm (e) {
@@ -15,21 +20,31 @@ function showForm (e) {
     habitForm.style.display = 'block';
 }
 
-async function addHabit () {
-
+async function addHabit (e) {
+    e.preventDefault()
+    data = {
+        id: user_id,
+        name: titleInput.value,
+        desc: descInput.value,
+        freq: freqInput.value,
+        start_date: new Date()
+    }
+    console.log(data)
+    postHabit(data)
 }
 
 async function display () {
-    const habits = await getUserHabits(2)
+    const habits = await getUserHabits(user_id)
     console.log("Client")
     console.log(habits)
     await checkList(habits)
     await longestStreak(habits)
+    // await deadlines()
     
 }
 
 async function changeColumn (habit_id) {
-    const data = getUser(2)
+    const data = getUser(user_id)
     data.completed = !data.completed
     updateData('users', data)
 }
