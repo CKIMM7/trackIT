@@ -27,6 +27,7 @@
    </nav>
    <div>
     <form id="edit-habit-form">
+        <p id="exit">X</p>
         <input id="title-input" placeholder="Enter title..." type="text">
         <input id="desc-input" placeholder="Enter Description..." type="text">
         <input id="freq-input" placeholder="Enter Frequency..." type="number">
@@ -40,13 +41,22 @@
         <p id="desc">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet justo leo, vitae efficitur metus euismod eu. Donec quis lacus eget quam aliquet maximus. Pellentesque dapibus bibendum mi non sodales. Pellentesque habitant morbi tristique senectus et netus et malesuada fames .
         </p>
+        <h3>Start Date</h3>
+        <p id="start_datetime">dd/mm/yy</p>
+        <div>
+            <p id="add-btn">ADD</p>
+            <p id="minus-btn">MINUS</p>
+        </div>
+        <div id="progress">
+            <div id="bar"></div>
+        </div>
         <section id="stats">
             <div>
-                <h3>Duration</h3>
+                <h3>Frequency</h3>
                 <p id="freq">1 Day</p>
             </div>
             <div>
-                <h3>Next Deadline</h3>
+                <h3>Current Count</h3>
                 <p id="next-deadline">18:00 15/11/2022</p>
             </div>
             <div>

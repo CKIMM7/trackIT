@@ -7,7 +7,7 @@ module.exports = class Habit {
         this.desc = data.description;
         this.freq = data.frequency;
         this.start_date = data.start_date;
-        this.last_completed = data.last_completed;
+        this.current_count = data.current_count;
         this.streak = data.streak;
         this.completed = data.completed;
     }
@@ -73,9 +73,9 @@ module.exports = class Habit {
     update (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date, last_completed, streak, completed, id } = data;
+                const { name, desc, freq, start_date, current_count, streak, completed, id } = data;
                 console.log("Updating")
-                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, last_completed, streak, completed, id])
+                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, current_count = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, current_count, streak, completed, id])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating habit")

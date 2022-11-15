@@ -1,23 +1,31 @@
 const main = document.querySelector('main')
 const editHabitForm = document.querySelector('#edit-habit-form')
 const editHabitBtn = document.querySelector('#edit-habit')
+const exitBtn = document.querySelector('#exit')
 const titleInput = document.querySelector('#title-input')
 const descInput = document.querySelector('#desc-input')
 const freqInput = document.querySelector('#freq-input')
 const deleteHabitBtn = document.querySelector('#delete-btn')
 const updateBtn = document.querySelector('#update-btn')
+const addBtn = document.querySelector('#add-btn')
+const minusBtn = document.querySelector('#minus-btn')
 const title = document.querySelector('#title')
 const desc = document.querySelector('#desc')
 const freq = document.querySelector('#freq')
 const deadline = document.querySelector('#next-deadline')
 const streak = document.querySelector('#streak')
+const progress = document.querySelector('#progress')
+const bar = document.querySelector('#bar')
+const startDate = document.querySelector('#start_datetime')
 
 const user_id = 2
 const habit_id = 2
 
 editHabitBtn.addEventListener('click', showHabitForm)
+exitBtn.addEventListener('click', showHabitForm)
 updateBtn.addEventListener('click', updateHabit)
-
+addBtn.addEventListener('click', changeCount)
+minusBtn.addEventListener('click', changeCount)
 
 async function showHabitForm (e) {
     e.preventDefault()
@@ -25,7 +33,8 @@ async function showHabitForm (e) {
     titleInput.value = data.name
     descInput.value = data.desc
     freqInput.value = data.freq
-    editHabitForm.style.display = 'block';
+    if (editHabitForm.style.display == 'block') editHabitForm.style.display = 'none'
+    else editHabitForm.style.display = 'block'
 
 }
 
@@ -36,6 +45,7 @@ async function updateHabit (e) {
     data.desc = descInput.value
     data.freq = freqInput.value
     update('habits', data)
+    location.reload()
 }
 
 function addDays(date, days) {
@@ -61,10 +71,28 @@ function formatDate (date) {
     return `${hour}:${minute} ${day}/${month}/${year}`
 }
 
-// function change (id, increase) {
-//     const habit = getItem('habits', id)
-//     if (current_count increase)
-// }
+async function changeCount (e) {
+    const habit = await getItem('habits', habit_id)
+    console.log(habit)
+    if (e.target.id === 'add-btn') {
+        if(habit.current_count < habit.freq) {console.log(habit.current_count); habit.current_count ++; console.log(habit.current_count); }
+        else console.log ('Reached Max')
+    }
+    else {
+        if(habit.current_count > 0) habit.current_count --
+        else console.log ('Cannot reduce')
+    }
+    if(habit.current_count == habit.freq) habit.completed = true
+    else habit.completed = false
+    await update('habits', habit)
+    location.reload()
+}
+
+async function updateProgress () {
+    const habit = await getItem('habits', habit_id)
+    const perc = habit.current_count / habit.freq * 100
+    bar.style.width = `${perc}%`
+}
 
 async function display () {
     const habit = await getItem('habits',habit_id)
@@ -72,8 +100,10 @@ async function display () {
     title.textContent = habit.name
     desc.textContent = habit.desc
     freq.textContent = habit.freq
-    deadline.textContent = formatDate(await addDays(new Date(), habit.freq))
+    deadline.textContent = habit.current_count
     streak.textContent = habit.streak
+    startDate.textContent = habit.start_date
+    updateProgress()
     nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
