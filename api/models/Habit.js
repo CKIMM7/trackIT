@@ -74,6 +74,7 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const { name, desc, freq, start_date, last_completed, streak, id } = data;
+                console.log("Updating")
                 const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6 WHERE id = $7;`, [name, desc, freq, start_date, last_completed, streak, id])
                 resolve(result.rows[0]);
             } catch (err) {

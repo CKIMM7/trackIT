@@ -4,34 +4,37 @@ const toDoSection = document.querySelector('#todo-section')
 const completedSection = document.querySelector('#completed-section')
 const longestStreakSection = document.querySelector('#longest-streak')
 const deadlinesSection = document.querySelector('#deadlines')
-const habitForm = document.querySelector('#habit-form')
+const addHabitForm = document.querySelector('#add-habit-form')
+const editHabitForm = document.querySelector('#edit-habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
 const editHabitBtn = document.querySelector('#edit-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
 const deleteHabitBtn = document.querySelector('#delete-btn')
+const updateBtn = document.querySelector('#update-btn')
 
 const user_id = 2
-const habit_id = 4
+const habit_id = 2
 
 // habitForm.addEventListener('submit', addHabit)
 // addHabitBtn.addEventListener('click', showForm)
 editHabitBtn.addEventListener('click', showHabitForm)
-deleteHabitBtn.addEventListener('click', () => {deleteHabit(habit_id); console.log('clicked')})
+updateBtn.addEventListener('click', updateHabit)
 
 function showForm (e) {
     e.preventDefault()
-    habitForm.style.display = 'block';
+    editHabitForm.style.display = 'block';
 }
 
 async function showHabitForm (e) {
     e.preventDefault()
-    showForm(e)
     const data = await getItem('habits',habit_id)
     titleInput.value = data.name
     descInput.value = data.desc
     freqInput.value = data.freq
+    showForm(e)
+
 }
 
 async function addHabit (e) {
@@ -45,6 +48,15 @@ async function addHabit (e) {
     }
     console.log(data)
     postHabit(data)
+}
+
+async function updateHabit (e) {
+    e.preventDefault()
+    const data = await getItem('habits', habit_id)
+    data.name = titleInput.value
+    data.desc = descInput.value
+    data.freq = freqInput.value
+    update('habits', data)
 }
 
 async function display () {

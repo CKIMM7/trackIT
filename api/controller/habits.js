@@ -30,10 +30,11 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const habit = await Habit.findById(parseInt(req.params.id))
-        const updatedHabit = await habit.update(req.body.name, req.body.desc, req.body.freq, req.body.start_date, req.body.last_completed, req.body.streak, req.body.id)
+        const habit = await Habit.findHabit(parseInt(req.params.id))
+        const updatedHabit = await habit.update(req.body)
         res.status(200).json(updatedHabit)
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }

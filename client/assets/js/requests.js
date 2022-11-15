@@ -68,23 +68,24 @@ async function deleteHabit(id){
     }
 }
 
-async function update (e, category) {
-    e.preventDefault();
+async function update (category, data) {
     try {
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+            body: JSON.stringify(data)
         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
+        const response = await fetch(`${url}/${category}/${data.id}`, options);
         const { id, err } = await response.json();
         if(err) { 
+            
             throw Error(err) 
         } else {
             // window.location.hash = `#books/${id}`
         }
     } catch (err) {
+        
         console.warn(err);
     }
 }
