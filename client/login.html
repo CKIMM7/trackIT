@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./assets/js/requests.js" defer></script>
     <title>trackIT-landing</title>
     <link rel="stylesheet" href="./assets/css/login_style.css">
 </head>
@@ -11,19 +12,19 @@
     <div class="login_form">
         <div class="details">
           <div class="welcome">Welcome</div>
-          <form action="/" method="post">
+          <form id="login">
             <div id="wrap">
               <label>Email</label>
-              <input type="text" placeholder="kamara123@gmail.com" class="input">
+              <input id="email_input" type="text" placeholder="kamara123@gmail.com" class="input">
               </div>
             <div id="wrap">
               <label>Password</label>
-              <input type="password" class="input" data-type="password">
+              <input  id="password_input" type="password" class="input" data-type="password">
               </div>
             <div id="wrap">
               <label>Forgot password?</label>
               </div>
-            <button type="submit" class="button"><h1 class="sign">Sign in!</h1></button>
+            <button class="button"><h1 class="sign">Sign in!</h1></button>
           </form>
         </div>
         <div class="details-two">
