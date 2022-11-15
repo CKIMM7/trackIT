@@ -166,8 +166,8 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                const { id, name } = data;
-                const result = await db.query(`UPDATE users SET name = $2 WHERE id = $1;`, [ id, name ])
+                const { id, name, email, password } = data;
+                const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1;`, [ id, name, email, password ])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating user")
@@ -183,6 +183,23 @@ module.exports = class User {
             } catch (err) {
                 reject("Error deleting user")
             }
+        })
+    }
+
+    async passwordCheck(newPassword){
+        return new Promise (async (resolve, reject) => {
+            try {
+                const user = await User.getUser(this.id)
+                const authorised = false;
+                const authed = await bcrypt.compare(newPassword, user.password)
+                if (!!authed) authorised = true
+                authorised = false
+                console.log('Password match')
+                resolve(authorised)
+            } catch (err) {
+                reject("Error changing password")
+            }
+            
         })
     }
 }
