@@ -110,7 +110,7 @@ async function login () {
     }
 }
 
-//login();
+login();
 
 async function signup (name, password, email) {
     //e.preventDefault();
@@ -127,16 +127,9 @@ async function signup (name, password, email) {
         const user = await response.json();
         console.log(user)
 
-        if(user.err) { 
-            console.log('you need to sign up again && do someting');
-            console.log(user);
-            //windows.location.href = localhost:3000/
-        } else {
-            console.log('you are signed in')
-        } 
     } catch (err) {
         console.warn(err);
     }
 }
 
-signup('newUser', `password`, `aaa@hotmail.com`)
+//signup('newUser', `password`, `444@hotmail.com`)
