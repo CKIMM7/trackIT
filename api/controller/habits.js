@@ -40,9 +40,8 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        console.log('Hey')
+
         const habit = await Habit.findHabit(parseInt(req.params.id))
-        console.log(habit)
         const resp = await habit.delete()
         
         res.status(204).json('Habit deleted')
