@@ -67,13 +67,13 @@ async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
 
-    const result = await passwordCheck(oldPassInput, samePassInput)
+    const result = await passwordCheck(5, oldPassInput.value, samePassInput.value)
     console.log(result)
     
     // if return false display an error
     if(!result) {
         const markup = `<p>Password does not match</p>`;
-        settingsSection.insertAdjacentElement('afterbegin', markup);
+        //settingsSection.insertAdjacentElement('afterbegin', markup);
     }
     // need check pass before pass below
 

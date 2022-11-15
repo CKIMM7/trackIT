@@ -189,11 +189,14 @@ module.exports = class User {
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
+                console.log("User Model")
+                console.log(password)
                 const user = await User.getUser(this.id)
-                const authorised = false;
+                let authorised = false;
+                console.log(`User Password ${user.password}`)
                 const authed = await bcrypt.compare(password, user.password)
-                if (!!authed) authorised = true
-                console.log('Password match')
+                if (authed) authorised = true
+                console.log(authorised)
                 resolve(authorised)
             } catch (err) {
                 reject("Error changing password")
