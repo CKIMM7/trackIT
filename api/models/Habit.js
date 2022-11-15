@@ -16,9 +16,10 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM habit;')
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data,start_data, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
+                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
                 resolve(habits);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habits")
             }
         })
