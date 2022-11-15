@@ -4,26 +4,43 @@ const toDoSection = document.querySelector('#todo-section')
 const completedSection = document.querySelector('#completed-section')
 const longestStreakSection = document.querySelector('#longest-streak')
 const deadlinesSection = document.querySelector('#deadlines')
-const habitForm = document.querySelector('#habit-form')
+const addHabitForm = document.querySelector('#add-habit-form')
+const editHabitForm = document.querySelector('#edit-habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
+const editHabitBtn = document.querySelector('#edit-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
+const deleteHabitBtn = document.querySelector('#delete-btn')
+const updateBtn = document.querySelector('#update-btn')
 
 const user_id = 2
+const habit_id = 2
 
-habitForm.addEventListener('submit', addHabit)
-addHabitBtn.addEventListener('click', showForm)
+// addHabitForm.addEventListener('submit', addHabit)
+// addHabitBtn.addEventListener('click', showForm)
+editHabitBtn.addEventListener('click', showHabitForm)
+updateBtn.addEventListener('click', updateHabit)
 
 function showForm (e) {
     e.preventDefault()
-    habitForm.style.display = 'block';
+    editHabitForm.style.display = 'block';
+}
+
+async function showHabitForm (e) {
+    e.preventDefault()
+    const data = await getItem('habits',habit_id)
+    titleInput.value = data.name
+    descInput.value = data.desc
+    freqInput.value = data.freq
+    showForm(e)
+
 }
 
 async function addHabit (e) {
     e.preventDefault()
     data = {
-        id: user_id,
+        user_id: user_id,
         name: titleInput.value,
         desc: descInput.value,
         freq: freqInput.value,
@@ -33,10 +50,19 @@ async function addHabit (e) {
     postHabit(data)
 }
 
+async function updateHabit (e) {
+    e.preventDefault()
+    const data = await getItem('habits', habit_id)
+    data.name = titleInput.value
+    data.desc = descInput.value
+    data.freq = freqInput.value
+    update('habits', data)
+}
+
 async function display () {
     const habits = await getUserHabits(user_id)
     console.log("Client")
-    console.log(habits)
+    console.log(await getItem('users',1))
     await checkList(habits)
     await longestStreak(habits)
     // await deadlines()
@@ -44,16 +70,20 @@ async function display () {
 }
 
 async function changeColumn (habit_id) {
-    const data = getUser(user_id)
+    const data = await getItem('habits', habit_id)
+
+    if (data.completed === false) data.last_completed = new Date()   
     data.completed = !data.completed
-    updateData('users', data)
+
+    await update('habits', data)
+    location.reload()
 }
 
 async function checkList (data) {
     for(let i = 0; i < data.length; i++){
         const div = document.createElement('div')
         div.className = 'habit'
-        div.id = i
+        div.id = data[i].id
         const name = document.createElement('p')
         name.textContent = data[i].name
         const fire_icon = document.createElement('i')
@@ -63,7 +93,9 @@ async function checkList (data) {
         div.append(name)
         div.append(fire_icon)
         div.append(streak)
-        data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
+        // data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
+
+        div.addEventListener('click', () => {changeColumn(div.id)})
     }
 }
 
@@ -82,7 +114,7 @@ async function longestStreak (data) {
     div.append(name)
     div.append(fire_icon)
     div.append(streak)
-    longestStreakSection.append(div)
+    // longestStreakSection.append(div)
 }
 
 async function deadlines () {}

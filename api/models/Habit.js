@@ -4,8 +4,8 @@ module.exports = class Habit {
     constructor(data){
         this.id = data.id;
         this.name = data.name;
-        this.desc = data.desc;
-        this.freq = data.freq;
+        this.desc = data.description;
+        this.freq = data.frequency;
         this.start_date = data.start_date;
         this.last_completed = data.last_completed;
         this.streak = data.streak;
@@ -16,9 +16,10 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM habit;')
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data,start_data, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
+                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
                 resolve(habits);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habits")
             }
         })
@@ -28,9 +29,10 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query(`SELECT * FROM habit WHERE id = $1;`, [id])
-                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data,start_data, last_completed: data.last_completed, streak: data.streak, completed: data.completed}))
-                resolve(habit);
+                const habit = new Habit(result.rows[0])
+                resolve(habit)
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habit")
             }
         })
@@ -39,13 +41,14 @@ module.exports = class Habit {
     static create (data) {
         return new Promise (async (resolve, reject) => {
             try {
+                console.log("---Server----")
                 console.log(data)
                 const { name, desc, freq, start_date, user_id} = data;
-                const result = await db.query(`INSERT INTO habit (name, description, frequency, start_date, last_completed, streak) VALUES ($1, $2, $3, $4, null, null);`, [name, desc, freq, start_date])
+                const result = await db.query(`INSERT INTO habit (name, description, frequency, start_date, last_completed, streak, completed) VALUES ($1, $2, $3, $4, null, null, false) RETURNING *;`, [name, desc, freq, start_date])
                 
                 console.log(result.rows[0])
 
-                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2);`, [user_id, result.rows[0].id])
+                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2) RETURNING *;`, [user_id, result.rows[0].id])
 
                 resolve(result2.rows[0]);
             } catch (err) {
@@ -70,8 +73,9 @@ module.exports = class Habit {
     update (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date, last_completed, streak, id } = data;
-                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6 WHERE id = $7;`, [name, desc, freq, start_date, last_completed, streak, id])
+                const { name, desc, freq, start_date, last_completed, streak, completed, id } = data;
+                console.log("Updating")
+                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, last_completed, streak, completed, id])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating habit")
@@ -79,10 +83,11 @@ module.exports = class Habit {
         })
     }
 
-    delete (id) {
+    delete () {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [id])
+                console.log(`Server delete ${this.id}`)
+                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [this.id])
                 resolve("Habit was deleted");
             } catch (err) {
                 reject("Error deleting habit")

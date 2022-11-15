@@ -1,6 +1,7 @@
 const db = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const SQL = require('sql-template-strings');
 
 module.exports = class User {
     constructor(data){
@@ -15,7 +16,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM users;')
-                const users = result.rows.map(d => ({ id: d.id, email: d.email }))
+                const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
                 reject("Error retrieving authors")
@@ -28,7 +29,7 @@ module.exports = class User {
             try {
                 const result = await db.query(`SELECT * FROM users WHERE id = $1;`, [id])
                 // console.log(result)
-                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
+                const user = new User(result.rows[0])
                 resolve(user);
             } catch (err) {
                 reject("Error retrieving user")
@@ -82,26 +83,22 @@ module.exports = class User {
 
                 const authed = await bcrypt.compare(password, user.password)
 
-
+                //if user authenticates successfully
                 if (!!authed){
-                    const payload = {
-                        user: user.username
-                    };
-        
+                    const payload = { user: email };
+                    console.log(payload)
                     const secret = 'some_secret'; //load from .env files
-                    console.log(secret);
+                    const options = {expiresIn: 60}
         
-                    const options = {
-                        expiresIn: 60
-                    }
-        
-
-                  //  const token = await jwt.sign(payload, secret, options)
-
-                    const token = jwt.sign(payload, secret, options)
-
-
-                    resolve(token)
+                    const token = jwt.sign(payload, secret, options, (err, token) => {
+                        if(err){ 
+                            throw new Error('No user with this email')
+                         }
+                        else {
+                            resolve(token)
+                        }
+                    })
+ 
                 } else {
                     throw new Error('Wrong password') 
                 }
@@ -109,20 +106,6 @@ module.exports = class User {
                 reject(err)
             }
 
-        })
-    }
-
-
-    static create(email, password){
-        return new Promise(async (res, rej) => {
-            try {
-                let result = await db.run(SQL`INSERT INTO users (email, password)
-                VALUES (${email}, ${password}) RETURNING *;`);
-                let user = new User(result.rows[0]);
-                res(user)
-            } catch (err) {
-                rej(`Error creating user: ${err}`)
-            }
         })
     }
 
@@ -135,7 +118,7 @@ module.exports = class User {
 
                 const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
                 let user = new User(result.rows[0]);
-                console.log(user);
+                //console.log(user);
                 resolve(user);
                 
             } catch (err) {
@@ -145,7 +128,21 @@ module.exports = class User {
         })
     }
 
+    static create(name, email, password){
+        return new Promise(async (res, rej) => {
+            try {
+                let result = await db.query(SQL`INSERT INTO users (name, email, password)
+                VALUES (${name}, ${email}, ${password}) RETURNING *;`);
+                let user = new User(result.rows[0]);
+                res(user)
+            } catch (err) {
+                rej(`Error creating user: ${err}`)
+            }
+        })
+    }
+
     static async signup(name, password, email){
+        console.log(name, password, email);
 
             return new Promise (async (resolve, reject) => {
 
@@ -169,8 +166,8 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                const { id, name } = data;
-                const result = await db.query(`UPDATE users SET name = $2 WHERE id = $1;`, [ id, name ])
+                const { id, name, email, password } = data;
+                const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1;`, [ id, name, email, password ])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating user")
@@ -186,6 +183,22 @@ module.exports = class User {
             } catch (err) {
                 reject("Error deleting user")
             }
+        })
+    }
+
+    async passwordCheck(password){
+        return new Promise (async (resolve, reject) => {
+            try {
+                const user = await User.getUser(this.id)
+                const authorised = false;
+                const authed = await bcrypt.compare(password, user.password)
+                if (!!authed) authorised = true
+                console.log('Password match')
+                resolve(authorised)
+            } catch (err) {
+                reject("Error changing password")
+            }
+            
         })
     }
 }

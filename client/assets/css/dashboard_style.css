@@ -129,7 +129,7 @@ main {
 
 }
 
-#habit-form {
+#add-habit-form {
   background-color: grey;
   position: absolute;
   left: 50%;
@@ -141,6 +141,8 @@ main {
   flex-direction: column;
   display: none;
 }
+
+
 
 /* 
 @media screen and (max-width: 900px) {

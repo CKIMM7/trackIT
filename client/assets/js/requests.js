@@ -59,55 +59,57 @@ async function postHabit(data){
 
 async function deleteHabit(id){
     try {
+        console.log(`Deleting ${id}`)
         const options = { method: 'DELETE' }
-        await fetch(`${url}/${url}habits/${id}`, options);
+        await fetch(`${url}/habits/${id}`, options);
         // window.location.hash = `#books`
     } catch (err) {
         console.warn(err);
     }
 }
 
-async function update (e, category) {
-    e.preventDefault();
+async function update (category, data) {
     try {
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+            body: JSON.stringify(data)
         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
+        const response = await fetch(`${url}/${category}/${data.id}`, options);
         const { id, err } = await response.json();
         if(err) { 
+            
             throw Error(err) 
         } else {
             // window.location.hash = `#books/${id}`
         }
     } catch (err) {
+        
         console.warn(err);
     }
 }
 
-async function updateData (data, category) {
-    // e.preventDefault();
-    try {
-        const options = {
-            method: 'PATCH',
-            headers: { "Content-Type": "application/json" },
-            body: data
-        }
+// async function updateData (data, category) {
+//     // e.preventDefault();
+//     try {
+//         const options = {
+//             method: 'PATCH',
+//             headers: { "Content-Type": "application/json" },
+//             body: data
+//         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
-        const { id, err } = await response.json();
-        if(err) { 
-            throw Error(err) 
-        } else {
-            // window.location.hash = `#books/${id}`
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-}
+//         const response = await fetch(`${url}/${category}/${id}`, options);
+//         const { id, err } = await response.json();
+//         if(err) { 
+//             throw Error(err) 
+//         } else {
+//             // window.location.hash = `#books/${id}`
+//         }
+//     } catch (err) {
+//         console.warn(err);
+//     }
+// }
 
 async function login () {
 
@@ -140,7 +142,7 @@ async function login () {
     }
 }
 
-//login();
+// login();
 
 async function signup (name, password, email) {
     //e.preventDefault();
@@ -159,16 +161,9 @@ async function signup (name, password, email) {
         const user = await response.json();
         console.log(user)
 
-        if(user.err) { 
-            console.log('you need to sign up again && do someting');
-            console.log(user);
-            //windows.location.href = localhost:3000/
-        } else {
-            console.log('you are signed in')
-        } 
     } catch (err) {
         console.warn(err);
     }
 }
 
-signup('newUser', `password`, `aaa@hotmail.com`)
+//signup('newUser', `password`, `444@hotmail.com`)
