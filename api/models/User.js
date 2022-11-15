@@ -85,10 +85,10 @@ module.exports = class User {
 
                 //if user authenticates successfully
                 if (!!authed){
-                    const payload = { user: email };
+                    const payload = { email: user.email, id: user.id };
 
                     const secret = 'some_secret'; //load from .env files
-                    const options = {expiresIn: 3600}
+                    const options = { expiresIn: 3600 }
         
                     const token = jwt.sign(payload, secret, options, (err, token) => {
                         if(err){ 

@@ -99,7 +99,9 @@ const authorization = async (req, res, next) => {
     console.log(`verify token if it works move onto the next`)
     const data = await jwt.verify(token, "some_secret");
     console.log('jws:data')
-    console.log(data)
+    req.id = data.id;
+    req.email = data.email;
+    console.log(req.id, req.email);
 
     return next();
     
