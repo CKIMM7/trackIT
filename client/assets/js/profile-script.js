@@ -24,22 +24,17 @@ async function display(){
     const name = document.querySelector('#profile-name');
     const email = document.querySelector('#email');
     const habits = document.querySelector('#habits');
-    // const User = require('../../../api/models/User');
 
     // gets user name, email and pass
-    const userData = await getUser(userId);
+    const userData = await getItem('users', userId);
     name.textContent = userData.name;
     email.textContent = userData.email;
 
-    const userHabits = await getHabits(userId);
-    habits.textContent = userHabits.habits.length //<<<<
+    console.log(userData.name)
 
-    console.log(userHabits);
+    // const userHabits = await getUserHabits('users', userId);
+    // habits.textContent = userHabits.habits.length //<<<< check this
 
-    /* cant use user getHabits cuz it gets only 1 habit
-    same for habit findHabit
-    you can use User getHabits -> grabs all
-    */
 }
 
 display();

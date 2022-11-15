@@ -29,7 +29,7 @@ module.exports = class User {
             try {
                 const result = await db.query(`SELECT * FROM users WHERE id = $1;`, [id])
                 // console.log(result)
-                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
+                const user = new User(result.rows[0])
                 resolve(user);
             } catch (err) {
                 reject("Error retrieving user")
