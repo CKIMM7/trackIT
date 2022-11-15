@@ -140,7 +140,7 @@ async function login () {
     }
 }
 
-login();
+// login();
 
 async function signup (name, password, email) {
     //e.preventDefault();

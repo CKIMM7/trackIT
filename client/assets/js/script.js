@@ -23,7 +23,7 @@ function showForm (e) {
 async function addHabit (e) {
     e.preventDefault()
     data = {
-        id: user_id,
+        user_id: user_id,
         name: titleInput.value,
         desc: descInput.value,
         freq: freqInput.value,

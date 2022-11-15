@@ -15,7 +15,7 @@ module.exports = class User {
     static get all(){
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT * FROM users;')
+                const result = await db.query('SELECT * FROM user_habits;')
                 const users = result.rows.map(d => ({ id: d.id, email: d.email }))
                 resolve(users);
             } catch (err) {
