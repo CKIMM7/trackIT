@@ -35,16 +35,17 @@ async function getUserHabits (id) {
     }
 }
 
-async function postHabit(e){
-    e.preventDefault();
+async function postHabit(data){
+
     try {
+        console.log(JSON.stringify(data))
         const options = {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+            body: JSON.stringify(data)
         }
         
-        const response = await fetch('${url}/${url}/habits', options);
+        const response = await fetch(`${url}/habits`, options);
         const { id, err } = await response.json();
         if(err) { 
             throw Error(err) 

@@ -20,7 +20,8 @@ const getHabit = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const habit = await Habit.create(req.body.name, req.body.desc, req.body.freq, req.body.start_date)
+        console.log(req.body)
+        const habit = await Habit.create(req.body)
         res.status(201).json(habit)
     } catch(err) {
         res.status(404).json({err})

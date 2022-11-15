@@ -12,7 +12,9 @@ CREATE TABLE users (
 CREATE TABLE user_habits (
     id serial PRIMARY KEY,
     user_id int,
-    habit_id int
+    habit_id int,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (habit_id) REFERENCES habit(id);
 );
 
 CREATE TABLE habit (
@@ -20,7 +22,7 @@ CREATE TABLE habit (
     name varchar(30) NOT NULL,
     description varchar(300),
     frequency INT,
-    start_date varchar(20),
+    start_date varchar(25),
     last_completed varchar(20),
     streak INT,
     completed boolean
