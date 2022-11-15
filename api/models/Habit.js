@@ -50,7 +50,7 @@ module.exports = class Habit {
 
                 const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2) RETURNING *;`, [user_id, result.rows[0].id])
 
-                resolve(result2.rows[0]);
+                resolve(new Habit(result2.rows[0]));
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")

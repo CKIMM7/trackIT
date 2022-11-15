@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "jest-fetch-mock": "^3.0.3",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.8.0",
     "sql-template-strings": "^2.2.2"
