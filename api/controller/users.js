@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const Users = require('../models/User');
 
 const displayAll = async (req, res) => {
     try {
@@ -11,7 +11,7 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.getUser(parseInt(req.params.id))
+        const user = await Users.getUser(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
 
 const getHabits = async (req, res) => {
     try {
-        const user = await User.getHabits(parseInt(req.params.id))
+        const user = await Users.getHabits(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
