@@ -132,8 +132,12 @@ const signup = async (req, res) => {
 
 const checkPassword = async (req, res) => {
     try {
-        const user = await Users.findByEmail(req.body.email)
-        res.status(204).json(await user.checkPassword())
+        console.log(req.body)
+        const user = await Users.getUser(req.body.id)
+        console.log(user)
+        const test = await user.passwordCheck(req.body.oldPass)
+        console.log(test)
+        res.status(204).json(test)
     } catch(err){
         res.status(500).json({err})
     }
