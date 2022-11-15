@@ -8,6 +8,10 @@ const settingsSection = document.querySelector('#settings');
 const editSubmitBtn = document.querySelector('#edit-profile > #submit-name');
 const saveBtn = document.querySelector('#settings > #save');
 
+// cancel buttons
+const cancelEditBtn = document.querySelector('#edit-profile > #edit-cancel');
+const cancelSettBtn = document.querySelector('#settings > #pass-cancel');
+
 // edit profile & settings var
 const nameInput = document.querySelector('#edit-name');
 const emailInput = document.querySelector('#edit-email');
@@ -18,8 +22,11 @@ const samePassInput = document.querySelector('#samePass');
 editBtn.addEventListener('click', showProfileForm);
 settingsBtn.addEventListener('click', showSettings);
 
-editSubmitBtn.addEventListener('submit', updateProfile);
+editSubmitBtn.addEventListener('click', updateProfile);
 saveBtn.addEventListener('click', addNewSettings);
+
+cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
+cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
 
 const userId = 1;
 
@@ -33,10 +40,13 @@ async function showProfileForm(e){
     nameInput.value = data.name
     editProfile(e)
 }
-// when submit pressed update name
+// when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
-    // update('habits', data)
+    console.log('save click')
+    const data = await getItem('users', userId);
+    data.name = nameInput.value;
+    update('users', data);
 }
 
 function settings(e){
@@ -57,9 +67,10 @@ async function addNewSettings(e){
     const result = await passwordCheck(oldPassInput, samePassInput)
     console.log(result)
     
-    // if(result) {
+    // if return false display an error
+    if(!result) {
 
-    // }
+    }
     // need check pass before pass below
 
     // data = {
