@@ -82,26 +82,22 @@ module.exports = class User {
 
                 const authed = await bcrypt.compare(password, user.password)
 
-
+                //if user authenticates successfully
                 if (!!authed){
-                    const payload = {
-                        user: user.username
-                    };
-        
+                    const payload = { user: email };
+                    console.log(payload)
                     const secret = 'some_secret'; //load from .env files
-                    console.log(secret);
+                    const options = {expiresIn: 60}
         
-                    const options = {
-                        expiresIn: 60
-                    }
-        
-
-                  //  const token = await jwt.sign(payload, secret, options)
-
-                    const token = jwt.sign(payload, secret, options)
-
-
-                    resolve(token)
+                    const token = jwt.sign(payload, secret, options, (err, token) => {
+                        if(err){ 
+                            throw new Error('No user with this email')
+                         }
+                        else {
+                            resolve(token)
+                        }
+                    })
+ 
                 } else {
                     throw new Error('Wrong password') 
                 }
@@ -135,7 +131,7 @@ module.exports = class User {
 
                 const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
                 let user = new User(result.rows[0]);
-                console.log(user);
+                //console.log(user);
                 resolve(user);
                 
             } catch (err) {
