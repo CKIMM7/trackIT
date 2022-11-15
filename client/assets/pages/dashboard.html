@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/986b088578.js" crossorigin="anonymous"></script>
+    <script src="/client/assets/js/requests.js" defer></script>
+    <script src="/client/assets/js/script.js" defer></script>
     <link rel="stylesheet" href="/client/assets/css/dashboard_style.css">
     <title>Dashboard</title>
 </head>
@@ -24,38 +26,46 @@
             </li>
         </ul>
    </nav>
+   <div>
+        <form id="habit-form">
+            <input placeholder="Enter title..." type="text">
+            <input placeholder="Enter Description..." type="text">
+            <input placeholder="Enter Frequency..." type="number">
+            <input type="submit" value="Add">
+        </form>
+   </div>
     <main>
-        <section class="habit-section">
+        <section id="todo-section" class="habit-section">
             <header>
                 <h2>To Do</h2>
                 <i class="fa-regular fa-clipboard"></i>
             </header>  
-            <div class="habit">
+            <!-- <div class="habit">
                 <p>No Caffeine</p>
                 <i class="fa-solid fa-fire"></i>
                 <p>31</p>
-            </div>
+            </div> -->
         </section>
-        <section class="habit-section">
+        <section id="completed-section" class="habit-section">
             <header>
                 <h2>Completed</h2>
                 <i class="fa-solid fa-check"></i>
             </header>
-            
+<!--             
             <div class="habit">
                 <p>Drink Water</p>
                 <i class="fa-solid fa-fire"></i>
                 <p>4</p>
-            </div>
+            </div> -->
         </section>
         <section id="stats-section">
-            <div class="stats">
+            <div id="longest-streak" class="stats">
                 <h3>Longest Streak</h3>
-                <p>No Caffeine <i class="fa-solid fa-fire"></i> 31</p>
+                <!-- <p>No Caffeine <i class="fa-solid fa-fire"></i> 31</p> -->
             </div>
-            <div class="stats">
+            <div id="deadlines" class="stats">
                 <h3>Deadlines</h3>
-                <p>No Caffeine - 6 Hours</p>
+                <!-- <p>No Caffeine - 6 Hours</p> -->
             </div>
         </section>
         <a id="add-habit" href="">Add Habit</a>

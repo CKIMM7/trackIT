@@ -1,7 +1,6 @@
 const db = require('../dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const SQL = require('sql-template-strings');
 
 module.exports = class User {
     constructor(data){
@@ -28,6 +27,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query(`SELECT * FROM users WHERE id = $1;`, [id])
+                // console.log(result)
                 const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
                 resolve(user);
             } catch (err) {
@@ -36,13 +36,14 @@ module.exports = class User {
         })
     }
 
-    get getHabits () {
+    static getHabits (id) {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT users.name AS user, habits.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habits ON habits.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc }))
+                const result = await db.query('SELECT users.name AS user, habit.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
+                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
                 resolve(habits);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habits")
             }
         })
@@ -68,15 +69,15 @@ module.exports = class User {
     // removeHabit (id) {}
 
 
+
     static async login(email, password){
         
         return new Promise (async (resolve, reject) => {
 
             try {
                 const user = await User.findByEmail(email)
-                console.log(`user`);
                 console.log(user);
-
+        
                 if(!user){ throw new Error('No user with this email') }
 
                 const authed = await bcrypt.compare(password, user.password)
@@ -108,29 +109,31 @@ module.exports = class User {
     }
 
 
-    static create(name, email, password){
-        console.log(name, email, password)
-
+    static create(email, password){
         return new Promise(async (res, rej) => {
             try {
-                let result = await db.query(SQL`INSERT INTO users (name, email, password)
-                VALUES (${name}, ${email}, ${password}) RETURNING *;`);
+                let result = await db.run(SQL`INSERT INTO users (email, password)
+                VALUES (${email}, ${password}) RETURNING *;`);
                 let user = new User(result.rows[0]);
                 res(user)
             } catch (err) {
-                rej(`${err}`)
+                rej(`Error creating user: ${err}`)
             }
         })
     }
 
+
     static findByEmail (email) {
+
 
         return new Promise (async (resolve, reject) => {
             try {
+
                 const result = await db.query(`SELECT * FROM users WHERE email = $1;`, [email])
                 let user = new User(result.rows[0]);
                 //console.log(user);
                 resolve(user);
+                
             } catch (err) {
                 console.log(err)
                 reject(err)

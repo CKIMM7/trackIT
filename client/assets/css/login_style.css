@@ -2,6 +2,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Helvetica';
+    /* font-weight: bold; */
 
   }
   ::placeholder { 
@@ -22,7 +23,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--colour-two);
+    /* background: var(--colour-two) */
+    background: linear-gradient(to left top, black, #3d0ca7);
   }
   .login_form {
     position: relative;
@@ -42,9 +44,10 @@
   }
   .welcome {
     position: absolute;
-    color: var(--colour-five);
+    color: var(--colour-three);
     left: 40%;
-    top: 30%;
+    top: 25%;
+    font-size: large;
   }
   #wrap:nth-child(1) {
     position: absolute;
@@ -93,12 +96,7 @@
     color: #fff;
     font-size: 15px;
   }
-  .fox {
-    position: absolute;
-    top: 25%;
-    left: 55%;
-    height: 18%;
-  }
+
   .back {
     position: absolute;
     top: 44%;
