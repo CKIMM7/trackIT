@@ -46,10 +46,11 @@ async function updateProfile (e) {
     e.preventDefault()
     console.log('save click')
     const data = await getItem('users', userId);
-    data.id = userId;
+    // data.id = userId;
     data.name = nameInput.value;
-    data.email = 
-    update('users', data);
+    // data.email = emailInput.value;
+    console.log(`dt: ${data.name}, ${data.email}, ${data.id}`);
+    update('users', data); //<<< err
 }
 
 function settings(e){
@@ -66,7 +67,7 @@ async function showSettings(e){
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
-
+    //old pass is sam
     const result = await passwordCheck(5, oldPassInput.value, samePassInput.value)
     console.log(result)
     
@@ -91,6 +92,8 @@ async function addNewSettings(e){
 /* use passwordCheck from User class. if return true change pass
 then use the update requests.js to update
 
+for checkpass, send new and old pass to api side, get it to compare inputed old pass with users pass
+if true update else error msg
 */
 
 async function display(){

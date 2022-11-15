@@ -77,6 +77,7 @@ async function update (category, data) {
         }
         
         const response = await fetch(`${url}/${category}/${data.id}`, options);
+        console.log(response)
         const { id, err } = await response.json();
         if(err) { 
             
@@ -174,7 +175,7 @@ async function passwordCheck(id, oldPass, newPass){
             body: JSON.stringify({id, oldPass, newPass})
         }
         const response = await fetch(`${url}/users/passwordcheck`, options);
-        console.log(await response.json())
+        await response.json()
         // console
     } catch(err){
         console.log(err)
