@@ -38,7 +38,7 @@ pool.query(`SELECT * FROM Users;`, (err, res) => {
       console.log(err);
   }
   else{
-      console.log(res.rows);
+      //console.log(res.rows);
   }
 });
 

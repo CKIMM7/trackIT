@@ -1,6 +1,8 @@
 const Users = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 const displayAll = async (req, res) => {
+    console.log(req.cookies.access_token);
     try {
         const users = await Users.all;
         res.status(200).json(users);
@@ -62,15 +64,20 @@ const login = async (req, res) => {
     //console.log(req.body)
     try {
         const user = await Users.login(req.body.email, req.body.password)
+        console.log('token')
+        console.log(user)
 
-        // res.status(200).json(user)
+        // const data = await jwt.verify(user, "some_secret")
+        //     console.log('jws:data')
+        //     console.log(data)
     res
     .cookie("access_token", user, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     })
     .status(200)
-    .json({ message: "Logged in successfully 😊 👌" });
+    .json({ message: "Logged in successfully 😊 👌",
+            user: user });
 
     } catch(err) {
         console.log(err)
@@ -81,6 +88,7 @@ const login = async (req, res) => {
 const authorization = async (req, res, next) => {
 
     const token = req.cookies.access_token;
+    console.log(`token`);
     console.log(token);
     //if no token, send a 403 msg
     if (!token) {
@@ -89,10 +97,10 @@ const authorization = async (req, res, next) => {
 
     try {
     console.log(`verify token if it works move onto the next`)
-    const data = jwt.verify(token, "some_secret");
+    const data = await jwt.verify(token, "some_secret");
+    console.log('jws:data')
     console.log(data)
-    req.userId = data.id;
-    req.userRole = data.role;
+
     return next();
     
     } catch {

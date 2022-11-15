@@ -86,9 +86,9 @@ module.exports = class User {
                 //if user authenticates successfully
                 if (!!authed){
                     const payload = { user: email };
-                    console.log(payload)
+
                     const secret = 'some_secret'; //load from .env files
-                    const options = {expiresIn: 60}
+                    const options = {expiresIn: 3600}
         
                     const token = jwt.sign(payload, secret, options, (err, token) => {
                         if(err){ 
@@ -96,9 +96,10 @@ module.exports = class User {
                          }
                         else {
                             resolve(token)
+                            console.log(token)
                         }
                     })
- 
+                    //resolve(token)
                 } else {
                     throw new Error('Wrong password') 
                 }
@@ -153,7 +154,6 @@ module.exports = class User {
                     console.log(hashed)
     
                     resolve(newUser);
-    
     
                 } catch (err) {
                     console.log(err)
