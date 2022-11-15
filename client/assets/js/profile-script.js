@@ -46,7 +46,9 @@ async function updateProfile (e) {
     e.preventDefault()
     console.log('save click')
     const data = await getItem('users', userId);
+    data.id = userId;
     data.name = nameInput.value;
+    data.email = 
     update('users', data);
 }
 
@@ -70,7 +72,8 @@ async function addNewSettings(e){
     
     // if return false display an error
     if(!result) {
-        // settingsSection.insertAdjacentElement()
+        const markup = `<p>Password does not match</p>`;
+        //settingsSection.insertAdjacentElement('afterbegin', markup);
     }
     // need check pass before pass below
 
