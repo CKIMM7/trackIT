@@ -174,7 +174,8 @@ async function passwordCheck(oldPass, newPass){
             body: JSON.stringify({oldPass, newPass})
         }
         const response = await fetch(`${url}/users/passwordcheck`, options);
-        await response.json();
+        const pass = await response.json();
+        // console
     } catch(err){
         console.warn(err)
     }

@@ -40,6 +40,7 @@ async function showProfileForm(e){
     nameInput.value = data.name
     editProfile(e)
 }
+
 // when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
@@ -69,7 +70,7 @@ async function addNewSettings(e){
     
     // if return false display an error
     if(!result) {
-
+        settingsSection.insertAdjacentElement()
     }
     // need check pass before pass below
 
