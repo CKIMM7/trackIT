@@ -16,7 +16,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM users;')
-                const users = result.rows.map(d => ({ id: d.id, email: d.email }))
+                const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
                 reject("Error retrieving authors")
@@ -186,14 +186,13 @@ module.exports = class User {
         })
     }
 
-    async passwordCheck(newPassword){
+    async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
                 const user = await User.getUser(this.id)
                 const authorised = false;
-                const authed = await bcrypt.compare(newPassword, user.password)
+                const authed = await bcrypt.compare(password, user.password)
                 if (!!authed) authorised = true
-                authorised = false
                 console.log('Password match')
                 resolve(authorised)
             } catch (err) {

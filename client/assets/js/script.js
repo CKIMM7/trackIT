@@ -17,10 +17,10 @@ const updateBtn = document.querySelector('#update-btn')
 const user_id = 2
 const habit_id = 2
 
-addHabitForm.addEventListener('submit', addHabit)
-addHabitBtn.addEventListener('click', showForm)
-// editHabitBtn.addEventListener('click', showHabitForm)
-// updateBtn.addEventListener('click', updateHabit)
+// addHabitForm.addEventListener('submit', addHabit)
+// addHabitBtn.addEventListener('click', showForm)
+editHabitBtn.addEventListener('click', showHabitForm)
+updateBtn.addEventListener('click', updateHabit)
 
 function showForm (e) {
     e.preventDefault()
@@ -93,7 +93,7 @@ async function checkList (data) {
         div.append(name)
         div.append(fire_icon)
         div.append(streak)
-        data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
+        // data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
 
         div.addEventListener('click', () => {changeColumn(div.id)})
     }
@@ -114,7 +114,7 @@ async function longestStreak (data) {
     div.append(name)
     div.append(fire_icon)
     div.append(streak)
-    longestStreakSection.append(div)
+    // longestStreakSection.append(div)
 }
 
 async function deadlines () {}

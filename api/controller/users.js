@@ -130,6 +130,15 @@ const signup = async (req, res) => {
     }
 }
 
+const checkPassword = async (req, res) => {
+    try {
+        const user = await Users.findByEmail(req.body.email)
+        res.status(204).json(await user.checkPassword())
+    } catch(err){
+        res.status(500).json({err})
+    }
+}
+
 const editInfo = async (req, res) => {
     try {
 
@@ -138,4 +147,4 @@ const editInfo = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization }
