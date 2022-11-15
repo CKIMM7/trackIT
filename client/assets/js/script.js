@@ -9,11 +9,14 @@ const addHabitBtn = document.querySelector('#add-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
+const deleteHabitBtn = document.querySelector('#delete-btn')
 
 const user_id = 2
+const habit_id = 7
 
-habitForm.addEventListener('submit', addHabit)
-addHabitBtn.addEventListener('click', showForm)
+// habitForm.addEventListener('submit', addHabit)
+// addHabitBtn.addEventListener('click', showForm)
+deleteHabitBtn.addEventListener('click', () => {deleteHabit(habit_id); console.log('clicked')})
 
 function showForm (e) {
     e.preventDefault()
@@ -23,7 +26,7 @@ function showForm (e) {
 async function addHabit (e) {
     e.preventDefault()
     data = {
-        id: user_id,
+        user_id: user_id,
         name: titleInput.value,
         desc: descInput.value,
         freq: freqInput.value,
@@ -87,4 +90,4 @@ async function longestStreak (data) {
 
 async function deadlines () {}
 
-display()
+// display()
