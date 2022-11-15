@@ -1,12 +1,15 @@
 const main = document.querySelector('main')
 const editBtn = document.querySelector('#edit-btn');
-const passBtn = document.querySelector('#pass-btn');
+const settingsBtn = document.querySelector('#settings-btn');
 
 const editProfSection = document.querySelector('#edit-profile');
-const changePassSection = document.querySelector('#change-pass');
+const settingsSection = document.querySelector('#settings');
 
-editBtn.addEventListener('click', editProfile);
-passBtn.addEventListener('click', changePass);
+const submitBtn = document.querySelector('#edit-profile > submit');
+
+editBtn.addEventListener('click', showProfileForm);
+settingsBtn.addEventListener('click', settings);
+// submitBtn.addEventListener('submit', updateProfile);
 
 const userId = 1;
 
@@ -15,10 +18,35 @@ function editProfile(e){
     editProfSection.style.display = 'block';
 }
 
-function changePass(e){
-    e.preventDefault()
-    changePassSection.style.display = 'block';
+async function showProfileForm(e){
+    const nameInput = document.querySelector('#edit-name');
+    // const emailInput = document.querySelector('#edit-email');
+
+    const data = await getItem('users', userId)
+    console.log(data)
+    console.log('asdasd')
+    nameInput.value = data.name
+    editProfile(e)
 }
+
+async function updateProfile (e) {
+    // when submit pressed update name
+    
+}
+
+function settings(e){
+    e.preventDefault()
+    settingsSection.style.display = 'block';
+}
+
+async function checkPass(){
+    
+}
+
+/* use passwordCheck from User class. if return true change pass
+then use the update requests.js to update
+
+*/
 
 async function display(){
     const name = document.querySelector('#profile-name');
@@ -30,11 +58,8 @@ async function display(){
     name.textContent = userData.name;
     email.textContent = userData.email;
 
-    console.log(userData.name)
-
-    // const userHabits = await getUserHabits('users', userId);
-    // habits.textContent = userHabits.habits.length //<<<< check this
-
+    const userHabits = await getUserHabits(userId);
+    habits.textContent = "Habits: " + userHabits.length;
 }
 
 display();

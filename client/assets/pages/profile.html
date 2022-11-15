@@ -29,21 +29,26 @@
     <section id="edit-profile">
         <h3>Edit Profile</h3>
         <input id="edit-name" type="text" placeholder="Enter new name...">
-        <input id="edit-email" type="text" placeholder="Enter new email...">
         <button type="submit">Save</button>
+        <button>Cancel</button>
     </section>
-    <section id="change-pass">
+    <section id="settings">
+        <h3>Edit Email</h3>
+        <input id="edit-email" type="text" placeholder="Enter new email...">
+        
         <h3>Change Password</h3>
+        <input id="oldPass" type="password" placeholder="old password">
         <input id="newPass" type="password" placeholder="new password">
         <input id="samePass" type="password" placeholder="repeat password">
         <button type="submit">Save</button>
+        <button>Cancel</button>
     </section>
     <main>
         <section>
             <h2 id="profile-name">John Doe</h2>
             <p id="email">email</p>
-            <button id="edit-btn">Edit Profile</button>
-            <button id="pass-btn">Change password</button>
+            <button id="edit-btn">Edit name</button>
+            <button id="settings-btn">Settings</button>
             <p id="habits">Habits: 0</p>
         </section>
     </main>
