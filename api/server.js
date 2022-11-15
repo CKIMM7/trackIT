@@ -2,11 +2,13 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
+const session = require('express-session');
 
 const server = express();
 server.use(cors());
 server.use(express.json());
 server.use(cookieParser());
+
 
 const userRoutes = require('./routes/users');
 const habitRoutes = require('./routes/habits');
@@ -16,6 +18,12 @@ server.use('/users', userRoutes)
 server.use('/habits', habitRoutes)
 server.use('/', clientRoutes)
 
+server.use((req, res, next) => {
+    console.log('Time:', Date.now())
+    console.log(req.cookies)
+    next()
+})
+
 const auth = require('./controller/users');
 
 //***D:\portfolios\trackIT\client <-should be looking at this
@@ -23,15 +31,9 @@ const auth = require('./controller/users');
 server.use('/', express.static(path.join(__dirname, '../client')))
 
 
-
 let reqPath = path.join(__dirname, '../client');
 console.log(reqPath);
 
-//server.get('/', auth.authorization ,(req, res) => 
-    //res.sendFile(path.join(__dirname, '../client/html.html')))
-
-server.get('/login', (req, res) => 
-    res.sendFile(path.join(__dirname, '../client/login.html')))
 
 server.get('/signup', (req, res) => 
     res.sendFile(path.join(__dirname, '../client/pages/signup.html')))
