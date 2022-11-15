@@ -62,7 +62,7 @@ async function updateHabit (e) {
 async function display () {
     const habits = await getUserHabits(user_id)
     console.log("Client")
-    console.log(habits)
+    console.log(await getItem('users',1))
     await checkList(habits)
     await longestStreak(habits)
     // await deadlines()
