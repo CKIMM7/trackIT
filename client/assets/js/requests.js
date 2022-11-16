@@ -1,11 +1,7 @@
 // const url = 'https://trackit-sillicon-alley.herokuapp.com'
 const url = 'http://localhost:3000'
 
-const loginForm = document.querySelector('#login');
-const emailInput = document.querySelector('#email_input');
-const passwordInput = document.querySelector('#password_input');
 
-loginForm.onsubmit = login;
 
 async function getAll(category){
     try {

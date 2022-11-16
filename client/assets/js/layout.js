@@ -1,21 +1,24 @@
 console.log('layout.js');
-const loginBtn = document.querySelector('#loginButton');
-const signUpBtn = document.querySelector('#signUpButton')
+const loginForm = document.querySelector('#login');
+const emailInput = document.querySelector('#email');
+const passwordInput = document.querySelector('#psw');
 
-loginBtn.addEventListener('click', () => {
-    window.location.href = `${window.location.href}login` 
-})
+loginForm.onsubmit = login;
 
-signUpBtn.addEventListener('click', () => {
-    window.location.href = `${window.location.href}signup` 
-})
+// loginBtn.addEventListener('click', () => {
+//     window.location.href = `${window.location.href}login` 
+// })
 
-const connectToBackendTest = async () => {
-    let url = 'https://trackit-sillicon-alley.herokuapp.com/';
-    const testRoot = await fetch(url);
-    const data = await testRoot.text();
-    console.log(data);
-    return data;
-}
+// signUpBtn.addEventListener('click', () => {
+//     window.location.href = `${window.location.href}signup` 
+// })
 
-connectToBackendTest();
+// const connectToBackendTest = async () => {
+//     let url = 'https://trackit-sillicon-alley.herokuapp.com/';
+//     const testRoot = await fetch(url);
+//     const data = await testRoot.text();
+//     console.log(data);
+//     return data;
+// }
+
+// connectToBackendTest();
