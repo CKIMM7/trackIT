@@ -110,6 +110,24 @@ module.exports = class User {
         })
     }
 
+    static habitCheck () {
+        return new Promise (async(resolve, reject) => {
+            try {
+
+                const result = await db.query(`SELECT * FROM user_habits WHERE user_id = $1;`, [id])
+                let usersHabits = results.rows.map();
+                let exists = false;
+                if (habit_id in usersHabits.habit_id) exists = true;
+                //console.log(user);
+                resolve(exists);
+            }
+            catch(err){
+                console.warn(err)
+                reject(err)
+            }
+        })
+    }
+
 
     static findByEmail (email) {
 

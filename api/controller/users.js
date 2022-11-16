@@ -119,6 +119,8 @@ const authorization = async (req, res, next) => {
         req.id = data.id;
         req.email = data.email;
 
+        console.log(req.originalUrl)
+
     return next();
     
     } catch {
