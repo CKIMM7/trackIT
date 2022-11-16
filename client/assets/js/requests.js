@@ -135,13 +135,13 @@ async function login (e) {
             body: JSON.stringify(input)
         }
         
-
         const response = await fetch(`${url}/users/login`, options);
 
         const token = await response.json();
         console.log(token)
 
         document.cookie = `access_token=${token.user}`;
+        document.cookie = `user_id=${token.id}`;
 
         if(token === 'error') {
             console.log('redirect the user to the homepage')
