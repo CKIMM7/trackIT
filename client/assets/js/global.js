@@ -1,6 +1,6 @@
 console.log('global')
 
-async function getHabit(id) {
+async function getGlobalHabit(id) {
     try {
 
         data = {
