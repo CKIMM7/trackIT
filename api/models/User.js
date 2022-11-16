@@ -227,7 +227,7 @@ module.exports = class User {
                 if (authed) authorised = true
                 console.log('auth?: '+authorised)
 
-                resolve(authorised)
+                return resolve(authorised)
             } catch (err) {
                 console.log(err)
                 reject("Error changing password")

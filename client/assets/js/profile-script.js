@@ -49,8 +49,7 @@ async function updateProfile (e) {
     console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
-    // need to input pass as well cuz update expects pass? n
-    console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+    // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); 
 }
 
@@ -99,20 +98,13 @@ async function addNewSettings(e){
     // repeat passes not same then...
     if(samePassInput.value !== newPassInput.value) stop = errMsg(3, true)
     else stop = errMsg(3, false)
-    
+    console.log('stop: '+stop)
+
     if(!stop){
-        const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
-        console.log(result) // returns undefined
-        
-        // if return false display an error <<<< still need to fix
-        if(!result) {
-            console.log('old pass not matched')
-            errMsg(2, false)
-        }
-        else {
-            console.log('matched')
-            errMsg(2, true)
-        }
+        const isPassed = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
+        // console.log('p.isPassed: '+ isPassed.toString()) 
+        if(!isPassed) errMsg(2, true)
+        else errMsg(2, false)
     }
 }
 
