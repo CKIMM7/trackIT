@@ -68,6 +68,8 @@ async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
     
+    // add email button...
+
     // or instead use event listner on input, if still empty highligh in red
     if(oldPassInput.value === null) {
         console.log('old pass empty');
