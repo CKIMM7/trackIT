@@ -56,7 +56,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        console.log(req.body)
+        console.log('c.users.update: '+req.body)
         const user = await Users.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
         console.log(`user ${user} updatedUser ${updatedUser}`)
@@ -165,9 +165,9 @@ const signup = async (req, res) => {
 
 const checkPassword = async (req, res) => {
     try {
-        console.log(req.body)
+        console.log('c.users.body.p: '+req.body.newPass)
         const user = await Users.getUser(req.body.id)
-        console.log('user: '+user)
+        console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
         console.log('test: '+test)
         // update if true

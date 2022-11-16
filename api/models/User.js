@@ -213,7 +213,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 console.log("User Model")
-                console.log(password)
+                console.log("p: "+password)
                 const user = await User.getUser(this.id)
                 let authorised = false;
                 console.log(`User Password ${user.password}`)
