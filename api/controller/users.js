@@ -210,8 +210,7 @@ const checkPassword = async (req, res) => {
             console.log('password updated')
             res.status(200).json(updated)
         }
-        // console.log('here')
-        return test;
+        else res.status(200).json(test);
     } catch(err){
         console.log(err)
         res.status(500).json({err})

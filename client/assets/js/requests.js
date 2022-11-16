@@ -210,6 +210,7 @@ async function passwordCheck(id, oldPass, newPass){
         const response = await fetch(`${url}/users/passwordcheck`, options);
         // console.log('response:'+response)
         const result = await response.json()
+        return result
         // console.log('r.result: '+result)
     } catch(err){
         console.log(err)
