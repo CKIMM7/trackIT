@@ -8,7 +8,12 @@ const server = express();
 server.use(cors());
 server.use(express.json());
 server.use(cookieParser());
-
+server.use(session({secret: "Shh, its a secret!"}));
+server.use((req, res, next) => {
+    console.log('Time:', Date.now())
+    console.log(req.cookies)
+    next()
+})
 
 const userRoutes = require('./routes/users');
 const habitRoutes = require('./routes/habits');
@@ -17,12 +22,6 @@ const clientRoutes = require('./routes/clients');
 server.use('/users', userRoutes)
 server.use('/habits', habitRoutes)
 server.use('/', clientRoutes)
-
-server.use((req, res, next) => {
-    console.log('Time:', Date.now())
-    console.log(req.cookies)
-    next()
-})
 
 const auth = require('./controller/users');
 

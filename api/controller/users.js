@@ -1,5 +1,6 @@
 const Users = require('../models/User');
 const jwt = require('jsonwebtoken');
+const server = require('../server');
 
 const currentUser = async (req, res) => {
     console.log(req.cookies.access_token);
@@ -114,6 +115,7 @@ const authorization = async (req, res, next) => {
         //if wrong token then return the user back to homepage
         console.log('jws:data')
         console.log(data)
+
         req.id = data.id;
         req.email = data.email;
 
@@ -121,7 +123,7 @@ const authorization = async (req, res, next) => {
     
     } catch {
         console.log('auth')
-        return res.redirect('https://trackit-sillicon-alley.netlify.app/');
+        return res.redirect('http://localhost:3000/login');
     }
   };
 
