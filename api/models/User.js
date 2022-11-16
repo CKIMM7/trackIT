@@ -85,10 +85,10 @@ module.exports = class User {
 
                 //if user authenticates successfully
                 if (!!authed){
-                    const payload = { user: email };
-                    console.log(payload)
+                    const payload = { email: user.email, id: user.id };
+
                     const secret = 'some_secret'; //load from .env files
-                    const options = {expiresIn: 60}
+                    const options = { expiresIn: 3600 }
         
                     const token = jwt.sign(payload, secret, options, (err, token) => {
                         if(err){ 
@@ -96,9 +96,10 @@ module.exports = class User {
                          }
                         else {
                             resolve(token)
+                            console.log(token)
                         }
                     })
- 
+                    //resolve(token)
                 } else {
                     throw new Error('Wrong password') 
                 }
@@ -129,7 +130,9 @@ module.exports = class User {
     }
 
     static create(name, email, password){
+
         return new Promise(async (res, rej) => {
+            console.log(name, email, password.length)
             try {
                 let result = await db.query(SQL`INSERT INTO users (name, email, password)
                 VALUES (${name}, ${email}, ${password}) RETURNING *;`);
@@ -153,7 +156,6 @@ module.exports = class User {
                     console.log(hashed)
     
                     resolve(newUser);
-    
     
                 } catch (err) {
                     console.log(err)
@@ -189,11 +191,14 @@ module.exports = class User {
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
+                console.log("User Model")
+                console.log(password)
                 const user = await User.getUser(this.id)
-                const authorised = false;
+                let authorised = false;
+                console.log(`User Password ${user.password}`)
                 const authed = await bcrypt.compare(password, user.password)
-                if (!!authed) authorised = true
-                console.log('Password match')
+                if (authed) authorised = true
+                console.log(authorised)
                 resolve(authorised)
             } catch (err) {
                 reject("Error changing password")

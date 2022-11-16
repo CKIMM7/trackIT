@@ -1,6 +1,12 @@
 // const url = 'https://trackit-sillicon-alley.herokuapp.com'
 const url = 'http://localhost:3000'
 
+const loginForm = document.querySelector('#login');
+const emailInput = document.querySelector('#email_input');
+const passwordInput = document.querySelector('#password_input');
+
+loginForm.onsubmit = login;
+
 async function getAll(category){
     try {
         const response = await fetch(`${url}/${category}`);
@@ -77,6 +83,7 @@ async function update (category, data) {
         }
         
         const response = await fetch(`${url}/${category}/${data.id}`, options);
+        console.log(response)
         const { id, err } = await response.json();
         if(err) { 
             
@@ -111,10 +118,14 @@ async function update (category, data) {
 //     }
 // }
 
-async function login () {
+async function login (e) {
+    e.preventDefault();
+    console.log(emailInput.value);
 
-    let input = { email: 'test@gmail.com',
-    password: 'test'
+    console.log(Object.fromEntries(new FormData(e.target)))
+
+    let input = { email: emailInput.value,
+    password: passwordInput.value
   }
 
     try {
@@ -130,11 +141,13 @@ async function login () {
         const token = await response.json();
         console.log(token)
 
+        document.cookie = `access_token=${token.user}`;
+
         if(token === 'error') {
             console.log('redirect the user to the homepage')
         } else {
             console.log('logged in')
-            localStorage.setItem('userToken', token)
+            //localStorage.setItem('userToken', token)
             // window.location.href = 'https://trackit-sillicon-alley.herokuapp.com/';
         }
     } catch (err) {
@@ -142,7 +155,7 @@ async function login () {
     }
 }
 
-// login();
+//login();
 
 async function signup (name, password, email) {
     //e.preventDefault();
@@ -163,6 +176,22 @@ async function signup (name, password, email) {
 
     } catch (err) {
         console.warn(err);
+    }
+}
+
+async function passwordCheck(id, oldPass, newPass){
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id, oldPass, newPass})
+        }
+        const response = await fetch(`${url}/users/passwordcheck`, options);
+        await response.json()
+        // console
+    } catch(err){
+        console.log(err)
+        console.warn(err)
     }
 }
 

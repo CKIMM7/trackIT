@@ -6,7 +6,7 @@ CREATE TABLE users (
     id serial PRIMARY KEY,
     name varchar(255) NOT NULL,
     email varchar(50) NOT NULL,
-    password varchar(30) NOT null
+    password varchar(60) NOT null
 );
 
 CREATE TABLE habit (
@@ -14,8 +14,9 @@ CREATE TABLE habit (
     name varchar(30) NOT NULL,
     description varchar(300),
     frequency INT,
+    current_count INT,
+    current_count INT,
     start_date varchar(25),
-    last_completed varchar(25),
     streak INT,
     completed boolean
 );
