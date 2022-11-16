@@ -21,7 +21,7 @@ addHabitBtn.addEventListener('click', showForm)
 
 function showForm (e) {
     e.preventDefault()
-    editHabitForm.style.display = 'block';
+    addHabitForm.style.display = 'block';
 }
 
 async function showHabitForm (e) {
@@ -36,8 +36,11 @@ async function showHabitForm (e) {
 
 async function addHabit (e) {
     e.preventDefault()
+
+    const globalUser = await getGlobal()
+    console.log(globalUser.id)
     data = {
-        user_id: user_id,
+        user_id: globalUser.id,
         name: titleInput.value,
         desc: descInput.value,
         freq: freqInput.value,
@@ -57,7 +60,8 @@ async function updateHabit (e) {
 }
 
 async function display () {
-    const habits = await getUserHabits(user_id)
+    const userData = await getGlobal()
+    const habits = await getUserHabits(userData.id)
     console.log("Client")
     console.log(await getItem('users',1))
     await checkList(habits)
@@ -135,6 +139,8 @@ async function longestStreak (data) {
     longestStreakSection.append(div)
 }
 
-async function deadlines () {}
+async function deadlines () {
+    
+}
 
-//display()
+display()

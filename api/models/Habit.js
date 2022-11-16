@@ -46,7 +46,7 @@ module.exports = class Habit {
                 console.log("---Server----")
                 console.log(data)
                 const { name, desc, freq, start_date, user_id} = data;
-                const result = await db.query(`INSERT INTO habit (name, description, frequency, start_date, last_completed, streak, completed) VALUES ($1, $2, $3, $4, null, null, false) RETURNING *;`, [name, desc, freq, start_date])
+                const result = await db.query(`INSERT INTO habit (name, description, frequency, current_count, start_date, streak, completed) VALUES ($1, $2, $3, 0, $4, null, false) RETURNING *;`, [name, desc, freq, start_date])
                 
                 console.log(result.rows[0])
 

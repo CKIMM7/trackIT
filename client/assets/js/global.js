@@ -1,8 +1,8 @@
 console.log('global')
-const ul = document.querySelector('#habitContainer')
+// const ul = document.querySelector('#habitContainer')
 
 
-let global
+let globalObject
 
 async function getGlobal() {
     console.log('getGlobal')
@@ -20,9 +20,9 @@ async function getGlobal() {
         const response = await fetch(`http://localhost:3000/auth`, options);
         const data = await response.json();
         console.log(data)
-        global = data;
+        globalObject = data;
 
-        displayHabits(data)
+        // displayHabits(data)
 
         return data;
     } catch (err) {
