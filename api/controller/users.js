@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const server = require('../server');
 
 const currentUser = async (req, res) => {
@@ -195,18 +196,30 @@ const checkPassword = async (req, res) => {
         const user = await User.getUser(req.body.id)
         console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
-        console.log('test: '+test)
+        
+        const salt = await bcrypt.genSalt(12);
+        const hashed = await bcrypt.hash(req.body.newPass, salt)
+
+        const data = {
+            id: req.body.id, 
+            name: user.name,
+            email: user.email,
+            password: hashed
+        }
+
+        console.log('returns test: '+test)
         // update if true
         if(test){
-            const updated = await user.update(req.body.id, req.body.newPass)
+            console.log('user_id: '+req.body.id)
+            const updated = await user.update(data)
+            console.log('updated: ')
             console.log(updated)
             console.log('password updated')
             res.status(200).json(updated)
-            // res.status(20).json(test)
         }
-        // res.status(200).json(test)
         
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }
