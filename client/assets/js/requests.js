@@ -5,7 +5,7 @@ const loginForm = document.querySelector('#login');
 const emailInput = document.querySelector('#email_input');
 const passwordInput = document.querySelector('#password_input');
 
-loginForm.onsubmit = login;
+// loginForm.onsubmit = login;
 
 async function getAll(category){
     try {
