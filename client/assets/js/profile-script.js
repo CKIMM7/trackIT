@@ -73,22 +73,20 @@ async function updateEmail(e){
 
     // compare email to all users
     const allUsers = await getAll('users');
-    let sameEmail = false
-    sameEmail = allUsers.map(d => {
-        if(eEmailInput.value === d.email) return sameEmail = true;
-    })
+    let sameEmail = isSameEmail(allUsers)
+    // console.log('sameEmail: '+sameEmail)
 
     if(!sameEmail) {
-        console.log('not the same email')
-        errMsg(1, sameEmail)  // display err msg if true
-
+        errMsg(1, sameEmail);
         data.email = eEmailInput.value;
         console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
-        await update('users', data)
-    } else {
-        console.log('same email')
-        errMsg(1, sameEmail)
-    }
+        await update('users', data);
+        console.log('email updated')
+    } else errMsg(1, sameEmail)
+}
+
+function isSameEmail(users){
+    return users.find(d => eEmailInput.value === d.email) 
 }
 
 //to test original pass is sam / a
@@ -119,7 +117,7 @@ async function addNewSettings(e){
 }
 
 function errMsg(id, bool){
-    const htmlTag = document.getElementById(id);
+    const htmlTag = document.querySelector(`#err-msg-${id}`);
     if(bool) htmlTag.style.display = 'block';
     else htmlTag.style.display = 'none';
     return bool;
