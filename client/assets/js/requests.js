@@ -47,6 +47,7 @@ async function getHabit(id) {
     }
 }
 
+
 async function getUserHabits (id) {
     try {
         const response = await fetch(`${url}/users/${id}/habits`);

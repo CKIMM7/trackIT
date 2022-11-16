@@ -104,7 +104,11 @@ const login = async (req, res) => {
 
 const authorization = async (req, res, next) => {
 
+    console.log(req.body.token)
+
     const token = req.cookies.access_token;
+
+    
     console.log(`token`);
     console.log(token);
     //if no token, send a 403 msg
@@ -114,7 +118,7 @@ const authorization = async (req, res, next) => {
 
     try {
         console.log(`verify token if it works move onto the next`)
-        const data = await jwt.verify(token, "some_secret");
+        const data = await jwt.verify(req.body.token, "some_secret");
         //if wrong token then return the user back to homepage
         console.log('jws:data')
         console.log(data)
@@ -124,6 +128,7 @@ const authorization = async (req, res, next) => {
 
         req.id = data.id;
         req.email = data.email;
+        req.global = data
 
         // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
         // console.log(req.originalUrl.split('/')[2])
@@ -135,6 +140,16 @@ const authorization = async (req, res, next) => {
         return res.redirect('http://localhost:3000/login');
     }
   };
+
+  const returnGlobal = async (req, res) => {
+    console.log(req.global)
+
+    try {
+        res.status(200).json(req.global);
+    } catch(err){
+        res.status(500).json({err})
+    }
+}
 
 const signup = async (req, res) => {
 
@@ -188,4 +203,4 @@ const checkPassword = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }
