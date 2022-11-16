@@ -70,45 +70,60 @@ async function updateEmail(e){
     e.preventDefault()
     console.log('save email')
     const data = await getItem('users', userId);
-    data.email = eEmailInput.value;
-    console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
-    await update('users', data)
+
+    // compare email to all users
+    const allUsers = await getAll('users');
+    let sameEmail = false
+    sameEmail = allUsers.map(d => {
+        if(eEmailInput.value === d.email) return sameEmail = true;
+    })
+
+    if(!sameEmail) {
+        console.log('not the same email')
+        errMsg(1, sameEmail)  // display err msg if true
+
+        data.email = eEmailInput.value;
+        console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+        await update('users', data)
+    } else {
+        console.log('same email')
+        errMsg(1, sameEmail)
+    }
 }
 
 //to test original pass is sam / a
+//email sam3@gmail.com
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
-    // required or instead use event listner on input, if still empty highligh in red
+    let stop = false
 
-    const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
-    console.log('p.result: '+result)
+    // repeat passes not same then...
+    if(samePassInput.value !== newPassInput.value) stop = errMsg(3, true)
+    else stop = errMsg(3, false)
     
-    // if return false display an error
-    // if(!result) {
-    //     const markup = `<p>Old password does not match</p>`;
-    //     //settingsSection.insertAdjacentElement('afterbegin', markup);
-    // }
-    // need check pass before pass below
-
-    // data = {
-    //     user_id: userId,
-    //     email: eEmailInput.value,
-    //     password: newPassInput.value
-    // }
-
-    // console.log('click')
-
-    // update('users', data)
-
+    if(!stop){
+        const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
+        console.log(result) // returns undefined
+        
+        // if return false display an error <<<< still need to fix
+        if(!result) {
+            console.log('old pass not matched')
+            errMsg(2, false)
+        }
+        else {
+            console.log('matched')
+            errMsg(2, true)
+        }
+    }
 }
 
-/* use passwordCheck from User class. if return true change pass
-then use the update requests.js to update
-
-for checkpass, send new and old pass to api side, get it to compare inputed old pass with users pass
-if true update else error msg
-*/
+function errMsg(id, bool){
+    const htmlTag = document.getElementById(id);
+    if(bool) htmlTag.style.display = 'block';
+    else htmlTag.style.display = 'none';
+    return bool;
+}
 
 async function display(){
     const name = document.querySelector('#profile-name');
@@ -117,6 +132,7 @@ async function display(){
 
     // gets user name, email and pass
     const userData = await getItem('users', userId);
+
     name.textContent = userData.name;
     email.textContent = userData.email;
 

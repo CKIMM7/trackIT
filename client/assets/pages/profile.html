@@ -35,12 +35,15 @@
     <section id="settings">
         <h3>Edit Email</h3>
         <input id="edit-email" type="text" placeholder="Enter new email...">
+        <p id="err-msg-1">Email already exists</p>
         <button id="save-email" type="submit">Save</button>
         
         <h3>Change Password</h3>
         <input id="oldPass" type="password" placeholder="old password" required>
+        <p id="err-msg-2">Old password does not match</p>
         <input id="newPass" type="password" placeholder="new password" required>
         <input id="samePass" type="password" placeholder="repeat password" required>
+        <p id="err-msg-3">Both passwords must be the same</p>
         <button id="save" type="submit">Save</button>
         <button id="pass-cancel">Cancel</button>
     </section>

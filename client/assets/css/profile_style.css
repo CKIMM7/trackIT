@@ -99,11 +99,10 @@ main {
 
 
 
-#edit-profile {
+#edit-profile, #settings, #err-msg-1, #err-msg-2, #err-msg-3 {
   display: none;
 }
 
-#settings {
-  display: none;
-}
+
+
 
