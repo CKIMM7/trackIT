@@ -108,8 +108,13 @@ async function checkList (data) {
         div.append(streak)
         data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
 
-        // div.addEventListener('click', () => {changeColumn(div.id)})
+        div.addEventListener('click', () => {goToHabit(div.id)})
     }
+}
+
+async function goToHabit (id) {
+    console.log(id)
+    window.location.href = `/habit/${id}`
 }
 
 async function longestStreak (data) {

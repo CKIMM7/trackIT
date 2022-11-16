@@ -1,11 +1,7 @@
 // const url = 'https://trackit-sillicon-alley.herokuapp.com'
 const url = 'http://localhost:3000'
 
-const loginForm = document.querySelector('#login');
-const emailInput = document.querySelector('#email_input');
-const passwordInput = document.querySelector('#password_input');
 
-loginForm.onsubmit = login;
 
 async function getAll(category){
     try {
@@ -21,6 +17,28 @@ async function getAll(category){
 async function getItem(category, id) {
     try {
         const response = await fetch(`${url}/${category}/${id}`);
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (err) {
+        console.warn(err);
+    }
+}
+
+async function getHabit(id) {
+    try {
+
+        data = {
+            habit_id: id,
+            token: document.cookie.match('(^|;)\\s*' + 'access_token' + '\\s*=\\s*([^;]+)')?.pop()
+        }
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        }
+        
+        const response = await fetch(`${url}/habits/${id}`, options);
         const data = await response.json();
         console.log(data)
         return data;
@@ -76,6 +94,7 @@ async function deleteHabit(id){
 
 async function update (category, data) {
     try {
+        console.log(`data: ${data.name}`)
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
@@ -188,9 +207,9 @@ async function passwordCheck(id, oldPass, newPass){
         }
         const response = await fetch(`${url}/users/passwordcheck`, options);
         await response.json()
-        // console
+        // console.log('r.result: '+result)
     } catch(err){
-        console.log(err)
+        // console.log(err)
         console.warn(err)
     }
 }
