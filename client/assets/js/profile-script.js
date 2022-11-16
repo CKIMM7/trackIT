@@ -65,7 +65,7 @@ async function showSettings(e){
     settings(e);
 }
 
-// need to test this
+// need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
     console.log('save email')
@@ -84,9 +84,6 @@ async function addNewSettings(e){
     const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
     console.log('p.result: '+result)
     
-    // const 
-    // const update = await update('users', userId)
-
     // if return false display an error
     // if(!result) {
     //     const markup = `<p>Old password does not match</p>`;
