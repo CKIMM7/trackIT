@@ -15,8 +15,8 @@ CREATE TABLE habit (
     description varchar(300),
     frequency INT,
     current_count INT,
-    current_count INT,
     start_date varchar(25),
+    last_completed varchar(25),
     streak INT,
     completed boolean
 );
