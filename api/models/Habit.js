@@ -1,13 +1,15 @@
+const { decode } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const db = require('../dbConfig');
 
 module.exports = class Habit {
     constructor(data){
         this.id = data.id;
         this.name = data.name;
-        this.desc = data.desc;
-        this.freq = data.freq;
+        this.desc = data.description;
+        this.freq = data.frequency;
         this.start_date = data.start_date;
-        this.last_completed = data.last_completed;
+        this.current_count = data.current_count;
         this.streak = data.streak;
         this.completed = data.completed;
     }
@@ -15,10 +17,11 @@ module.exports = class Habit {
     static get all(){
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT * FROM habits;')
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
+                const result = await db.query('SELECT * FROM habit;')
+                const habits = result.rows.map(data => (new Habit(data)))
                 resolve(habits);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habits")
             }
         })
@@ -27,10 +30,11 @@ module.exports = class Habit {
     static findHabit(id){
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query(`SELECT * FROM habits WHERE id = $1;`, [id])
-                const habit = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.desc}))
-                resolve(habit);
+                const result = await db.query(`SELECT * FROM habit WHERE id = $1;`, [id])
+                const habit = new Habit(result.rows[0])
+                resolve(habit)
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving habit")
             }
         })
@@ -39,14 +43,16 @@ module.exports = class Habit {
     static create (data) {
         return new Promise (async (resolve, reject) => {
             try {
+                console.log("---Server----")
+                console.log(data)
                 const { name, desc, freq, start_date, user_id} = data;
-                const result = await db.query(`INSERT INTO habits (name, description, frequency, start_date, last_completed, streak) VALUES ($1, $2, $3, $4, null, null);`, [name, desc, freq, start_date])
+                const result = await db.query(`INSERT INTO habit (name, description, frequency, current_count, start_date, streak, completed) VALUES ($1, $2, $3, 0, $4, null, false) RETURNING *;`, [name, desc, freq, start_date])
                 
                 console.log(result.rows[0])
 
-                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2);`, [user_id, result.rows[0].id])
+                const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2) RETURNING *;`, [user_id, result.rows[0].id])
 
-                resolve(result2.rows[0]);
+                resolve(new Habit(result2.rows[0]));
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")
@@ -54,23 +60,31 @@ module.exports = class Habit {
         })
     }
 
-    // markComplete () {}
-
-    // setFrequency () {}
-
-    // setStartDate () {}
-
-    // setLastCompleted () {}
-
-    // setStreak () {}
-
-    // setCompleted () {}
+    belongsToUser (token) {
+        return new Promise (async(resolve, reject) => {
+            try {
+                // const id = decode(token).id
+                console.log(jwt.verify(token, 'some_secret'))
+                // const result = await db.query(`SELECT * FROM user_habits WHERE user_id = $1;`, [id])
+                // let usersHabits = results.rows.map();
+                // let exists = false;
+                // if (habit_id in usersHabits.habit_id) exists = true;
+                // //console.log(user);
+                resolve('Test');
+            }
+            catch(err){
+                console.warn(err)
+                reject(err)
+            }
+        })
+    }
 
     update (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date, last_completed, streak, id } = data;
-                const result = await db.query(`UPDATE habits SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6 WHERE id = $7;`, [name, desc, freq, start_date, last_completed, streak, id])
+                const { name, desc, freq, start_date, current_count, streak, completed, id } = data;
+                console.log("Updating")
+                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, current_count = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, current_count, streak, completed, id])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating habit")
@@ -78,10 +92,11 @@ module.exports = class Habit {
         })
     }
 
-    delete (id) {
+    delete () {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query(`DELETE FROM habits WHERE id = $1;`, [id])
+                console.log(`Server delete ${this.id}`)
+                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [this.id])
                 resolve("Habit was deleted");
             } catch (err) {
                 reject("Error deleting habit")

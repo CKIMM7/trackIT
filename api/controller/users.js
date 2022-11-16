@@ -1,8 +1,25 @@
-const Users = require('../models/User');
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const server = require('../server');
+
+const currentUser = async (req, res) => {
+    console.log(req.cookies.access_token);
+    try {
+    
+    const user = { cookie: req.cookies.access_token,
+                       id: req.id,
+                    email: req.email }
+        req.send(user)
+    } catch (err) {
+        res.send(err)
+    }
+}
 
 const displayAll = async (req, res) => {
+    console.log(req.cookies.access_token);
     try {
-        const users = await Users.all;
+        const users = await User.all;
         res.status(200).json(users);
     } catch (err) {
         res.status(500).send(err);
@@ -11,16 +28,29 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await Users.getUser(parseInt(req.params.id))
+
+        const user = await User.getUser(parseInt(req.params.id))
+
         res.status(200).json(user)
     } catch(err){
+        console.log(err)
+        res.status(404).json({err})
+    }
+}
+
+const getHabits = async (req, res) => {
+    try {
+        const user = await User.getHabits(parseInt(req.params.id))
+        res.status(200).json(user)
+    } catch(err){
+        console.log(err)
         res.status(404).json({err})
     }
 }
 
 const create = async (req, res) => {
     try {
-        const users = await Users.create(req.body.name, req.body.email, req.body.password)
+        const users = await User.create(req.body.name, req.body.email, req.body.password)
         res.status(201).json(users)
     } catch(err) {
         res.status(404).json({err})
@@ -29,17 +59,20 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const user = await Users.findById(parseInt(req.params.id))
-        const updatedUser = await user.update(req.body.id, req.body.name)
+        console.log('c.users.update: '+req.body)
+        const user = await User.getUser(parseInt(req.body.id))
+        const updatedUser = await user.update(req.body)
+        console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }
 
 const destroy = async (req, res) => {
     try {
-        const user = await Users.findById(parseInt(req.params.id))
+        const user = await User.findById(parseInt(req.params.id))
         await user.destroy()
         res.status(204).json('User deleted')
     } catch(err){
@@ -50,29 +83,165 @@ const destroy = async (req, res) => {
 const login = async (req, res) => {
     //console.log(req.body)
     try {
-        const user = await Users.login(req.body.email, req.body.password)
-        res.status(200).json(user)
+        const user = await User.login(req.body.email, req.body.password)
+        console.log('token')
+        console.log(user)
+
+        // const data = await jwt.verify(user, "some_secret")
+        //     console.log('jws:data')
+        //     console.log(data)
+    res
+    .cookie("access_token", user, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ message: "Logged in successfully 😊 👌",
+            user: user });
+
     } catch(err) {
-        res.status(404).json({err})
+        console.log(err)
+        res.status(404).json('error')
     }
+}
+
+const authorization = async (req, res, next) => {
+
+    console.log(req.body.token)
+
+    const token = req.cookies.access_token || req.body.token;
+    
+    console.log(`token`);
+    console.log(token);
+    //if no token, send a 403 msg
+    if (!token) {
+        return res.redirect('https://trackit-sillicon-alley.netlify.app/');
+    }
+
+    try {
+        console.log(`verify token if it works move onto the next`)
+        const data = await jwt.verify(token, "some_secret");
+        //if wrong token then return the user back to homepage
+        console.log('jws:data')
+        console.log(data)
+
+        // const habits = await User.getHabits(data.id)
+        // console.log(habits)
+
+        req.id = data.id;
+        req.email = data.email;
+        req.global = data
+
+        // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
+        // console.log(req.originalUrl.split('/')[2])
+
+    return next();
+    
+    } catch {
+        console.log('auth')
+        return res.redirect('http://localhost:3000/login');
+    }
+  };
+
+  const returnGlobal = async (req, res) => {
+
+    const getUser = await User.getUser(req.id);
+    const getHabits = await User.getHabits(req.id);
+
+    console.log(getUser)
+    console.log(getHabits)
+
+    const globalData = { email: getUser.email,
+                            id: getUser.id,
+                            habits: getHabits }
+
+    try {
+        res.status(200).json(globalData);
+    } catch(err){
+        res.status(500).json({err})
+    }
+}
+
+const habitCheck = async (req, res, next) => {
+    try{
+        console.log(req.id)
+
+        const getHabits = await User.getHabits(req.id);
+        console.log(getHabits)
+        const user_id = req.id
+        const habit_id = req.originalUrl.split('/')[2]
+        const check = getHabits.find(obj => obj.id == habit_id)
+        console.log(check)
+        if (check) return next()
+        else res.status(200).json('This habit doesnt belong to you');
+        
+    }
+    catch (err) {}
 }
 
 const signup = async (req, res) => {
-    //console.log(req.body)
+
     try {
-        const user = await Users.signup(req.body.name, req.body.password, req.body.email)
-        res.status(201).json(user)
+        let userExists = true;
+        const findUser = await User.findByEmail(req.body.email)
+        .then(data => { 
+            console.log(data)
+        })
+        .catch(err => {
+            console.log(err)
+            console.log('creaing new user')
+            userExists = false
+        })
+
+        if(!userExists) {
+            const newUser = await User.signup(
+                req.body.name,
+                req.body.password,
+                req.body.email)
+
+        res.status(200).json(newUser);
+        }
+
+        res.status(200).json(findUser);
+        
     } catch(err) {
         res.status(404).json({err})
     }
 }
 
-const editInfo = async (req, res) => {
+const checkPassword = async (req, res) => {
     try {
-
-    } catch(err){
+        console.log('c.users.body.p: '+req.body.newPass)
+        const user = await User.getUser(req.body.id)
+        console.log('user id: '+user.id)
+        const test = await user.passwordCheck(req.body.oldPass)
         
+        const salt = await bcrypt.genSalt(12);
+        const hashed = await bcrypt.hash(req.body.newPass, salt)
+
+        const data = {
+            id: req.body.id, 
+            name: user.name,
+            email: user.email,
+            password: hashed
+        }
+
+        console.log('returns test: '+test)
+        // update if true
+        if(test){
+            console.log('user_id: '+req.body.id)
+            const updated = await user.update(data)
+            console.log('updated: ')
+            console.log(updated)
+            console.log('password updated')
+            res.status(200).json(updated)
+        }
+        console.log('go thr here..')
+        return test;
+    } catch(err){
+        console.log(err)
+        res.status(500).json({err})
     }
 }
 
-module.exports = { displayAll, getUser, create, update, destroy, login, signup }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, habitCheck, authorization, currentUser, returnGlobal }

@@ -79,7 +79,7 @@ main {
     height: fit-content;
     margin: 5%;
     height: 70%;
-    display: flex;
+    display: grid;
     justify-content: space-around;
     align-items: center;
     border-radius: 10px;
@@ -129,7 +129,21 @@ main {
 
 }
 
-#add-habit-form {
+#progress {
+  width: 100%;
+  background-color: #ddd;
+}
+
+#bar {
+  width: 0;
+  height: 30px;
+  background-color: #04AA6D;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+
+#edit-habit-form {
   background-color: grey;
   position: absolute;
   left: 50%;
@@ -141,18 +155,6 @@ main {
   flex-direction: column;
   display: none;
 }
-
-#habitContainer {
-  display: flex;
-  flex-direction: column;
-  color: red;
-}
-
-.eachHabit {
-  border: 3px black solid;
-}
-
-
 
 /* 
 @media screen and (max-width: 900px) {

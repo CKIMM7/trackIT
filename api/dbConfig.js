@@ -32,15 +32,16 @@ const client = new Client({
 // const seeds = fs.readFileSync(__dirname + '/dev_seeds.sql').toString();
 // pool.query(seeds, () => console.log('Dev database seeded'));
 
-// pool.query(`SELECT * FROM Users;`, (err, res) => {
-//   if (err) {
-//       console.log("Error - Failed to select all from Users");
-//       console.log(err);
-//   }
-//   else{
-//       console.log(res.rows);
-//   }
-// });
+
+pool.query(`SELECT * FROM user_habits;`, (err, res) => {
+  if (err) {
+      console.log("Error - Failed to select all from Users");
+      console.log(err);
+  }
+  else{
+      // console.log(res.rows);
+  }
+});
 
 
 module.exports = pool;

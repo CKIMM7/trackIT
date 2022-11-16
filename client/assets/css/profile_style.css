@@ -13,6 +13,7 @@
 
 html, body {
     height: 100%;
+   
 }
 
 /* Smooth scroll effect */
@@ -28,6 +29,7 @@ nav {
     padding: 1rem 1.5rem;
     box-shadow: 2px 3px 2px #504f4f;
   }
+
 
   ul {
     display: flex;
@@ -76,6 +78,8 @@ a:hover {
 
 main {
     background-color: rgba(128, 128, 128, 0.432);
+  
+
     height: fit-content;
     margin: 5%;
     height: 70%;
@@ -85,94 +89,20 @@ main {
     border-radius: 10px;
 }
 
-.habit {
-    display: flex;
-    background-color: rgba(255, 255, 255, 0.336);
-    padding: 20px;
-    justify-content: space-around;
-    margin: 15px 0;
-    border-radius: 10px;
-}
+/*  */
 
-.habit-section header {
-    padding: 10px;
-    border-bottom: 1px solid white;
-}
-
-.habit p {
-    margin: 0 10px;
-}
-
-.habit-section {
-    background-color: #504f4f;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-#stats-section {
-    background-color: #504f4f;
-    padding: 15px;
-    /* height: 250px; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    border-radius: 10px;
-}
-
-.stats p {
-    margin: 0 10px;
+#profile-name {
+  /* border: 1px blue solid; */
+  font-size: 44px;
+  align-self: flex-start;
 }
 
 
-#add-habit {
-    align-self: flex-end;
 
-}
-
-#add-habit-form {
-  background-color: grey;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
+#edit-profile, #settings, #err-msg-1, #err-msg-2, #err-msg-3 {
   display: none;
 }
 
-#habitContainer {
-  display: flex;
-  flex-direction: column;
-  color: red;
-}
-
-.eachHabit {
-  border: 3px black solid;
-}
 
 
 
-/* 
-@media screen and (max-width: 900px) {
-  ul.sidenav {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  
-  ul.sidenav li a {
-    float: left;
-    padding: 15px;
-  }
-  
-  div.content {margin-left: 0;}
-}
-
-@media screen and (max-width: 400px) {
-  ul.sidenav li a {
-    text-align: center;
-    float: none;
-  }
-} */

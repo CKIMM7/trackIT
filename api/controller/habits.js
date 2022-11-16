@@ -12,6 +12,8 @@ const displayAll = async (req, res) => {
 const getHabit = async (req, res) => {
     try {
         const habit = await Habit.findHabit(parseInt(req.params.id))
+        // const isUsersHabit = await habit.belongsToUser(document.cookie)
+
         res.status(200).json(habit)
     } catch(err){
         res.status(404).json({err})
@@ -20,7 +22,8 @@ const getHabit = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const habit = await Habit.create(req.body.name, req.body.desc, req.body.freq, req.body.start_date)
+        console.log(req.body)
+        const habit = await Habit.create(req.body)
         res.status(201).json(habit)
     } catch(err) {
         res.status(404).json({err})
@@ -29,21 +32,24 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const habit = await Habit.findById(parseInt(req.params.id))
-        const updatedHabit = await habit.update(req.body.name, req.body.desc, req.body.freq, req.body.start_date, req.body.last_completed, req.body.streak, req.body.id)
+        const habit = await Habit.findHabit(parseInt(req.params.id))
+        const updatedHabit = await habit.update(req.body)
         res.status(200).json(updatedHabit)
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }
 
 const destroy = async (req, res) => {
     try {
-        // get the cat first by id then destroy
-        const habit = await Habit.findById(parseInt(req.params.id))
-        await habit.destroy()
+
+        const habit = await Habit.findHabit(parseInt(req.params.id))
+        const resp = await habit.delete()
+        
         res.status(204).json('Habit deleted')
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }

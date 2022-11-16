@@ -25,6 +25,7 @@ describe('Users controller', () => {
     })
 
     describe('getUser', () => {
+
         test('return a user by id with a 200 status code', async () => {
             const testData = {id: 1, email: 'test1@mail.com'};
             const mockReq = { params: { id: 1 } }
@@ -125,6 +126,7 @@ describe('Users controller', () => {
             expect(mockJson).toHaveBeenCalledWith(testData);
         } )
     })
+
 
 
 
