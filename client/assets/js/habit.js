@@ -19,7 +19,8 @@ const bar = document.querySelector('#bar')
 const startDate = document.querySelector('#start_datetime')
 
 const user_id = 2
-const habit_id = 2
+console.log(window.location.href.split('/')[4])
+const habit_id = window.location.href.split('/')[4]
 
 editHabitBtn.addEventListener('click', showHabitForm)
 exitBtn.addEventListener('click', showHabitForm)
@@ -111,4 +112,4 @@ async function display () {
 
 getHabit(1)
 
-//display()
+display()
