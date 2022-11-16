@@ -94,6 +94,7 @@ async function deleteHabit(id){
 
 async function update (category, data) {
     try {
+        console.log(`data: ${data.name}`)
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
@@ -206,9 +207,9 @@ async function passwordCheck(id, oldPass, newPass){
         }
         const response = await fetch(`${url}/users/passwordcheck`, options);
         await response.json()
-        // console
+        // console.log('r.result: '+result)
     } catch(err){
-        console.log(err)
+        // console.log(err)
         console.warn(err)
     }
 }
