@@ -25,6 +25,28 @@ async function getItem(category, id) {
     }
 }
 
+async function getHabit(id) {
+    try {
+
+        data = {
+            habit_id: id,
+            token: document.cookie.match('(^|;)\\s*' + 'access_token' + '\\s*=\\s*([^;]+)')?.pop()
+        }
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        }
+        
+        const response = await fetch(`${url}/habits/${id}`, options);
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (err) {
+        console.warn(err);
+    }
+}
+
 async function getUserHabits (id) {
     try {
         const response = await fetch(`${url}/users/${id}/habits`);

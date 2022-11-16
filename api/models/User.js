@@ -37,7 +37,7 @@ module.exports = class User {
         })
     }
 
-    static getHabits (id) {
+    getHabits (id) {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT users.name AS user, habit.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
@@ -78,6 +78,8 @@ module.exports = class User {
             try {
                 const user = await User.findByEmail(email)
                 console.log(user);
+
+                
         
                 if(!user){ throw new Error('No user with this email') }
 
@@ -85,7 +87,10 @@ module.exports = class User {
 
                 //if user authenticates successfully
                 if (!!authed){
-                    const payload = { email: user.email, id: user.id };
+                    const user_habits = await user.getHabits(1)
+                    console.log(`habits ${user_habits}`)
+
+                    const payload = { email: user.email, id: user.id, habits: user_habits};
 
                     const secret = 'some_secret'; //load from .env files
                     const options = { expiresIn: 3600 }

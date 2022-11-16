@@ -1,3 +1,5 @@
+const { decode } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const db = require('../dbConfig');
 
 module.exports = class Habit {
@@ -58,17 +60,24 @@ module.exports = class Habit {
         })
     }
 
-    // markComplete () {}
-
-    // setFrequency () {}
-
-    // setStartDate () {}
-
-    // setLastCompleted () {}
-
-    // setStreak () {}
-
-    // setCompleted () {}
+    belongsToUser (token) {
+        return new Promise (async(resolve, reject) => {
+            try {
+                // const id = decode(token).id
+                console.log(jwt.verify(token, 'some_secret'))
+                // const result = await db.query(`SELECT * FROM user_habits WHERE user_id = $1;`, [id])
+                // let usersHabits = results.rows.map();
+                // let exists = false;
+                // if (habit_id in usersHabits.habit_id) exists = true;
+                // //console.log(user);
+                resolve('Test');
+            }
+            catch(err){
+                console.warn(err)
+                reject(err)
+            }
+        })
+    }
 
     update (data) {
         return new Promise (async (resolve, reject) => {
