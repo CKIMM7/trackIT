@@ -234,7 +234,8 @@ const checkPassword = async (req, res) => {
             console.log('password updated')
             res.status(200).json(updated)
         }
-        
+        console.log('go thr here..')
+        return test;
     } catch(err){
         console.log(err)
         res.status(500).json({err})

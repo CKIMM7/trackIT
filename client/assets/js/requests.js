@@ -201,6 +201,7 @@ async function signup (name, password, email) {
 
 async function passwordCheck(id, oldPass, newPass){
     try {
+        console.log('--fetch')
         const options = {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
@@ -209,7 +210,7 @@ async function passwordCheck(id, oldPass, newPass){
         const response = await fetch(`${url}/users/passwordcheck`, options);
         // console.log('response:'+response)
         const result = await response.json()
-        console.log('r.result: '+result)
+        // console.log('r.result: '+result)
     } catch(err){
         console.log(err)
         console.warn(err)
