@@ -67,26 +67,38 @@ async function showSettings(e){
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
-    //old pass is sam
-    const result = await passwordCheck(5, oldPassInput.value, samePassInput.value)
-    console.log(result)
     
-    // if return false display an error
-    if(!result) {
-        const markup = `<p>Password does not match</p>`;
-        //settingsSection.insertAdjacentElement('afterbegin', markup);
+    // or instead use event listner on input, if still empty highligh in red
+    if(oldPassInput.value === null) {
+        console.log('old pass empty');
+        const markup = `<p>Fill in old password</p>`;
+        oldPassInput.insertAdjacentElement('afterend', markup);
     }
-    // need check pass before pass below
+    else if(newPassInput.value !== samePassInput.value) {
+        console.log('not the same');
+        const markup = `<p>Passwords do not match</p>`;
+        samePassInput.insertAdjacentElement('afterbegin', markup);
+    } else {
+        const result = await passwordCheck(5, oldPassInput.value, newPassInput.value)
+        console.log(result)
+        
+        // if return false display an error
+        if(!result) {
+            const markup = `<p>Old password does not match</p>`;
+            //settingsSection.insertAdjacentElement('afterbegin', markup);
+        }
+        // need check pass before pass below
 
-    // data = {
-    //     user_id: userId,
-    //     email: emailInput.value,
-    //     password: newPassInput.value
-    // }
+        // data = {
+        //     user_id: userId,
+        //     email: emailInput.value,
+        //     password: newPassInput.value
+        // }
 
-    // console.log('click')
+        // console.log('click')
 
-    // update('users', data)
+        // update('users', data)
+    }
 }
 
 /* use passwordCheck from User class. if return true change pass
