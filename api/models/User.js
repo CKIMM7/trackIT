@@ -173,8 +173,8 @@ module.exports = class User {
             return new Promise (async (resolve, reject) => {
 
                 try {
-                    const salt = await bcrypt.genSalt(12);
-                    const hashed = await bcrypt.hash(password, salt)
+                    const salt = await bcrypt.genSalt(12) || "";
+                    const hashed = await bcrypt.hash(password, salt) || ""
                     const newUser = await User.create(name, email, hashed)
                     console.log(hashed)
     

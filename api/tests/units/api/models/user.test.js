@@ -19,11 +19,11 @@ describe('User', () => {
     });
 
     describe('get habits', () => {
-        test('it resolves with users on successful db query', async () => {
+        test('it resolves with users habits on successful db query', async () => {
             jest.spyOn(db, 'query')
-                .mockResolvedValueOnce({ id: 1 });
-            const all = await User.getHabits(1);
-            expect(all).toHaveLength(4)
+                .mockResolvedValueOnce({rows: [{}, {}, {}, {}]});
+            const habits = await User.getHabits(1);
+            expect(habits).toHaveLength(4)
         })
     });
 
@@ -68,8 +68,38 @@ describe('User', () => {
         })
     });
 
+    describe('signup', () => {
+        test('it resolves with user on successful db query', async () => {
+            let userData = { id: 1, name: 'New User', email: 'test@test.com', password: 'Password' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ userData });
+            await expect(User.signup(userData)).resolves.toEqual({
+                validated: true,
+                reason: 'You have successfully registered !',
+                user: {
+                    password: expect.anything(),
+                    email: 'test@test.com'
+                }
+            })
+            const result = await User.signup(userData);
+            expect(result).toBeInstanceOf(User)
+        })
+        
+    });
+
+    // describe('password check', () => {
+    //     test('it resolves with user on successful db query', async () => {
+    //         let userData = { password: 'Test' }
+    //         jest.spyOn(db, 'query')
+    //             .mockResolvedValueOnce({ userData });
+    //         let testUser = await User.signup({ id: 1, name: 'Test User'})
+    //         const result = await testUser.passwordCheck('Test');
+    //         expect(result).toBeBooleanOrNull()
+    //     })
+    // });
+
     //habit check
-    //getHabits
+
     //passwordcheck
 
     
