@@ -21,7 +21,7 @@ const loginPage = async (req, res) => {
         //                    id: req.id,
         //                 email: req.email }
         console.log(path.join(`${__dirname}/index.html`))
-        res.sendFile(path.join(__dirname, '../../client/login.html'))
+        res.sendFile(path.join(__dirname, '../../client/assets/pages/newlogin.html'))
         
         } catch (err) {
         res.send(err)
@@ -36,7 +36,7 @@ const signUpPage = async (req, res) => {
         //                    id: req.id,
         //                 email: req.email }
         console.log(path.join(`${__dirname}/index.html`))
-        res.sendFile(path.join(__dirname, '../../client/pages/signup.html'))
+        res.sendFile(path.join(__dirname, '../../client/assets/pages/signup.html'))
         
         } catch (err) {
         res.send(err)
