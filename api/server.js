@@ -29,9 +29,7 @@ const auth = require('./controller/users');
 
 //***D:\portfolios\trackIT\client <-should be looking at this
 //assets should just point at index.html, ../ or ./ does not have an effect
-server.use('/', express.static(path.join(__dirname, '../client')))
+server.use(express.static(path.join(__dirname, '../client')))
 
-
-server.get('/ejs', (req, res) => res.render('index'))
 
 module.exports = server

@@ -5,7 +5,7 @@ const landingPage = async (req, res) => {
     console.log(path.join(__dirname, '../../client/index.html'))
     try {
 
-        res.sendFile(path.join(__dirname, '../../client/index.html'))
+        res.sendFile(path.join(__dirname, '../client/index.html'))
         
         } catch (err) {
         res.send(err)
