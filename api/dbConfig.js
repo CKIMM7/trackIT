@@ -24,13 +24,14 @@ const client = new Client({
 })
 
 
-client.connect(function(err) {
-    if (err) throw err;
-    console.log("Postgres Client Connected!");
-  });  
+// client.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Postgres Client Connected!");
+//   });  
 
 // const seeds = fs.readFileSync(__dirname + '/dev_seeds.sql').toString();
 // pool.query(seeds, () => console.log('Dev database seeded'));
+
 
 pool.query(`SELECT * FROM user_habits;`, (err, res) => {
   if (err) {

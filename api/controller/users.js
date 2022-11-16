@@ -28,7 +28,9 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
+
         const user = await User.getUser(parseInt(req.params.id))
+
         res.status(200).json(user)
     } catch(err){
         console.log(err)
