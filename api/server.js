@@ -9,6 +9,7 @@ server.use(cors());
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({secret: "Shh, its a secret!"}));
+server.set('view engine','ejs');
 
 server.use((req, res, next) => {
     //console.log('Time:', Date.now())
@@ -31,19 +32,6 @@ const auth = require('./controller/users');
 server.use('/', express.static(path.join(__dirname, '../client')))
 
 
-let reqPath = path.join(__dirname, '../client');
-console.log(reqPath);
-
-
-server.get('/signup', (req, res) => 
-    res.sendFile(path.join(__dirname, '../client/pages/signup.html')))
-
-server.get('/admin', (req, res) => 
-    res.send({ id: req.id, email: req.email }))
-
-
-
-
-//server.get('/', (req, res) => res.send('Hello world! 0.2'))
+server.get('/ejs', (req, res) => res.render('index'))
 
 module.exports = server

@@ -5,27 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/986b088578.js" crossorigin="anonymous"></script>
-    <script src="../assets/js/requests.js" defer></script>
-    <script src="../assets/js/profile-script.js" defer></script>
-    <link rel="stylesheet" href="../assets/css/profile_style.css">
+    <script src="../js/requests.js" defer></script>
+    <script src="../js/profile-script.js" defer></script>
+    <link rel="stylesheet" href="/client/assets/css/profile_style.css">
     <title>Profile</title>
 </head>
 <body>
-    <nav>
-        <a href="#" class="logo">
-          <h1>
-            <span>trackIT</span>
-          </h1>
-        </a>
-        <ul>
-            <li class="nav-item">
-              <a href="#" id="nav-link" class="nav-link" >DASHBOARD</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-active">PROFILE</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="navbar navbar-expand-lg navbar-dark shadow-5-strong">
+        <div class="container-fluid">
+            
+
+           
+                <a href="#" class="logo">
+                <h1>
+                    <span>trackIT</span>
+                </h1>
+                </a>
+                <ul>
+                    <li class="nav-item">
+                     <a href="./dashboard.html" id="nav-link" class="nav-link" >DASHBOARD</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="#" class="nav-active">PROFILE</a>
+                    </li>
+                </ul>
+            </div>
+        
+    </div>
     <section id="edit-profile">
         <h3>Edit Profile</h3>
         <input id="edit-name" type="text" placeholder="Enter new name...">
@@ -35,15 +41,12 @@
     <section id="settings">
         <h3>Edit Email</h3>
         <input id="edit-email" type="text" placeholder="Enter new email...">
-        <p id="err-msg-1">Email already exists</p>
         <button id="save-email" type="submit">Save</button>
         
         <h3>Change Password</h3>
-        <input id="oldPass" type="password" placeholder="old password" required>
-        <p id="err-msg-2">Old password does not match</p>
-        <input id="newPass" type="password" placeholder="new password" required>
-        <input id="samePass" type="password" placeholder="repeat password" required>
-        <p id="err-msg-3">Both passwords must be the same</p>
+        <input id="oldPass" type="password" placeholder="old password">
+        <input id="newPass" type="password" placeholder="new password">
+        <input id="samePass" type="password" placeholder="repeat password">
         <button id="save" type="submit">Save</button>
         <button id="pass-cancel">Cancel</button>
     </section>

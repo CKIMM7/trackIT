@@ -6,7 +6,8 @@ const settingsSection = document.querySelector('#settings');
 
 // edit profile & settings btns
 const editSubmitBtn = document.querySelector('#edit-profile > #submit-name');
-const saveBtn = document.querySelector('#settings > #save');
+const saveEmailBtn = document.querySelector('#settings > #save-email'); 
+const savePassBtn = document.querySelector('#settings > #save');
 
 // cancel buttons
 const cancelEditBtn = document.querySelector('#edit-profile > #edit-cancel');
@@ -14,7 +15,7 @@ const cancelSettBtn = document.querySelector('#settings > #pass-cancel');
 
 // edit profile & settings var
 const nameInput = document.querySelector('#edit-name');
-const emailInput = document.querySelector('#edit-email');
+const eEmailInput = document.querySelector('#edit-email');
 const oldPassInput = document.querySelector('#oldPass');
 const newPassInput = document.querySelector('#newPass');
 const samePassInput = document.querySelector('#samePass');
@@ -23,12 +24,13 @@ editBtn.addEventListener('click', showProfileForm);
 settingsBtn.addEventListener('click', showSettings);
 
 editSubmitBtn.addEventListener('click', updateProfile);
-saveBtn.addEventListener('click', addNewSettings);
+saveEmailBtn.addEventListener('click', updateEmail);
+savePassBtn.addEventListener('click', addNewSettings);
 
 cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
 cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
 
-const userId = 1;
+const userId = 6;
 
 function editProfile(e){
     e.preventDefault()
@@ -47,10 +49,9 @@ async function updateProfile (e) {
     console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
-    // data.password = emailInput.value;
-    // need to input pass as well cuz update expects pass?
-    console.log(`dt: ${data.name}, ${data.email}, ${data.password}`);
-    update('users', data); //<<< err
+    // need to input pass as well cuz update expects pass? n
+    console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+    update('users', data); 
 }
 
 function settings(e){
@@ -60,55 +61,69 @@ function settings(e){
 
 async function showSettings(e){
     const data = await getItem('users', userId);
-    emailInput.value = data.email;
+    eEmailInput.value = data.email;
     settings(e);
 }
 
-async function addNewSettings(e){
+// need to add compare email not same as someone elses
+async function updateEmail(e){
     e.preventDefault()
-    console.log('click')
-    
-    // add email button...
+    console.log('save email')
+    const data = await getItem('users', userId);
 
-    // or instead use event listner on input, if still empty highligh in red
-    if(oldPassInput.value === null) {
-        console.log('old pass empty');
-        const markup = `<p>Fill in old password</p>`;
-        oldPassInput.insertAdjacentElement('afterend', markup);
-    }
-    else if(newPassInput.value !== samePassInput.value) {
-        console.log('not the same');
-        const markup = `<p>Passwords do not match</p>`;
-        samePassInput.insertAdjacentElement('afterbegin', markup);
+    // compare email to all users
+    const allUsers = await getAll('users');
+    let sameEmail = false
+    sameEmail = allUsers.map(d => {
+        if(eEmailInput.value === d.email) return sameEmail = true;
+    })
+
+    if(!sameEmail) {
+        console.log('not the same email')
+        errMsg(1, sameEmail)  // display err msg if true
+
+        data.email = eEmailInput.value;
+        console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+        await update('users', data)
     } else {
-        const result = await passwordCheck(5, oldPassInput.value, newPassInput.value)
-        console.log(result)
-        
-        // if return false display an error
-        if(!result) {
-            const markup = `<p>Old password does not match</p>`;
-            //settingsSection.insertAdjacentElement('afterbegin', markup);
-        }
-        // need check pass before pass below
-
-        // data = {
-        //     user_id: userId,
-        //     email: emailInput.value,
-        //     password: newPassInput.value
-        // }
-
-        // console.log('click')
-
-        // update('users', data)
+        console.log('same email')
+        errMsg(1, sameEmail)
     }
 }
 
-/* use passwordCheck from User class. if return true change pass
-then use the update requests.js to update
+//to test original pass is sam / a
+//email sam3@gmail.com
+async function addNewSettings(e){
+    e.preventDefault()
+    console.log('click')
+    let stop = false
 
-for checkpass, send new and old pass to api side, get it to compare inputed old pass with users pass
-if true update else error msg
-*/
+    // repeat passes not same then...
+    if(samePassInput.value !== newPassInput.value) stop = errMsg(3, true)
+    else stop = errMsg(3, false)
+    
+    if(!stop){
+        const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
+        console.log(result) // returns undefined
+        
+        // if return false display an error <<<< still need to fix
+        if(!result) {
+            console.log('old pass not matched')
+            errMsg(2, false)
+        }
+        else {
+            console.log('matched')
+            errMsg(2, true)
+        }
+    }
+}
+
+function errMsg(id, bool){
+    const htmlTag = document.getElementById(id);
+    if(bool) htmlTag.style.display = 'block';
+    else htmlTag.style.display = 'none';
+    return bool;
+}
 
 async function display(){
     const name = document.querySelector('#profile-name');
@@ -117,6 +132,7 @@ async function display(){
 
     // gets user name, email and pass
     const userData = await getItem('users', userId);
+
     name.textContent = userData.name;
     email.textContent = userData.email;
 

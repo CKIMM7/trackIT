@@ -78,6 +78,8 @@ module.exports = class User {
             try {
                 const user = await User.findByEmail(email)
                 console.log(user);
+
+                
         
                 if(!user){ throw new Error('No user with this email') }
 
@@ -85,7 +87,10 @@ module.exports = class User {
 
                 //if user authenticates successfully
                 if (!!authed){
-                    const payload = { email: user.email, id: user.id };
+                    const user_habits = await User.getHabits(1)
+                    console.log(`habits ${user_habits}`)
+
+                    const payload = { email: user.email, id: user.id, habits: user_habits};
 
                     const secret = 'some_secret'; //load from .env files
                     const options = { expiresIn: 3600 }
@@ -107,6 +112,24 @@ module.exports = class User {
                 reject(err)
             }
 
+        })
+    }
+
+    static habitCheck () {
+        return new Promise (async(resolve, reject) => {
+            try {
+
+                const result = await db.query(`SELECT * FROM user_habits WHERE user_id = $1;`, [id])
+                let usersHabits = results.rows.map();
+                let exists = false;
+                if (habit_id in usersHabits.habit_id) exists = true;
+                //console.log(user);
+                resolve(exists);
+            }
+            catch(err){
+                console.warn(err)
+                reject(err)
+            }
         })
     }
 
@@ -168,10 +191,14 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
+                console.log('--modeller update')
                 const { id, name, email, password } = data;
-                const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1;`, [ id, name, email, password ])
-                resolve(result.rows[0]);
+                console.log(`m.user.update.data.id ${data.id}`)
+                const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1 RETURNING *;`, [ id, name, email, password ])
+                console.log('m.user.result: '+result.rows[0])
+                resolve(new User( result.rows[0]));
             } catch (err) {
+                console.log(err)
                 reject("Error updating user")
             }
         })
@@ -187,20 +214,22 @@ module.exports = class User {
             }
         })
     }
-
+    // this is fine
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
-                console.log("User Model")
-                console.log(password)
+                console.log("--User Model")
+                console.log("old p: "+password)
                 const user = await User.getUser(this.id)
                 let authorised = false;
-                console.log(`User Password ${user.password}`)
+                console.log(`User Password: ${user.password}`)
                 const authed = await bcrypt.compare(password, user.password)
                 if (authed) authorised = true
-                console.log(authorised)
+                console.log('auth?: '+authorised)
+
                 resolve(authorised)
             } catch (err) {
+                console.log(err)
                 reject("Error changing password")
             }
             
