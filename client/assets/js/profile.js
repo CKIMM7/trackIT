@@ -27,8 +27,14 @@ editSubmitBtn.addEventListener('click', updateProfile);
 saveEmailBtn.addEventListener('click', updateEmail);
 savePassBtn.addEventListener('click', addNewSettings);
 
-cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
-cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
+cancelEditBtn.addEventListener('click', (e) => {
+    editProfSection.style.display = 'none';
+    displayMsg(1, false, 'pos');
+});
+cancelSettBtn.addEventListener('click', (e) => {
+    settingsSection.style.display = 'none';
+    resetMsg();
+});
 
 const userId = 6;
 
@@ -46,11 +52,11 @@ async function showProfileForm(e){
 // when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
-    console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
     // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); 
+    displayMsg(1, true, 'pos');
 }
 
 function settings(e){
@@ -67,7 +73,6 @@ async function showSettings(e){
 // need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
-    console.log('save email')
     const data = await getItem('users', userId);
 
     // compare email to all users
@@ -76,12 +81,13 @@ async function updateEmail(e){
     // console.log('sameEmail: '+sameEmail)
 
     if(!sameEmail) {
-        errMsg(1, sameEmail);
+        displayMsg(1, sameEmail, 'err');
         data.email = eEmailInput.value;
-        console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+        // console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
         await update('users', data);
         console.log('email updated')
-    } else errMsg(1, sameEmail)
+        displayMsg(2, true, 'pos')
+    } else displayMsg(1, sameEmail, 'err')
 }
 
 function isSameEmail(users){
@@ -92,27 +98,46 @@ function isSameEmail(users){
 //email sam3@gmail.com
 async function addNewSettings(e){
     e.preventDefault()
-    console.log('click')
     let stop = false
 
     // repeat passes not same then...
-    if(samePassInput.value !== newPassInput.value) stop = errMsg(3, true)
-    else stop = errMsg(3, false)
-    console.log('stop: '+stop)
+    if(samePassInput.value !== newPassInput.value) stop = displayMsg(3, true, 'err')
+    else stop = displayMsg(3, false, 'err')
 
     if(!stop){
         const isPassed = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
         // console.log('p.isPassed: '+ isPassed.toString()) 
-        if(!isPassed) errMsg(2, true)
-        else errMsg(2, false)
+        if(!isPassed) return displayMsg(2, true, 'err')
+        displayMsg(2, false, 'err')
+        displayMsg(3, true, 'pos')
+        resetPassFields();
     }
 }
 
-function errMsg(id, bool){
-    const htmlTag = document.querySelector(`#err-msg-${id}`);
+function displayMsg(id, bool, type){
+    const htmlTag = document.querySelector(`#${type}-msg-${id}`);
     if(bool) htmlTag.style.display = 'block';
     else htmlTag.style.display = 'none';
     return bool;
+}
+
+function resetMsg(){
+    let index = 0;
+    let type = ['err', 'pos']
+    while(index < 2){
+        for(let id=1; id <= 3; id++){
+            let htmlTag = document.querySelector(`#${type[index]}-msg-${id}`);
+            htmlTag.style.display = 'none';
+        }
+        index++;
+    }
+    return index; // use this to test reset
+}
+
+function resetPassFields(){
+    oldPassInput.value = null
+    newPassInput.value = null
+    samePassInput.value = null
 }
 
 async function display(){
