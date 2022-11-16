@@ -9,9 +9,10 @@ server.use(cors());
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({secret: "Shh, its a secret!"}));
+
 server.use((req, res, next) => {
-    console.log('Time:', Date.now())
-    console.log(req.cookies)
+    //console.log('Time:', Date.now())
+   //console.log(req.cookies)
     next()
 })
 

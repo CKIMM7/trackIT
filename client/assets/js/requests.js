@@ -74,47 +74,49 @@ async function deleteHabit(id){
     }
 }
 
-async function update (e, category) {
-    e.preventDefault();
+async function update (category, data) {
     try {
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.fromEntries(new FormData(e.target)))
+            body: JSON.stringify(data)
         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
+        const response = await fetch(`${url}/${category}/${data.id}`, options);
+        console.log(response)
         const { id, err } = await response.json();
         if(err) { 
+            
             throw Error(err) 
         } else {
             // window.location.hash = `#books/${id}`
         }
     } catch (err) {
+        
         console.warn(err);
     }
 }
 
-async function updateData (data, category) {
-    // e.preventDefault();
-    try {
-        const options = {
-            method: 'PATCH',
-            headers: { "Content-Type": "application/json" },
-            body: data
-        }
+// async function updateData (data, category) {
+//     // e.preventDefault();
+//     try {
+//         const options = {
+//             method: 'PATCH',
+//             headers: { "Content-Type": "application/json" },
+//             body: data
+//         }
         
-        const response = await fetch(`${url}/${category}/${id}`, options);
-        const { id, err } = await response.json();
-        if(err) { 
-            throw Error(err) 
-        } else {
-            // window.location.hash = `#books/${id}`
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-}
+//         const response = await fetch(`${url}/${category}/${id}`, options);
+//         const { id, err } = await response.json();
+//         if(err) { 
+//             throw Error(err) 
+//         } else {
+//             // window.location.hash = `#books/${id}`
+//         }
+//     } catch (err) {
+//         console.warn(err);
+//     }
+// }
 
 async function login (e) {
     e.preventDefault();
@@ -174,6 +176,22 @@ async function signup (name, password, email) {
 
     } catch (err) {
         console.warn(err);
+    }
+}
+
+async function passwordCheck(id, oldPass, newPass){
+    try {
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id, oldPass, newPass})
+        }
+        const response = await fetch(`${url}/users/passwordcheck`, options);
+        await response.json()
+        // console
+    } catch(err){
+        console.log(err)
+        console.warn(err)
     }
 }
 

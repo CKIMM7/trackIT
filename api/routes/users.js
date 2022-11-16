@@ -8,6 +8,7 @@ router.get('/', usersController.displayAll);
 router.get('/:id',  usersController.authorization, 
                     usersController.getUser);
 router.get('/:id/habits', usersController.getHabits);
+router.post('/passwordcheck', usersController.checkPassword);
 router.post('/login', usersController.login);
 router.post('/signup', usersController.signup);
 router.patch('/:id', usersController.update);

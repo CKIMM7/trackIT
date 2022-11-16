@@ -16,7 +16,7 @@ module.exports = class User {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM users;')
-                const users = result.rows.map(d => ({ id: d.id, email: d.email }))
+                const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
                 reject("Error retrieving authors")
@@ -29,7 +29,7 @@ module.exports = class User {
             try {
                 const result = await db.query(`SELECT * FROM users WHERE id = $1;`, [id])
                 // console.log(result)
-                const user = result.rows.map(data => ({ id: data.id, name: data.name, email : data.email}))
+                const user = new User(result.rows[0])
                 resolve(user);
             } catch (err) {
                 reject("Error retrieving user")
@@ -168,8 +168,8 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                const { id, name } = data;
-                const result = await db.query(`UPDATE users SET name = $2 WHERE id = $1;`, [ id, name ])
+                const { id, name, email, password } = data;
+                const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1;`, [ id, name, email, password ])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating user")
@@ -185,6 +185,25 @@ module.exports = class User {
             } catch (err) {
                 reject("Error deleting user")
             }
+        })
+    }
+
+    async passwordCheck(password){
+        return new Promise (async (resolve, reject) => {
+            try {
+                console.log("User Model")
+                console.log(password)
+                const user = await User.getUser(this.id)
+                let authorised = false;
+                console.log(`User Password ${user.password}`)
+                const authed = await bcrypt.compare(password, user.password)
+                if (authed) authorised = true
+                console.log(authorised)
+                resolve(authorised)
+            } catch (err) {
+                reject("Error changing password")
+            }
+            
         })
     }
 }

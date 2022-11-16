@@ -157,12 +157,17 @@ const signup = async (req, res) => {
     }
 }
 
-const editInfo = async (req, res) => {
+const checkPassword = async (req, res) => {
     try {
-
+        console.log(req.body)
+        const user = await Users.getUser(req.body.id)
+        console.log(user)
+        const test = await user.passwordCheck(req.body.oldPass)
+        console.log(test)
+        res.status(204).json(test)
     } catch(err){
-        
+        res.status(500).json({err})
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, signup, authorization, currentUser }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser }

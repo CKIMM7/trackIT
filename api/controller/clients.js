@@ -11,7 +11,7 @@ const landingPage = async (req, res) => {
         } catch (err) {
         res.send(err)
         }
-}
+    }
 
 const loginPage = async (req, res) => {
 
