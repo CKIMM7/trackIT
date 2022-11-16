@@ -1,3 +1,6 @@
+test.skip('', () => {
+
+}); 
 // const fs = require('fs');
 // const path = require('path');
 // global.fetch = require('jest-fetch-mock');

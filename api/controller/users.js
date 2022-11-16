@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const server = require('../server');
 
 const currentUser = async (req, res) => {
-    console.log(req.cookies.access_token);
+    // console.log(req.cookies.access_token);
     try {
     
     const user = { cookie: req.cookies.access_token,
@@ -17,7 +17,7 @@ const currentUser = async (req, res) => {
 }
 
 const displayAll = async (req, res) => {
-    console.log(req.cookies.access_token);
+    // console.log(req.cookies.access_token);
     try {
         const users = await Users.all;
         res.status(200).json(users);
@@ -152,6 +152,21 @@ const authorization = async (req, res, next) => {
     }
 }
 
+const habitCheck = async (req, res, next) => {
+    try{
+        console.log(req.id)
+        const getHabits = await User.getHabits(req.id);
+        console.log(getHabits)
+        const user_id = req.id
+        const habit_id = req.originalUrl.split('/')[2]
+        const check = getHabits.find(obj => obj.id == habit_id)
+        console.log(check)
+        if (check) return next()
+        else res.status(200).json('This habit doesnt belong to you');
+    }
+    catch (err) {}
+}
+
 const signup = async (req, res) => {
 
     try {
@@ -217,4 +232,4 @@ const checkPassword = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }
+module.exports = { displayAll, getUser, getHabits, habitCheck, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }

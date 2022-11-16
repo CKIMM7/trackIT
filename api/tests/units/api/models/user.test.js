@@ -10,10 +10,19 @@ describe('User', () => {
     afterAll(() => jest.resetAllMocks())
 
     describe('all', () => {
-        test('it resolves with authors on successful db query', async () => {
+        test('it resolves with users on successful db query', async () => {
             jest.spyOn(db, 'query')
                 .mockResolvedValueOnce({ rows: [{}, {}, {}, {}]});
             const all = await User.all;
+            expect(all).toHaveLength(4)
+        })
+    });
+
+    describe('get habits', () => {
+        test('it resolves with users on successful db query', async () => {
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({ id: 1 });
+            const all = await User.getHabits(1);
             expect(all).toHaveLength(4)
         })
     });
@@ -30,7 +39,7 @@ describe('User', () => {
     });
 
     describe('findById', () => {
-        test('it resolves with author on successful db query', async () => {
+        test('it resolves with user on successful db query', async () => {
             let userData = { id: 1, name: 'Test User' }
             jest.spyOn(db, 'query')
                 .mockResolvedValueOnce({rows: [ userData ] });
@@ -39,8 +48,18 @@ describe('User', () => {
         })
     });
 
+    describe('findByEmail', () => {
+        test('it resolves with user on successful db query', async () => {
+            let userData = { id: 1, email: 'test@test.com', name: 'Test User' }
+            jest.spyOn(db, 'query')
+                .mockResolvedValueOnce({rows: [ userData ] });
+            const result = await User.findByEmail('test@test.com');
+            expect(result).toBeInstanceOf(User)
+        })
+    });
+
     describe('create', () => {
-        test('it resolves with author on successful db query', async () => {
+        test('it resolves with user on successful db query', async () => {
             let habitData = { id: 1, name: 'New User' }
             jest.spyOn(db, 'query')
                 .mockResolvedValueOnce({rows: [ habitData] });
@@ -48,6 +67,10 @@ describe('User', () => {
             expect(result).toBeInstanceOf(User)
         })
     });
+
+    //habit check
+    //getHabits
+    //passwordcheck
 
     
 })
