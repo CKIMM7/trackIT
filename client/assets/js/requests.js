@@ -219,3 +219,4 @@ async function passwordCheck(id, oldPass, newPass){
 }
 
 //signup('newUser', `password`, `444@hotmail.com`)
+module.exports = { getAll, getHabit, getItem, getUserHabits, postHabit, deleteHabit, update, login, signup, passwordCheck }
