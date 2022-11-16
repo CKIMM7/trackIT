@@ -167,6 +167,9 @@ const checkPassword = async (req, res) => {
         console.log(user)
         const test = await user.passwordCheck(req.body.oldPass)
         console.log(test)
+        // update 
+        const updated = await user.update(req.body.id, req.body.newPass)
+        // need to return a false?
         res.status(204).json(test)
     } catch(err){
         res.status(500).json({err})

@@ -6,7 +6,8 @@ const settingsSection = document.querySelector('#settings');
 
 // edit profile & settings btns
 const editSubmitBtn = document.querySelector('#edit-profile > #submit-name');
-const saveBtn = document.querySelector('#settings > #save');
+const saveEmailBtn = document.querySelector('#settings > #save-email'); 
+const savePassBtn = document.querySelector('#settings > #save');
 
 // cancel buttons
 const cancelEditBtn = document.querySelector('#edit-profile > #edit-cancel');
@@ -14,7 +15,7 @@ const cancelSettBtn = document.querySelector('#settings > #pass-cancel');
 
 // edit profile & settings var
 const nameInput = document.querySelector('#edit-name');
-const emailInput = document.querySelector('#edit-email');
+const eEmailInput = document.querySelector('#edit-email');
 const oldPassInput = document.querySelector('#oldPass');
 const newPassInput = document.querySelector('#newPass');
 const samePassInput = document.querySelector('#samePass');
@@ -23,7 +24,8 @@ editBtn.addEventListener('click', showProfileForm);
 settingsBtn.addEventListener('click', showSettings);
 
 editSubmitBtn.addEventListener('click', updateProfile);
-saveBtn.addEventListener('click', addNewSettings);
+saveEmailBtn.addEventListener('click', updateEmail);
+savePassBtn.addEventListener('click', addNewSettings);
 
 cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
 cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
@@ -47,7 +49,7 @@ async function updateProfile (e) {
     console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
-    // data.password = emailInput.value;
+    // data.password = eEmailInput.value;
     // need to input pass as well cuz update expects pass?
     console.log(`dt: ${data.name}, ${data.email}, ${data.password}`);
     update('users', data); //<<< err
@@ -60,47 +62,44 @@ function settings(e){
 
 async function showSettings(e){
     const data = await getItem('users', userId);
-    emailInput.value = data.email;
+    eEmailInput.value = data.email;
     settings(e);
+}
+
+// need to test this
+async function updateEmail(e){
+    e.preventDefault()
+    console.log('save email')
+    const data = await getItem('users', userId);
+    data.name = eEmailInput.value;
+    update('users', data)
 }
 
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
+    // required or instead use event listner on input, if still empty highligh in red
+
+    const result = await passwordCheck(5, oldPassInput.value, newPassInput.value)
+    console.log(result)
     
-    // add email button...
-
-    // or instead use event listner on input, if still empty highligh in red
-    if(oldPassInput.value === null) {
-        console.log('old pass empty');
-        const markup = `<p>Fill in old password</p>`;
-        oldPassInput.insertAdjacentElement('afterend', markup);
+    // if return false display an error
+    if(!result) {
+        const markup = `<p>Old password does not match</p>`;
+        //settingsSection.insertAdjacentElement('afterbegin', markup);
     }
-    else if(newPassInput.value !== samePassInput.value) {
-        console.log('not the same');
-        const markup = `<p>Passwords do not match</p>`;
-        samePassInput.insertAdjacentElement('afterbegin', markup);
-    } else {
-        const result = await passwordCheck(5, oldPassInput.value, newPassInput.value)
-        console.log(result)
-        
-        // if return false display an error
-        if(!result) {
-            const markup = `<p>Old password does not match</p>`;
-            //settingsSection.insertAdjacentElement('afterbegin', markup);
-        }
-        // need check pass before pass below
+    // need check pass before pass below
 
-        // data = {
-        //     user_id: userId,
-        //     email: emailInput.value,
-        //     password: newPassInput.value
-        // }
+    // data = {
+    //     user_id: userId,
+    //     email: eEmailInput.value,
+    //     password: newPassInput.value
+    // }
 
-        // console.log('click')
+    // console.log('click')
 
-        // update('users', data)
-    }
+    // update('users', data)
+
 }
 
 /* use passwordCheck from User class. if return true change pass
