@@ -109,5 +109,6 @@ async function display () {
 
 }
 
+getHabit(1)
 
 display()

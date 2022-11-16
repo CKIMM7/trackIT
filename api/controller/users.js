@@ -86,7 +86,7 @@ const login = async (req, res) => {
         //     console.log(data)
     res
     .cookie("access_token", user, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
     })
     .status(200)
@@ -116,12 +116,15 @@ const authorization = async (req, res, next) => {
         console.log('jws:data')
         console.log(data)
 
+        // const habits = await User.getHabits(data.id)
+        // console.log(habits)
+
         req.id = data.id;
         req.email = data.email;
 
-        if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
-        console.log(req.originalUrl.split('/')[2])
-        
+        // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
+        // console.log(req.originalUrl.split('/')[2])
+
     return next();
     
     } catch {
