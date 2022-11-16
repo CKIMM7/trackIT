@@ -56,10 +56,13 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const user = await Users.findById(parseInt(req.params.id))
-        const updatedUser = await user.update(req.body.id, req.body.name)
+        console.log(req.body)
+        const user = await Users.getUser(parseInt(req.body.id))
+        const updatedUser = await user.update(req.body)
+        console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }
@@ -164,13 +167,19 @@ const checkPassword = async (req, res) => {
     try {
         console.log(req.body)
         const user = await Users.getUser(req.body.id)
-        console.log(user)
+        console.log('user: '+user)
         const test = await user.passwordCheck(req.body.oldPass)
-        console.log(test)
-        // update 
-        const updated = await user.update(req.body.id, req.body.newPass)
-        // need to return a false?
-        res.status(204).json(test)
+        console.log('test: '+test)
+        // update if true
+        if(test){
+            const updated = await user.update(req.body.id, req.body.newPass)
+            console.log(updated)
+            console.log('password updated')
+            res.status(200).json(updated)
+            // res.status(20).json(test)
+        }
+        // res.status(200).json(test)
+        
     } catch(err){
         res.status(500).json({err})
     }
