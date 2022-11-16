@@ -119,8 +119,9 @@ const authorization = async (req, res, next) => {
         req.id = data.id;
         req.email = data.email;
 
-        console.log(req.originalUrl)
-
+        if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
+        console.log(req.originalUrl.split('/')[2])
+        
     return next();
     
     } catch {
