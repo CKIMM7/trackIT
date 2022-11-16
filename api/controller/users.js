@@ -118,7 +118,7 @@ const authorization = async (req, res, next) => {
 
     try {
         console.log(`verify token if it works move onto the next`)
-        const data = await jwt.verify(req.body.token, "some_secret");
+        const data = await jwt.verify(token, "some_secret");
         //if wrong token then return the user back to homepage
         console.log('jws:data')
         console.log(data)
