@@ -112,9 +112,10 @@ async function checkList (data) {
     }
 }
 
-// async function goToHabit (id) {
-//     if ()
-// }
+async function goToHabit (id) {
+    console.log(id)
+    window.location.href = `/habit/${id}`
+}
 
 async function longestStreak (data) {
 
@@ -136,4 +137,4 @@ async function longestStreak (data) {
 
 async function deadlines () {}
 
-display()
+//display()

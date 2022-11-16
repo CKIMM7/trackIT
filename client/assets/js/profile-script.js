@@ -30,7 +30,7 @@ savePassBtn.addEventListener('click', addNewSettings);
 cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
 cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
 
-const userId = 1;
+const userId = 5;
 
 function editProfile(e){
     e.preventDefault()
@@ -49,9 +49,8 @@ async function updateProfile (e) {
     console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
-    // data.password = eEmailInput.value;
-    // need to input pass as well cuz update expects pass?
-    console.log(`dt: ${data.name}, ${data.email}, ${data.password}`);
+    // need to input pass as well cuz update expects pass? n
+    console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); //<<< err
 }
 
@@ -66,28 +65,30 @@ async function showSettings(e){
     settings(e);
 }
 
-// need to test this
+// need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
     console.log('save email')
     const data = await getItem('users', userId);
-    data.name = eEmailInput.value;
-    update('users', data)
+    data.email = eEmailInput.value;
+    console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+    await update('users', data)
 }
 
+//to test old pass is sam
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
     // required or instead use event listner on input, if still empty highligh in red
 
-    const result = await passwordCheck(5, oldPassInput.value, newPassInput.value)
-    console.log(result)
+    const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
+    console.log('p.result: '+result)
     
     // if return false display an error
-    if(!result) {
-        const markup = `<p>Old password does not match</p>`;
-        //settingsSection.insertAdjacentElement('afterbegin', markup);
-    }
+    // if(!result) {
+    //     const markup = `<p>Old password does not match</p>`;
+    //     //settingsSection.insertAdjacentElement('afterbegin', markup);
+    // }
     // need check pass before pass below
 
     // data = {

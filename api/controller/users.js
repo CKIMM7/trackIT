@@ -56,10 +56,13 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const user = await Users.findById(parseInt(req.params.id))
-        const updatedUser = await user.update(req.body.id, req.body.name)
+        console.log('c.users.update: '+req.body)
+        const user = await Users.getUser(parseInt(req.body.id))
+        const updatedUser = await user.update(req.body)
+        console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
+        console.log(err)
         res.status(500).json({err})
     }
 }
@@ -86,7 +89,7 @@ const login = async (req, res) => {
         //     console.log(data)
     res
     .cookie("access_token", user, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
     })
     .status(200)
@@ -101,7 +104,11 @@ const login = async (req, res) => {
 
 const authorization = async (req, res, next) => {
 
+    console.log(req.body.token)
+
     const token = req.cookies.access_token;
+
+    
     console.log(`token`);
     console.log(token);
     //if no token, send a 403 msg
@@ -111,17 +118,21 @@ const authorization = async (req, res, next) => {
 
     try {
         console.log(`verify token if it works move onto the next`)
-        const data = await jwt.verify(token, "some_secret");
+        const data = await jwt.verify(req.body.token, "some_secret");
         //if wrong token then return the user back to homepage
         console.log('jws:data')
         console.log(data)
 
+        // const habits = await User.getHabits(data.id)
+        // console.log(habits)
+
         req.id = data.id;
         req.email = data.email;
+        req.global = data
 
-        if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
-        console.log(req.originalUrl.split('/')[2])
-        
+        // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
+        // console.log(req.originalUrl.split('/')[2])
+
     return next();
     
     } catch {
@@ -129,6 +140,16 @@ const authorization = async (req, res, next) => {
         return res.redirect('http://localhost:3000/login');
     }
   };
+
+  const returnGlobal = async (req, res) => {
+    console.log(req.global)
+
+    try {
+        res.status(200).json(req.global);
+    } catch(err){
+        res.status(500).json({err})
+    }
+}
 
 const signup = async (req, res) => {
 
@@ -162,18 +183,24 @@ const signup = async (req, res) => {
 
 const checkPassword = async (req, res) => {
     try {
-        console.log(req.body)
+        console.log('c.users.body.p: '+req.body.newPass)
         const user = await Users.getUser(req.body.id)
-        console.log(user)
+        console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
-        console.log(test)
-        // update 
-        const updated = await user.update(req.body.id, req.body.newPass)
-        // need to return a false?
-        res.status(204).json(test)
+        console.log('test: '+test)
+        // update if true
+        if(test){
+            const updated = await user.update(req.body.id, req.body.newPass)
+            console.log(updated)
+            console.log('password updated')
+            res.status(200).json(updated)
+            // res.status(20).json(test)
+        }
+        // res.status(200).json(test)
+        
     } catch(err){
         res.status(500).json({err})
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }

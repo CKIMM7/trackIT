@@ -25,6 +25,29 @@ async function getItem(category, id) {
     }
 }
 
+async function getHabit(id) {
+    try {
+
+        data = {
+            habit_id: id,
+            token: document.cookie.match('(^|;)\\s*' + 'access_token' + '\\s*=\\s*([^;]+)')?.pop()
+        }
+        const options = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        }
+        
+        const response = await fetch(`${url}/habits/${id}`, options);
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch (err) {
+        console.warn(err);
+    }
+}
+
+
 async function getUserHabits (id) {
     try {
         const response = await fetch(`${url}/users/${id}/habits`);
@@ -72,6 +95,7 @@ async function deleteHabit(id){
 
 async function update (category, data) {
     try {
+        console.log(`data: ${data.name}`)
         const options = {
             method: 'PATCH',
             headers: { "Content-Type": "application/json" },
@@ -131,13 +155,13 @@ async function login (e) {
             body: JSON.stringify(input)
         }
         
-
         const response = await fetch(`${url}/users/login`, options);
 
         const token = await response.json();
         console.log(token)
 
         document.cookie = `access_token=${token.user}`;
+        document.cookie = `user_id=${token.id}`;
 
         if(token === 'error') {
             console.log('redirect the user to the homepage')
@@ -184,9 +208,9 @@ async function passwordCheck(id, oldPass, newPass){
         }
         const response = await fetch(`${url}/users/passwordcheck`, options);
         await response.json()
-        // console
+        // console.log('r.result: '+result)
     } catch(err){
-        console.log(err)
+        // console.log(err)
         console.warn(err)
     }
 }
