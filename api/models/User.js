@@ -191,10 +191,11 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                console.log(`Userclass.data ${data}`)
+                console.log('--modeller update')
                 const { id, name, email, password } = data;
+                console.log(`m.user.update.data.id ${data.id}`)
                 const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1 RETURNING *;`, [ id, name, email, password ])
-                console.log(result.rows[0])
+                console.log('m.user.result: '+result.rows[0])
                 resolve(new User( result.rows[0]));
             } catch (err) {
                 console.log(err)
@@ -213,20 +214,22 @@ module.exports = class User {
             }
         })
     }
-
+    // this is fine
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
-                console.log("User Model")
-                console.log("p: "+password)
+                console.log("--User Model")
+                console.log("old p: "+password)
                 const user = await User.getUser(this.id)
                 let authorised = false;
-                console.log(`User Password ${user.password}`)
+                console.log(`User Password: ${user.password}`)
                 const authed = await bcrypt.compare(password, user.password)
                 if (authed) authorised = true
                 console.log('auth?: '+authorised)
+
                 resolve(authorised)
             } catch (err) {
+                console.log(err)
                 reject("Error changing password")
             }
             

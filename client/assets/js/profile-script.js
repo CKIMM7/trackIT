@@ -30,7 +30,7 @@ savePassBtn.addEventListener('click', addNewSettings);
 cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
 cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
 
-const userId = 5;
+const userId = 6;
 
 function editProfile(e){
     e.preventDefault()
@@ -51,7 +51,7 @@ async function updateProfile (e) {
     data.name = nameInput.value;
     // need to input pass as well cuz update expects pass? n
     console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
-    update('users', data); //<<< err
+    update('users', data); 
 }
 
 function settings(e){
@@ -75,7 +75,7 @@ async function updateEmail(e){
     await update('users', data)
 }
 
-//to test old pass is sam
+//to test original pass is sam / a
 async function addNewSettings(e){
     e.preventDefault()
     console.log('click')
