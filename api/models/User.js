@@ -155,7 +155,7 @@ module.exports = class User {
     static create(name, email, password){
 
         return new Promise(async (res, rej) => {
-            console.log(name, email, password.length)
+            console.log(name, email, password)
             try {
                 let result = await db.query(SQL`INSERT INTO users (name, email, password)
                 VALUES (${name}, ${email}, ${password}) RETURNING *;`);
