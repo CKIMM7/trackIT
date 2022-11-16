@@ -7,7 +7,7 @@ module.exports = class Habit {
         this.desc = data.description;
         this.freq = data.frequency;
         this.start_date = data.start_date;
-        this.last_completed = data.last_completed;
+        this.current_count = data.current_count;
         this.streak = data.streak;
         this.completed = data.completed;
     }
@@ -16,7 +16,7 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 const result = await db.query('SELECT * FROM habit;')
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
+                const habits = result.rows.map(data => (new Habit(data)))
                 resolve(habits);
             } catch (err) {
                 console.log(err)
@@ -50,7 +50,7 @@ module.exports = class Habit {
 
                 const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2) RETURNING *;`, [user_id, result.rows[0].id])
 
-                resolve(result2.rows[0]);
+                resolve(new Habit(result2.rows[0]));
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")
@@ -73,8 +73,9 @@ module.exports = class Habit {
     update (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date, last_completed, streak, id } = data;
-                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, last_completed = $5, streak = $6 WHERE id = $7;`, [name, desc, freq, start_date, last_completed, streak, id])
+                const { name, desc, freq, start_date, current_count, streak, completed, id } = data;
+                console.log("Updating")
+                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, current_count = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, current_count, streak, completed, id])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating habit")

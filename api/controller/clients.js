@@ -11,7 +11,7 @@ const landingPage = async (req, res) => {
         } catch (err) {
         res.send(err)
         }
-}
+    }
 
 const loginPage = async (req, res) => {
 
@@ -43,4 +43,15 @@ const signUpPage = async (req, res) => {
         }
 }
 
-module.exports = { landingPage, loginPage, signUpPage }
+const testPage = async (req, res) => {
+
+    if(req.session.page_views){
+        req.session.page_views++;
+        res.send("You visited this page " + req.session.page_views + " times");
+     } else {
+        req.session.page_views = 1;
+        res.send("Welcome to this page for the first time!");
+     }
+}
+
+module.exports = { landingPage, loginPage, signUpPage, testPage }

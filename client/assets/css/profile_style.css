@@ -88,6 +88,18 @@ main {
 /*  */
 
 #profile-name {
-    /* border: 1px blue solid; */
-    align-self: flex-start;
+  /* border: 1px blue solid; */
+  font-size: 44px;
+  align-self: flex-start;
 }
+
+
+
+#edit-profile {
+  display: none;
+}
+
+#settings {
+  display: none;
+}
+
