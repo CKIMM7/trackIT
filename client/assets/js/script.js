@@ -66,13 +66,18 @@ async function display () {
     console.log(await getItem('users',1))
     await checkList(habits)
     await longestStreak(habits)
-    // await deadlines()
+    await deadlines(habits)
     
 }
 
 // async function streakCheck () {
-//     if(new Date () < (lastcompleted + freq)) {}
+//     var diff = Math.abs(date1.getTime() - date2.getTime()) / 3600000;
+//     if(current_count == freq && 24 < diff && diff < 48) {}
 //     else streak = 0
+// }
+
+// async function resetComplete () {
+//     if (current_date > (lastcompleted + 24hrs)) habit_id.complete = false
 // }
 
 // async function pseudo () {
@@ -139,8 +144,23 @@ async function longestStreak (data) {
     longestStreakSection.append(div)
 }
 
-async function deadlines () {
-    
+async function deadlines (data) {
+
+    for(let i = 0; i < data.length; i++){
+        const div = document.createElement('div')
+        div.className = 'habit'
+        div.id = data[i].id
+        const name = document.createElement('p')
+        name.textContent = data[i].name
+        const streak = document.createElement('p')
+        streak.textContent = new Date()
+        div.append(name)
+        div.append(streak)
+        deadlinesSection.append(div)
+
+        div.addEventListener('click', () => {goToHabit(div.id)})
+    }
 }
+
 
 display()
