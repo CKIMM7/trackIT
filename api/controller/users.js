@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const Users = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const server = require('../server');
@@ -19,7 +19,7 @@ const currentUser = async (req, res) => {
 const displayAll = async (req, res) => {
     console.log(req.cookies.access_token);
     try {
-        const users = await User.all;
+        const users = await Users.all;
         res.status(200).json(users);
     } catch (err) {
         res.status(500).send(err);
@@ -28,7 +28,7 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.getUser(parseInt(req.params.id))
+        const user = await Users.getUser(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -38,7 +38,7 @@ const getUser = async (req, res) => {
 
 const getHabits = async (req, res) => {
     try {
-        const user = await User.getHabits(parseInt(req.params.id))
+        const user = await Users.getHabits(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -48,7 +48,7 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const users = await User.create(req.body.name, req.body.email, req.body.password)
+        const users = await Users.create(req.body.name, req.body.email, req.body.password)
         res.status(201).json(users)
     } catch(err) {
         res.status(404).json({err})
@@ -58,7 +58,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         console.log('c.users.update: '+req.body)
-        const user = await User.getUser(parseInt(req.body.id))
+        const user = await Users.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
         console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
@@ -70,7 +70,7 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        const user = await User.findById(parseInt(req.params.id))
+        const user = await Users.findById(parseInt(req.params.id))
         await user.destroy()
         res.status(204).json('User deleted')
     } catch(err){
@@ -81,7 +81,7 @@ const destroy = async (req, res) => {
 const login = async (req, res) => {
     //console.log(req.body)
     try {
-        const user = await User.login(req.body.email, req.body.password)
+        const user = await Users.login(req.body.email, req.body.password)
         console.log('token')
         console.log(user)
 
@@ -107,7 +107,8 @@ const authorization = async (req, res, next) => {
 
     console.log(req.body.token)
 
-    const token = req.cookies.access_token || req.body.token;
+    const token = req.cookies.access_token;
+
     
     console.log(`token`);
     console.log(token);
@@ -142,46 +143,20 @@ const authorization = async (req, res, next) => {
   };
 
   const returnGlobal = async (req, res) => {
-
-    const getUser = await User.getUser(req.id);
-    const getHabits = await User.getHabits(req.id);
-
-    console.log(getUser)
-    console.log(getHabits)
-
-    const globalData = { email: getUser.email,
-                            id: getUser.id,
-                            habits: getHabits }
+    console.log(req.global)
 
     try {
-        res.status(200).json(globalData);
+        res.status(200).json(req.global);
     } catch(err){
         res.status(500).json({err})
     }
-}
-
-const habitCheck = async (req, res, next) => {
-    try{
-        console.log(req.id)
-
-        const getHabits = await User.getHabits(req.id);
-        console.log(getHabits)
-        const user_id = req.id
-        const habit_id = req.originalUrl.split('/')[2]
-        const check = getHabits.find(obj => obj.id == habit_id)
-        console.log(check)
-        if (check) return next()
-        else res.status(200).json('This habit doesnt belong to you');
-        
-    }
-    catch (err) {}
 }
 
 const signup = async (req, res) => {
 
     try {
         let userExists = true;
-        const findUser = await User.findByEmail(req.body.email)
+        const findUser = await Users.findByEmail(req.body.email)
         .then(data => { 
             console.log(data)
         })
@@ -192,7 +167,7 @@ const signup = async (req, res) => {
         })
 
         if(!userExists) {
-            const newUser = await User.signup(
+            const newUser = await Users.signup(
                 req.body.name,
                 req.body.password,
                 req.body.email)
@@ -209,8 +184,9 @@ const signup = async (req, res) => {
 
 const checkPassword = async (req, res) => {
     try {
-        console.log('c.users.body.p: '+req.body.newPass)
-        const user = await User.getUser(req.body.id)
+        console.log('--controller')
+        console.log('c.users.body.id: '+req.body.id)
+        const user = await Users.getUser(req.body.id)
         console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
         
@@ -234,7 +210,7 @@ const checkPassword = async (req, res) => {
             console.log('password updated')
             res.status(200).json(updated)
         }
-        console.log('go thr here..')
+        // console.log('here')
         return test;
     } catch(err){
         console.log(err)
@@ -242,4 +218,4 @@ const checkPassword = async (req, res) => {
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, habitCheck, authorization, currentUser, returnGlobal }
+module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }

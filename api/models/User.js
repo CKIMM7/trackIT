@@ -214,7 +214,7 @@ module.exports = class User {
             }
         })
     }
-    // this is fine
+    
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
