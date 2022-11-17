@@ -2,6 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const server = require('../server');
+const path = require('path');
 
 const currentUser = async (req, res) => {
     console.log(req.cookies.access_token);
@@ -108,14 +109,23 @@ const login = async (req, res) => {
 const authorization = async (req, res, next) => {
 
     console.log(req.body.token)
-
     const token = req.cookies.access_token || req.body.token;
     
     console.log(`token`);
     console.log(token);
-    //if no token, send a 403 msg
+
+    //user does not have a token -> either new user or cookie has expired
     if (!token) {
-        return res.redirect('https://trackit-sillicon-alley.netlify.app/');
+
+        let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+
+        if(url === 'http://localhost:3000/') {
+            console.log('login redirect')
+            return res.sendFile(path.join(__dirname, '../../client/index.html'));
+        } else if (url === 'http://localhost:3000/signup') {
+            console.log('sign up redirect')
+            return res.sendFile(path.join(__dirname, '../../client/assets/pages/signup.html'));
+        }
     }
 
     try {
@@ -135,11 +145,34 @@ const authorization = async (req, res, next) => {
         // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
         // console.log(req.originalUrl.split('/')[2])
 
+        //if a user has a token, send it to next() whatever that is but
+        //but if current page is / which is landing page we need to redirect
+        //the user to dashboard or whichever path the user want to to get
+
+        console.log(`req.originalUrl`);
+        console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+        
+        let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+        //1. user has a token/cookie at login or sign-up page
+
+        if(url === 'http://localhost:3000/') {
+            console.log('login redirect')
+            return res.redirect('http://localhost:3000/dashboard')
+
+        } else if (url === 'http://localhost:3000/signup') {
+            console.log('sign up redirect')
+            return res.redirect('http://localhost:3000/dashboard')
+        }
+
     return next();
     
     } catch {
+
+        //if token is modified.
+        //clear the cookie to avoid infinite redirects
         console.log('auth')
-        return res.redirect('http://localhost:3000/login');
+        res.clearCookie('access_token')
+        return res.redirect('http://localhost:3000/');
     }
   };
 
@@ -182,30 +215,16 @@ const habitCheck = async (req, res, next) => {
 const signup = async (req, res) => {
 
     try {
-        let userExists = true;
-        const findUser = await User.findByEmail(req.body.email)
-        .then(data => { 
-            console.log(data)
-        })
-        .catch(err => {
-            console.log(err)
-            console.log('creaing new user')
-            userExists = false
-        })
-
-        if(!userExists) {
-            const newUser = await User.signup(
-                req.body.name,
-                req.body.password,
-                req.body.email)
-
-        res.status(200).json(newUser);
-        }
-
-        res.status(200).json(findUser);
+        const findUser = await User.findByEmail(req.body.email);
+        console.log(findUser);
+        res.status(404).json({err: `${findUser.email} exists`});
         
     } catch(err) {
-        res.status(404).json({err})
+        console.log(`no user`)
+        console.log(err)
+
+        const newUser = await User.signup(req.body.name, req.body.password, req.body.email)
+        res.status(200).json(newUser);
     }
 }
 

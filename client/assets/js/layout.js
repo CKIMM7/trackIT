@@ -1,7 +1,11 @@
 console.log('layout.js');
 const loginForm = document.querySelector('#login');
+
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#psw');
+
+
+
 
 loginForm.onsubmit = login;
 

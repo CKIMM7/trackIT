@@ -1,7 +1,17 @@
 // const url = 'https://trackit-sillicon-alley.herokuapp.com'
 const url = 'http://localhost:3000'
 
+const signUpBtn = document.querySelector('#signUpBtn');
+const nameInputSignUp = document.querySelector('#nameSignUp');
+const emailInputSignUp = document.querySelector('#emailSignUp');
+const passwordInputSignUp = document.querySelector('#psw');
 
+console.log(nameInputSignUp)
+console.log(emailInputSignUp)
+console.log(passwordInputSignUp)
+console.log(signUpBtn)
+
+signUpBtn.addEventListener('click', signup);
 
 async function getAll(category){
     try {
@@ -158,18 +168,16 @@ async function login (e) {
         const response = await fetch(`${url}/users/login`, options);
 
         const token = await response.json();
-        console.log(token)
+        console.log(token);
 
         document.cookie = `access_token=${token.user}`;
-        document.cookie = `user_id=${token.id}`;
 
-        if(token === 'error') {
-            console.log('redirect the user to the homepage')
-        } else {
-            console.log('logged in')
-            //localStorage.setItem('userToken', token)
-            // window.location.href = 'https://trackit-sillicon-alley.herokuapp.com/';
-        }
+        //client side reload and make the user go through auth
+        location.reload();
+
+        //when to path / and make the user go through auth.
+        window.location.href = url;
+
     } catch (err) {
         console.log(err);
     }
@@ -177,10 +185,19 @@ async function login (e) {
 
 //login();
 
-async function signup (name, password, email) {
-    //e.preventDefault();
+async function signup (e) {
+    e.preventDefault();
+    emailInputSignUp.value
+    passwordInputSignUp.value
+    signUpForm.value
 
-    const signUpData = { name, password, email}
+    console.log(emailInputSignUp);
+
+    const signUpData = { 
+                            name: nameInputSignUp.value,
+                            password: passwordInputSignUp.value, 
+                            email: emailInputSignUp.value 
+                        }
     try {
         const options = {
             method: 'POST',
@@ -188,16 +205,22 @@ async function signup (name, password, email) {
             body: JSON.stringify(signUpData)
         }
         
-
         const response = await fetch(`${url}/users/signup`, options);
-
         const user = await response.json();
-        console.log(user)
+        if(user.err) {
+            console.log(user.err);
+        } else {
+            console.log('successful');
+            console.log(user);
+            window.location.href = url;
+        }
 
     } catch (err) {
+        console.log('err');
         console.warn(err);
     }
 }
+
 
 async function passwordCheck(id, oldPass, newPass){
     try {

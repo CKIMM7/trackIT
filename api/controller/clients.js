@@ -2,7 +2,7 @@ const path = require('path');
 
 const landingPage = async (req, res) => {
 
-    console.log(path.join(__dirname, '../../client/index.html'))
+    console.log(path.join(__dirname, '../../client/newlogin.html'))
     try {
 
         res.sendFile(path.join(__dirname, '../../client/index.html'))
@@ -12,15 +12,6 @@ const landingPage = async (req, res) => {
         }
     }
 
-const loginPage = async (req, res) => {
-
-    console.log(path.join(__dirname, '../../client/assets/pages/newlogin.html'))
-    try {
-        res.sendFile(path.join(__dirname, '../../client/assets/pages/newlogin.html'))
-        } catch (err) {
-        res.send(err)
-        }
-    }
 
 const signUpPage = async (req, res) => {
 
@@ -77,6 +68,16 @@ const testPage = async (req, res) => {
         res.send(err)
     }
 }
+
+const loginPage = async (req, res) => {
+
+    console.log(path.join(__dirname, '../../client/assets/pages/newlogin.html'))
+    try {
+        res.sendFile(path.join(__dirname, '../../client/assets/pages/newlogin.html'))
+        } catch (err) {
+        res.send(err)
+        }
+    }
 
 module.exports = { landingPage, 
     loginPage, 
