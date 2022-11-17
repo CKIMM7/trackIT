@@ -18,6 +18,7 @@ module.exports = class User {
                 const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving authors")
             }
         })

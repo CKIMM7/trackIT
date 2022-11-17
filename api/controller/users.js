@@ -10,18 +10,19 @@ const currentUser = async (req, res) => {
     const user = { cookie: req.cookies.access_token,
                        id: req.id,
                     email: req.email }
-        req.send(user)
+        req.status(200).send(user)
     } catch (err) {
-        res.send(err)
+        res.status(500).send(err)
     }
 }
 
 const displayAll = async (req, res) => {
     // console.log(req.cookies.access_token);
     try {
-        const User = await User.all;
-        res.status(200).json(User);
+        const user = await User.all;
+        res.status(200).json(user);
     } catch (err) {
+        console.log(err)
         res.status(500).send(err);
     }
 }
@@ -57,10 +58,9 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        console.log('c.User.update: '+req.body)
         const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
-        console.log(`user ${user} updatedUser ${updatedUser}`)
+        // console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
         console.log(err)
