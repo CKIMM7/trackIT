@@ -106,10 +106,13 @@ const login = async (req, res) => {
     }
 }
 
+
 const authorization = async (req, res, next) => {
 
     //console.log(req.body.token)
     const token = req.cookies.access_token || req.body.token;
+    let urldev = 'http://localhost:3000/'
+    let urlPro = 'https://trackit-sillicon-alley.netlify.app'
     
     console.log(`token`);
     // console.log(token);
@@ -119,10 +122,11 @@ const authorization = async (req, res, next) => {
 
         let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
 
-        if(url === 'https://trackit-sillicon-alley.netlify.app') {
+
+        if(url === urldev) {
             console.log('no token login redirect')
             return res.sendFile(path.join(__dirname, '../../client/index.html'));
-        } else if (url === 'https://trackit-sillicon-alley.netlify.app/signup') {
+        } else if (url === `https://trackit-sillicon-alley.netlify.app/signup`) {
             console.log('sign up redirect')
             return res.sendFile(path.join(__dirname, '../../client/assets/pages/signup.html'));
         }

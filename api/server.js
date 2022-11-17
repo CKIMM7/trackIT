@@ -4,6 +4,10 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 
+require('dotenv').config();
+console.log(process.env.NODE_ENV)
+
+
 const server = express();
 const corsOptions = {
     origin: true, //included origin as true
@@ -13,7 +17,6 @@ server.use(cors((corsOptions)));
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({secret: "Shh, its a secret!"}));
-server.set('view engine','ejs');
 
 server.use((req, res, next) => {
     //console.log('Time:', Date.now())
