@@ -25,6 +25,7 @@ const habit_id = window.location.href.split('/')[4]
 editHabitBtn.addEventListener('click', showHabitForm)
 exitBtn.addEventListener('click', showHabitForm)
 updateBtn.addEventListener('click', updateHabit)
+deleteHabitBtn.addEventListener('click', destroy)
 addBtn.addEventListener('click', changeCount)
 minusBtn.addEventListener('click', changeCount)
 
@@ -47,6 +48,12 @@ async function updateHabit (e) {
     data.freq = freqInput.value
     update('habits', data)
     location.reload()
+}
+
+async function destroy (e) {
+    e.preventDefault()
+    await deleteHabit(habit_id)
+    window.location.href = '/dashboard'
 }
 
 function addDays(date, days) {
@@ -105,6 +112,16 @@ async function updateProgress (curr,freq) {
     bar.style.width = `${percentage}%`
 }
 
+function formatDate (date) {
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let hour = date.getHours()
+    let minute = date.getMinutes()
+ 
+    return `${hour.toString()}:${minute.toString()} ${day.toString()}/${month.toString()}/${year.toString()}`
+}
+
 async function display () {
     const habit = await getItem('habits',habit_id)
     console.log("Client")
@@ -113,7 +130,8 @@ async function display () {
     freq.textContent = habit.freq
     currCount.textContent = habit.current_count
     streak.textContent = habit.streak
-    startDate.textContent = habit.start_date
+    const start = new Date(habit.start_date)
+    startDate.textContent = formatDate(start)
     updateProgress(habit.current_count, habit.freq)
     nextDeadline()
     // nextDeadline.textContent = habit.start_date
