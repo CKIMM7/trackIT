@@ -19,6 +19,7 @@ module.exports = class User {
                 const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving authors")
             }
         })
@@ -192,14 +193,12 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                console.log('--modeller update')
                 const { id, name, email, password } = data;
-                console.log(`m.user.update.data.id ${data.id}`)
+                // console.log(`m.user.update.data.id ${data.id}`)
                 const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1 RETURNING *;`, [ id, name, email, password ])
-                console.log('m.user.result: '+result.rows[0])
+                // console.log('m.user.result: '+result.rows[0])
                 resolve(new User( result.rows[0]));
             } catch (err) {
-                console.log(err)
                 reject("Error updating user")
             }
         })
