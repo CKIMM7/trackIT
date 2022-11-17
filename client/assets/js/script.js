@@ -51,20 +51,17 @@ async function display () {
 
 }
 
-// function timeBeforeMidnight() {
-//     const midnight = new Date();
-//     midnight.setHours(24,0,0,0);
-//     const now = new Date()
-//     const ran = new Date("2016-07-25T00:00:00Z")
-//     const mnafter = ran.setHours(24,0,0,0);
-//     const diffInHrs = Math.round((midnight - now) / 36e5 * 10) / 10;
-//     const p = document.createElement('p')
-//     p.textContent = `${diffInHrs} hours`
-//     timeLeftSection.append(p)
-//     console.log(diffInHrs)
+function timeBeforeMidnight() {
+    const midnight = new Date();
+    midnight.setHours(24,0,0,0);
+    const now = new Date()
+    const diffInHrs = Math.round((midnight - now) / 36e5 * 10) / 10;
+    const p = document.createElement('p')
+    p.textContent = `${diffInHrs} hours`
+    timeLeftSection.append(p)
 
-//     return diffInHrs
-// }
+    return diffInHrs
+}
 
 async function streakCheck (habits) {
     for(let i = 0; i < habits.length; i++){

@@ -235,8 +235,7 @@ input:focus {
   display: none;
 } */
 #add-habit-form{
-  /* display: none; */
-  display:flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   position: absolute;
