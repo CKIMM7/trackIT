@@ -67,7 +67,7 @@ describe('User', () => {
             expect(result).toBeInstanceOf(User)
         })
     });
-
+//Before each add salt and hashed
     describe('signup', () => {
         test('it resolves with user on successful db query', async () => {
             let userData = { id: 1, name: 'New User', email: 'test@test.com', password: 'Password' }

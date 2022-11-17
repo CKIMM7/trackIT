@@ -85,16 +85,17 @@ function timeBeforeMidnight() {
 async function streakCheck (habits) {
     for(let i = 0; i < habits.length; i++){
         const last_date = new Date(habits[i].last_completed)
+        const midnight = last_date.setHours(24,0,0,0);
         const now = new Date()
         let timeToMidnight = Math.round((midnight - now) / 36e5 * 10) / 10;
         
-        // if (timeToMidnight < 0) habits[i].completed = false
+        if (timeToMidnight < 0) habits[i].completed = false
 
         if(current_count == freq && timeToMidnight > 0 && last_date.getDate() != now.getDate()) {
             habits[i].streak ++
             habits[i].lastcompleted = today
         }
-        else if (current_count < freq && timeToMidnight > 0) {
+        else if (current_count < freq && timeToMidnight < 0) {
             habits[i].streak = 0
         }
     }
