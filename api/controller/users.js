@@ -116,6 +116,8 @@ const authorization = async (req, res, next) => {
 
     let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
     console.log(url);
+    console.log(`process.env.ENVIRO`);
+    console.log(process.env.ENVIRO);
 
     //user does not have a token -> either new user or cookie has expired
     if (!token) {
