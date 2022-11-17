@@ -37,7 +37,6 @@ cancelSettBtn.addEventListener('click', (e) => {
     resetMsg();
 });
 
-const userId = 6;
 
 function editProfile(e){
     e.preventDefault()
@@ -46,6 +45,8 @@ function editProfile(e){
 }
 
 async function showProfileForm(e){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId)
     nameInput.value = data.name
     editProfile(e)
@@ -54,6 +55,8 @@ async function showProfileForm(e){
 // when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
     data.name = nameInput.value;
     // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
@@ -68,6 +71,8 @@ function settings(e){
 }
 
 async function showSettings(e){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
     eEmailInput.value = data.email;
     settings(e);
@@ -76,6 +81,8 @@ async function showSettings(e){
 // need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
 
     // compare email to all users
@@ -140,19 +147,6 @@ function resetMsg(){
     return index; // use this to test reset
 }
 
-function resetMsg(){
-    let index = 0;
-    let type = ['err', 'pos']
-    while(index < 2){
-        for(let id=1; id <= 3; id++){
-            let htmlTag = document.querySelector(`#${type[index]}-msg-${id}`);
-            htmlTag.style.display = 'none';
-        }
-        index++;
-    }
-    return index; // use this to test reset
-}
-
 function resetPassFields(){
     oldPassInput.value = null
     newPassInput.value = null
@@ -160,6 +154,9 @@ function resetPassFields(){
 }
 
 async function display(){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
+
     const name = document.querySelector('#profile-name');
     const email = document.querySelector('#email');
     const habits = document.querySelector('#habits');

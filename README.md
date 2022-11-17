@@ -8,31 +8,33 @@ Create a habit tracker
 ## Usage
 - Open terminal and navigate to the repo folder
 - ```cd api``` then ```npm run dev``` to run development
-- To test use ```npm test``` in api folder
+- To test use ```npm test ``` in api folder
 
 ## Changelogs
 ### Client
-- add profile view and edit profile view
-- add profie event listeners
-- fixed update profile functions 
-- added display error and success message
+- Add profile view and edit profile view
+- Add profie event listeners
+- Fixed update profile functions 
+- Added display error and success message
 
 ### API
-- added server backend files
-- changed package.json dependencies 
-- added database setup files
-- added habits & users routes
-- fixed controllers
-- added missing status codes
+- Added server backend files
+- Changed package.json dependencies 
+- Added database setup files
+- Added habits & users routes
+- Fixed controllers
+- Added missing status codes
 
 ### Testing
-- added test setup files
-- added controller test files
+- Added test setup files
+- Added controller test files
+- Added modal test files
+- Added route test files
 
 ### Other
 
 ## Wins 
-- auth
+- 
 
 ## Challenges
 - auth

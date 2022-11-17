@@ -129,16 +129,11 @@ header{
   max-width: 900px;
 }
 
-#progress{
-  display: flex;
-  /* position: absolute; */
-  top: 50%;
-  left: 210px;
-  height: 5%;
-  flex-wrap: wrap;
-  width: 78%;
+#progress, #bar{
   border-radius: 20px;
 }
+
+
 
 #button{
   display: flex;

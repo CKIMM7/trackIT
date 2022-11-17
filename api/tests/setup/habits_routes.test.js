@@ -54,23 +54,23 @@ describe('habits endpoints', () => {
     //     })
     // })
 
-    describe('update habit', () => {
-        test('it updates a habit', (done) => {
-            const data = {
-                id: 2,
-                name: "Test text", 
-                desc: null,
-                freq: null,
-                start_date: null,
-                user_id: 1
-            }
-            request(api)
-            .patch('/habits/2')
-            .send(data)
-            .set('Content-Type', 'application/json')
-            .expect(200, done);
-        })
-    })
+    // describe('update habit', () => {
+    //     test('it updates a habit', (done) => {
+    //         const data = {
+    //             id: 2,
+    //             name: "Test text", 
+    //             desc: null,
+    //             freq: null,
+    //             start_date: null,
+    //             user_id: 1
+    //         }
+    //         request(api)
+    //         .patch('/habits/2')
+    //         .send(data)
+    //         .set('Content-Type', 'application/json')
+    //         .expect(200, done);
+    //     })
+    // })
 
     describe('delete habit', () => {
         test('it deletes a habit', async (done) => {
