@@ -1,4 +1,4 @@
-const Users = require('../models/User');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const server = require('../server');
@@ -20,7 +20,7 @@ const currentUser = async (req, res) => {
 const displayAll = async (req, res) => {
     // console.log(req.cookies.access_token);
     try {
-        const users = await Users.all;
+        const users = await User.all;
         res.status(200).json(users);
     } catch (err) {
         res.status(500).send(err);
@@ -29,7 +29,7 @@ const displayAll = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await Users.getUser(parseInt(req.params.id))
+        const user = await User.getUser(parseInt(req.params.id))
 
         res.status(200).json(user)
     } catch(err){
@@ -40,7 +40,7 @@ const getUser = async (req, res) => {
 
 const getHabits = async (req, res) => {
     try {
-        const user = await Users.getHabits(parseInt(req.params.id))
+        const user = await User.getHabits(parseInt(req.params.id))
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -50,7 +50,7 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const users = await Users.create(req.body.name, req.body.email, req.body.password)
+        const users = await User.create(req.body.name, req.body.email, req.body.password)
         res.status(201).json(users)
     } catch(err) {
         res.status(404).json({err})
@@ -60,7 +60,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         console.log('c.users.update: '+req.body)
-        const user = await Users.getUser(parseInt(req.body.id))
+        const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
         console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
@@ -72,7 +72,7 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
     try {
-        const user = await Users.findById(parseInt(req.params.id))
+        const user = await User.findById(parseInt(req.params.id))
         await user.destroy()
         res.status(204).json('User deleted')
     } catch(err){
@@ -83,7 +83,7 @@ const destroy = async (req, res) => {
 const login = async (req, res) => {
     //console.log(req.body)
     try {
-        const user = await Users.login(req.body.email, req.body.password)
+        const user = await User.login(req.body.email, req.body.password)
         console.log('token')
         console.log(user)
 
@@ -220,7 +220,7 @@ const checkPassword = async (req, res) => {
     try {
         console.log('--controller')
         console.log('c.users.body.id: '+req.body.id)
-        const user = await Users.getUser(req.body.id)
+        const user = await User.getUser(req.body.id)
         console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
         

@@ -9,7 +9,18 @@ const addHabitBtn = document.querySelector('#add-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
-const deleteHabitBtn = document.querySelector('#delete-btn')
+
+const signUpBtn = document.querySelector('#signUpBtn');
+const nameInputSignUp = document.querySelector('#nameSignUp');
+const emailInputSignUp = document.querySelector('#emailSignUp');
+const passwordInputSignUp = document.querySelector('#psw');
+
+console.log(nameInputSignUp)
+console.log(emailInputSignUp)
+console.log(passwordInputSignUp)
+console.log(signUpBtn)
+
+// signUpBtn.addEventListener('click', signup);
 
 
 const user_id = 2
@@ -34,6 +45,7 @@ async function showHabitForm (e) {
 
 }
 
+
 async function addHabit (e) {
     e.preventDefault()
 
@@ -47,7 +59,8 @@ async function addHabit (e) {
         start_date: new Date()
     }
     console.log(data)
-    postHabit(data)
+    await postHabit(data)
+    location.reload()
 }
 
 async function updateHabit (e) {
