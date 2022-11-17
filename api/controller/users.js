@@ -19,9 +19,10 @@ const currentUser = async (req, res) => {
 const displayAll = async (req, res) => {
     // console.log(req.cookies.access_token);
     try {
-        const User = await User.all;
-        res.status(200).json(User);
+        const user = await User.all;
+        res.status(200).json(user);
     } catch (err) {
+        console.log(err)
         res.status(500).send(err);
     }
 }
