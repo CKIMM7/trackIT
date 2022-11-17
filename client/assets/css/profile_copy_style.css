@@ -1,0 +1,17 @@
+main {
+    font-family: "Roboto", sans-serf;
+    background-color: black;
+    color: white;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("./images/wp7085599.jpg") no-repeat center;
+    background-size: cover;
+    animation: backgroundZoomAnimate 20s forwards;
+    }

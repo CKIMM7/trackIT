@@ -44,7 +44,7 @@ nav {
   }
 
   #nav-active {
-    background-color: blue;
+    background-color: #FFE699;
   }
 
 /* Resets */
@@ -56,9 +56,23 @@ nav {
 }
 
  body {
-  font-family: "Roboto", sans-serf;
-  background-color: black;
-  color: white;
+  background: linear-gradient(45deg, rgb(231, 238, 98), rgb(246, 138, 172));
+  animation: gradient 15s ease infinite;
+  color: black;
+  font-weight: bolder;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 ul li {
@@ -67,11 +81,12 @@ ul li {
 
 a {
   text-decoration: none;
-  color: var(--primary-color);
+  color: white;
+  font-weight: bolder;
 }
 
 a:hover {
-  color: var(--secondary-color);
+  color: #FFE699;
 } 
 
 main {

@@ -19,38 +19,46 @@
         </a>
         <ul>
             <li class="nav-item">
-              <a href="#" id="nav-link" class="nav-link" >DASHBOARD</a>
+              <a href="/dashboard" id="nav-link" class="nav-link" >DASHBOARD</a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-active">PROFILE</a>
             </li>
         </ul>
     </nav>
-    <section id="edit-profile">
-        <h3>Edit Profile</h3>
-        <input id="edit-name" type="text" placeholder="Enter new name...">
-        <button id="submit-name"  type="submit">Save</button>
-        <button id="edit-cancel">Cancel</button>
-    </section>
-    <section id="settings">
-        <h3>Edit Email</h3>
-        <input id="edit-email" type="text" placeholder="Enter new email...">
-        <button id="save-email" type="submit">Save</button>
-        
-        <h3>Change Password</h3>
-        <input id="oldPass" type="password" placeholder="old password" required>
-        <input id="newPass" type="password" placeholder="new password" required>
-        <input id="samePass" type="password" placeholder="repeat password" required>
-        <button id="save" type="submit">Save</button>
-        <button id="pass-cancel">Cancel</button>
-    </section>
-    <main>
+    
+   
+            <section id="edit-profile">
+              <h3>Edit Profile</h3>
+              <input id="edit-name" type="text" placeholder="Enter new name...">
+              <button id="submit-name"  type="submit">Save</button>
+              <button id="edit-cancel">Cancel</button>
+          </section>
+          <section id="settings">
+              <h3>Edit Email</h3>
+              <input id="edit-email" type="text" placeholder="Enter new email...">
+              <button id="save-email" type="submit">Save</button>
+              
+              <h3>Change Password</h3>
+              <input id="oldPass" type="password" placeholder="old password" required>
+              <input id="newPass" type="password" placeholder="new password" required>
+              <input id="samePass" type="password" placeholder="repeat password" required>
+              <button id="save" type="submit">Save</button>
+              <button id="pass-cancel">Cancel</button>
+          </section>
+           <main>
         <section>
             <h2 id="profile-name">John Doe</h2>
             <p id="email">email</p>
-            <button id="edit-btn">Edit name</button>
+            <button id="edit-btn">Edit Name</button>
             <button id="settings-btn">Settings</button>
-            <p id="habits">Habits: 0</p>
+            <!-- <p id="habits">Habits:0 </p> -->
+            <div id="habit-section">
+              <div id="habit">Habits: </div>
+              <div id="habit">Running</div>
+              <div id="habit">Language</div>
+              <div id="habit">Drinking</div>
+            </div>
         </section>
     </main>
 </body>

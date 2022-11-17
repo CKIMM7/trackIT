@@ -87,7 +87,7 @@ module.exports = class User {
 
                 //if user authenticates successfully
                 if (!!authed){
-                    const user_habits = await user.getHabits(1)
+                    const user_habits = await User.getHabits(1)
                     console.log(`habits ${user_habits}`)
 
                     const payload = { email: user.email, id: user.id, habits: user_habits};

@@ -56,7 +56,7 @@ async function updateProfile (e) {
 
 function settings(e){
     e.preventDefault()
-    settingsSection.style.display = 'block';
+    settingsSection.style.display = 'block';   
 }
 
 async function showSettings(e){
@@ -122,6 +122,14 @@ async function display(){
 
     const userHabits = await getUserHabits(userId);
     habits.textContent = "Habits: " + userHabits.length;
+}
+
+nameInput.addEventListener('click', showForm)
+
+
+function showForm (e) {
+    e.preventDefault()
+    editHabitForm.style.display = 'block';
 }
 
 display();
