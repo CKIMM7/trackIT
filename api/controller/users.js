@@ -118,10 +118,10 @@ const authorization = async (req, res, next) => {
 
         let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
 
-        if(url === 'http://localhost:3000/') {
+        if(url === 'https://trackit-sillicon-alley.netlify.app') {
             console.log('no token login redirect')
             return res.sendFile(path.join(__dirname, '../../client/index.html'));
-        } else if (url === 'http://localhost:3000/signup') {
+        } else if (url === 'https://trackit-sillicon-alley.netlify.app/signup') {
             console.log('sign up redirect')
             return res.sendFile(path.join(__dirname, '../../client/assets/pages/signup.html'));
         }
@@ -154,13 +154,13 @@ const authorization = async (req, res, next) => {
         let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
         //1. user has a token/cookie at login or sign-up page
 
-        if(url === 'http://localhost:3000/') {
+        if(url === 'https://trackit-sillicon-alley.netlify.app/') {
             console.log('login redirect')
-            return res.redirect('http://localhost:3000/dashboard')
+            return res.redirect('https://trackit-sillicon-alley.netlify.app/dashboard')
 
-        } else if (url === 'http://localhost:3000/signup') {
+        } else if (url === 'https://trackit-sillicon-alley.netlify.app/signup') {
             console.log('sign up redirect')
-            return res.redirect('http://localhost:3000/dashboard')
+            return res.redirect('https://trackit-sillicon-alley.netlify.app/dashboard')
         }
 
     return next();
@@ -171,7 +171,7 @@ const authorization = async (req, res, next) => {
         //clear the cookie to avoid infinite redirects
         console.log('auth')
         res.clearCookie('access_token')
-        return res.redirect('http://localhost:3000/');
+        return res.redirect('https://trackit-sillicon-alley.netlify.app');
     }
   };
 
