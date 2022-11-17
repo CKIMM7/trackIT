@@ -28,11 +28,14 @@
    </nav>
    <div>
     <form id="edit-habit-form">
-        <p id="exit">X</p>
-        <input id="title-input" placeholder="Enter title..." type="text">
+        <label for="title">Title</label>
+        <input id="title-input" placeholder="Enter Title..." type="text">
+        <label for="desc">Description</label>
         <input id="desc-input" placeholder="Enter Description..." type="text">
+        <label for="freq">How many times a day?</label>
         <input id="freq-input" placeholder="Enter Frequency..." type="number">
         <input id="update-btn" type="submit" value="Update">
+        <button id="exit">Cancel</button>
     </form>
 </div>
     <main>
@@ -51,13 +54,14 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet justo leo, vitae efficitur metus euismod eu. Donec quis lacus eget quam aliquet maximus. Pellentesque dapibus bibendum mi non sodales. Pellentesque habitant morbi tristique senectus et netus et malesuada fames .
         </p>
         
-        <div id="button">
-            <p id="add-btn">+</p>
+        <div id="progress-bar">
             <p id="minus-btn">-</p>
+            <div id="progress">
+                <div id="bar"></div>
+            </div>
+            <p id="add-btn">+</p>
         </div>
-        <div id="progress">
-            <div id="bar"></div>
-        </div>
+        
         <section id="stats">
             <div>
                 <h3>Frequency</h3>
@@ -71,7 +75,6 @@
                 <h3>Current Streak</h3>
                 <p id="streak">16</p>
             </div>
-            <div></div>
         </section>
 
     </main>    

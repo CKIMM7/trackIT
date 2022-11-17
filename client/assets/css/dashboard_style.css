@@ -236,13 +236,13 @@ input:focus {
   justify-content: center;
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 50%;
   transform: translate(-50%,-50%);
   background: #FFE699;
   border-radius: 10px;
   /* position: fixed; */
   padding: 20px;
-  z-index: 999;
+  z-index: 2;
 
 }
 
