@@ -7,6 +7,8 @@ Create a habit tracker
 ## Usage
 - Open terminal and navigate to the repo folder...
 
+- To test use ```npm test``` in api folder
+
 ## Changelogs
 ### Client
 
