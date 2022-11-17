@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const server = require('../server');
 
 const currentUser = async (req, res) => {
-    console.log(req.cookies.access_token);
+    // console.log(req.cookies.access_token);
     try {
     
     const user = { cookie: req.cookies.access_token,
@@ -17,10 +17,10 @@ const currentUser = async (req, res) => {
 }
 
 const displayAll = async (req, res) => {
-    console.log(req.cookies.access_token);
+    // console.log(req.cookies.access_token);
     try {
-        const users = await User.all;
-        res.status(200).json(users);
+        const User = await User.all;
+        res.status(200).json(User);
     } catch (err) {
         res.status(500).send(err);
     }
@@ -48,8 +48,8 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const users = await User.create(req.body.name, req.body.email, req.body.password)
-        res.status(201).json(users)
+        const User = await User.create(req.body.name, req.body.email, req.body.password)
+        res.status(201).json(User)
     } catch(err) {
         res.status(404).json({err})
     }
@@ -57,7 +57,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        console.log('c.users.update: '+req.body)
+        console.log('c.User.update: '+req.body)
         const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
         console.log(`user ${user} updatedUser ${updatedUser}`)
@@ -152,6 +152,21 @@ const authorization = async (req, res, next) => {
     }
 }
 
+const habitCheck = async (req, res, next) => {
+    try{
+        console.log(req.id)
+        const getHabits = await User.getHabits(req.id);
+        console.log(getHabits)
+        const user_id = req.id
+        const habit_id = req.originalUrl.split('/')[2]
+        const check = getHabits.find(obj => obj.id == habit_id)
+        console.log(check)
+        if (check) return next()
+        else res.status(200).json('This habit doesnt belong to you');
+    }
+    catch (err) {}
+}
+
 const signup = async (req, res) => {
 
     try {
@@ -185,7 +200,7 @@ const signup = async (req, res) => {
 const checkPassword = async (req, res) => {
     try {
         console.log('--controller')
-        console.log('c.users.body.id: '+req.body.id)
+        console.log('c.User.body.id: '+req.body.id)
         const user = await User.getUser(req.body.id)
         console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)
@@ -210,11 +225,11 @@ const checkPassword = async (req, res) => {
             console.log('password updated')
             res.status(200).json(updated)
         }
-        
+        else res.status(200).json(test);
     } catch(err){
         console.log(err)
         res.status(500).json({err})
     }
 }
 
-module.exports = { displayAll, getUser, getHabits, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }
+module.exports = { displayAll, getUser, getHabits, habitCheck, create, update, destroy, login, checkPassword, signup, authorization, currentUser, returnGlobal }

@@ -9,7 +9,6 @@ module.exports = class User {
         this.name = data.name;
         this.email = data.email;
         this.password = data.password;
-        this.habits = { name: data.habit_name, path: `/habits/${data.habit_id}`};
     }
 
     static get all(){
@@ -155,7 +154,7 @@ module.exports = class User {
     static create(name, email, password){
 
         return new Promise(async (res, rej) => {
-            console.log(name, email, password.length)
+            console.log(name, email, password)
             try {
                 let result = await db.query(SQL`INSERT INTO users (name, email, password)
                 VALUES (${name}, ${email}, ${password}) RETURNING *;`);
@@ -173,8 +172,8 @@ module.exports = class User {
             return new Promise (async (resolve, reject) => {
 
                 try {
-                    const salt = await bcrypt.genSalt(12);
-                    const hashed = await bcrypt.hash(password, salt)
+                    const salt = await bcrypt.genSalt(12) || "";
+                    const hashed = await bcrypt.hash(password, salt) || ""
                     const newUser = await User.create(name, email, hashed)
                     console.log(hashed)
     
@@ -214,7 +213,7 @@ module.exports = class User {
             }
         })
     }
-    // this is fine
+    
     async passwordCheck(password){
         return new Promise (async (resolve, reject) => {
             try {
@@ -227,7 +226,7 @@ module.exports = class User {
                 if (authed) authorised = true
                 console.log('auth?: '+authorised)
 
-                resolve(authorised)
+                return resolve(authorised)
             } catch (err) {
                 console.log(err)
                 reject("Error changing password")

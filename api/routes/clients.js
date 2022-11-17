@@ -9,8 +9,8 @@ router.get('/login', clientsController.loginPage);
 router.get('/signup', clientsController.signUpPage);
 router.get('/dashboard', clientsController.dashboardPage);
 router.get('/profile', clientsController.profilePage);
-router.get('/habit', usersController.authorization, clientsController.habitPage);
-//router.get('/habit/:id', usersController.authorization, clientsController.habitPage);
+
+router.get('/habit/:id', usersController.authorization, usersController.habitCheck, clientsController.habitPage);
 
 router.post('/auth', usersController.authorization, usersController.returnGlobal);    
 router.get('/test', clientsController.testPage);

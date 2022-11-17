@@ -137,12 +137,7 @@ h2{
   font-size: 20px;
 }
 
-/* #habits-section{
-  position: absolute;
-  bottom: 140px;
-  left: 80px;
-  font-size: 40px;
-} */
+
 
  /* #habit-section{
   display: flex;
@@ -152,8 +147,11 @@ h2{
   display:inline-block;
   font-size: 20;
  }  */
+ #edit-profile, #settings, #err-msg-1, #err-msg-2, #err-msg-3, #pos-msg-1, #pos-msg-2, #pos-msg-3 {
+  display: none;
+}
 
-
+/* important! */
 #edit-profile {
   display: none;
   position: absolute;

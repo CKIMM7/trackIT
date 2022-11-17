@@ -157,6 +157,16 @@ main {
   display: none;
 }
 
+#habitContainer {
+  display: flex;
+  flex-direction: column;
+  color: red;
+}
+
+.eachHabit {
+  border: 3px black solid;
+}
+
 
 
 /* 

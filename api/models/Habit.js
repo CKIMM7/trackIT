@@ -46,7 +46,7 @@ module.exports = class Habit {
                 console.log("---Server----")
                 console.log(data)
                 const { name, desc, freq, start_date, user_id} = data;
-                const result = await db.query(`INSERT INTO habit (name, description, frequency, start_date, last_completed, streak, completed) VALUES ($1, $2, $3, $4, null, null, false) RETURNING *;`, [name, desc, freq, start_date])
+                const result = await db.query(`INSERT INTO habit (name, description, frequency, current_count, start_date, streak, completed) VALUES ($1, $2, $3, 0, $4, null, false) RETURNING *;`, [name, desc, freq, start_date])
                 
                 console.log(result.rows[0])
 
@@ -56,25 +56,6 @@ module.exports = class Habit {
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")
-            }
-        })
-    }
-
-    belongsToUser (token) {
-        return new Promise (async(resolve, reject) => {
-            try {
-                // const id = decode(token).id
-                console.log(jwt.verify(token, 'some_secret'))
-                // const result = await db.query(`SELECT * FROM user_habits WHERE user_id = $1;`, [id])
-                // let usersHabits = results.rows.map();
-                // let exists = false;
-                // if (habit_id in usersHabits.habit_id) exists = true;
-                // //console.log(user);
-                resolve('Test');
-            }
-            catch(err){
-                console.warn(err)
-                reject(err)
             }
         })
     }
