@@ -100,7 +100,7 @@ module.exports = class User {
                          }
                         else {
                             resolve(token)
-                            console.log(token)
+                            //console.log(token)
                         }
                     })
                     //resolve(token)

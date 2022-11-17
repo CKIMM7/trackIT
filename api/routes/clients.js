@@ -11,6 +11,7 @@ router.get('/signup', usersController.authorization, clientsController.signUpPag
 router.get('/dashboard', usersController.authorization,clientsController.dashboardPage);
 
 router.get('/profile', clientsController.profilePage);
+router.get('/habit', usersController.authorization, clientsController.habitPage);
 
 router.get('/habit/:id', usersController.authorization, usersController.habitCheck, clientsController.habitPage);
 

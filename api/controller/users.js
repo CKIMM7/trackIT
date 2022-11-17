@@ -84,8 +84,8 @@ const login = async (req, res) => {
     //console.log(req.body)
     try {
         const user = await User.login(req.body.email, req.body.password)
-        console.log('token')
-        console.log(user)
+        console.log(user);
+        //console.log(user)
 
         // const data = await jwt.verify(user, "some_secret")
         //     console.log('jws:data')
@@ -107,7 +107,7 @@ const login = async (req, res) => {
 
 const authorization = async (req, res, next) => {
 
-    console.log(req.body.token)
+    //console.log(req.body.token)
     const token = req.cookies.access_token || req.body.token;
     
     console.log(`token`);
@@ -119,7 +119,7 @@ const authorization = async (req, res, next) => {
         let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
 
         if(url === 'http://localhost:3000/') {
-            console.log('login redirect')
+            console.log('no token login redirect')
             return res.sendFile(path.join(__dirname, '../../client/index.html'));
         } else if (url === 'http://localhost:3000/signup') {
             console.log('sign up redirect')
@@ -132,7 +132,7 @@ const authorization = async (req, res, next) => {
         const data = await jwt.verify(token, "some_secret");
         //if wrong token then return the user back to homepage
         console.log('jws:data')
-        console.log(data)
+        //console.log(data)
 
         // const habits = await User.getHabits(data.id)
         // console.log(habits)
