@@ -37,7 +37,8 @@ cancelSettBtn.addEventListener('click', (e) => {
     resetMsg();
 });
 
-const userId = 6;
+const globalUser = getGlobal()
+userId = globalUser.id
 
 function editProfile(e){
     e.preventDefault()
