@@ -111,22 +111,19 @@ const authorization = async (req, res, next) => {
 
     //console.log(req.body.token)
     const token = req.cookies.access_token || req.body.token;
-    let urldev = 'http://localhost:3000/'
-    let urlPro = 'https://trackit-sillicon-alley.netlify.app'
-    
     console.log(`token`);
-    // console.log(token);
+    console.log(token);
+
+    let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    console.log(url);
 
     //user does not have a token -> either new user or cookie has expired
     if (!token) {
 
-        let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-
-
-        if(url === urldev) {
+        if(url === process.env.ENVIRO) {
             console.log('no token login redirect')
             return res.sendFile(path.join(__dirname, '../../client/index.html'));
-        } else if (url === `https://trackit-sillicon-alley.netlify.app/signup`) {
+        } else if (url === `${process.env.ENVIRO}signup`) {
             console.log('sign up redirect')
             return res.sendFile(path.join(__dirname, '../../client/assets/pages/signup.html'));
         }
@@ -137,35 +134,19 @@ const authorization = async (req, res, next) => {
         const data = await jwt.verify(token, "some_secret");
         //if wrong token then return the user back to homepage
         console.log('jws:data')
-        //console.log(data)
-
-        // const habits = await User.getHabits(data.id)
-        // console.log(habits)
+        console.log(data)
 
         req.id = data.id;
         req.email = data.email;
         req.global = data
 
-        // if(req.originalUrl.split()[1] == 'habit') req.habit = req.originalUrl.split('/')[2]
-        // console.log(req.originalUrl.split('/')[2])
-
-        //if a user has a token, send it to next() whatever that is but
-        //but if current page is / which is landing page we need to redirect
-        //the user to dashboard or whichever path the user want to to get
-
-        console.log(`req.originalUrl`);
-        console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-        
-        let url = `${req.protocol}://${req.get('host')}${req.originalUrl}`
-        //1. user has a token/cookie at login or sign-up page
-
-        if(url === 'https://trackit-sillicon-alley.netlify.app/') {
+        if(url === process.env.ENVIRO) {
             console.log('login redirect')
-            return res.redirect('https://trackit-sillicon-alley.netlify.app/dashboard')
+            return res.redirect(`${process.env.ENVIRO}dashboard`)
 
-        } else if (url === 'https://trackit-sillicon-alley.netlify.app/signup') {
+        } else if (url === `${process.env.ENVIRO}signup`) {
             console.log('sign up redirect')
-            return res.redirect('https://trackit-sillicon-alley.netlify.app/dashboard')
+            return res.redirect(`${process.env.ENVIRO}dashboard`)
         }
 
     return next();
@@ -176,7 +157,7 @@ const authorization = async (req, res, next) => {
         //clear the cookie to avoid infinite redirects
         console.log('auth')
         res.clearCookie('access_token')
-        return res.redirect('https://trackit-sillicon-alley.netlify.app');
+        return res.redirect(process.env.ENVIRO);
     }
   };
 

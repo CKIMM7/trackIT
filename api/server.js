@@ -1,7 +1,5 @@
-if(process.env.NODE_ENV !== 'development') {
-    console.log('sdaf')
-    require('dotenv').config()
-  }
+const dotevn = require('dotenv');
+dotevn.config()
 
 console.log(process.env.HOST)
 
