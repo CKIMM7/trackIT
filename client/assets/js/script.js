@@ -92,7 +92,7 @@ async function checkList (data) {
         const name = document.createElement('p')
         name.textContent = data[i].name
         div.append(name)
-        if(parseInt(data[i].streak > 1)) {
+        if(parseInt(data[i].streak > 0)) {
             const fire_icon = document.createElement('i')
             fire_icon.className = 'fa-solid fa-fire'
             const streak = document.createElement('p')

@@ -217,10 +217,6 @@ input:focus {
 }
 
 
-#add-habit {
-    align-self: flex-end;
-
-}
 
 /* #add-form {
   background-color: grey;
@@ -281,10 +277,14 @@ input:focus {
   cursor: pointer;
   border: 2px solid #ff9292 !important;
   text-align: center;
+  font-family: "Roboto", monospace;
+  font-weight: bold;
+  align-self: flex-end;
 }
 
-#cancel-btn {
-
+#form-add, #cancel-btn {
+  font-family: "Roboto", monospace;
+  font-weight: bold;
 }
 
 /* form>a:hover{

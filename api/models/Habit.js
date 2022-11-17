@@ -9,6 +9,7 @@ module.exports = class Habit {
         this.desc = data.description;
         this.freq = data.frequency;
         this.start_date = data.start_date;
+        this.last_completed = data.last_completed;
         this.current_count = data.current_count;
         this.streak = data.streak;
         this.completed = data.completed;

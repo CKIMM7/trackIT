@@ -1,6 +1,6 @@
 const editBtn = document.querySelector('#edit-btn');
 const settingsBtn = document.querySelector('#settings-btn');
-
+const habitSection = document.querySelector('#habit-section')
 const editProfSection = document.querySelector('#edit-profile');
 const settingsSection = document.querySelector('#settings');
 
@@ -36,6 +36,7 @@ cancelSettBtn.addEventListener('click', (e) => {
     settingsSection.style.display = 'none';
     resetMsg();
 });
+
 
 
 function editProfile(e){
@@ -153,6 +154,26 @@ function resetPassFields(){
     samePassInput.value = null
 }
 
+async function goToHabit (id) {
+    console.log(id)
+    window.location.href = `/habit/${id}`
+}
+
+async function viewHabits (data) {
+    for(let i = 0; i < data.length; i++){
+        const div = document.createElement('div')
+        div.className = 'habit'
+        div.id = data[i].id
+        const name = document.createElement('p')
+        name.textContent = data[i].name
+        div.append(name)
+
+        habitSection.append(div)
+
+        div.addEventListener('click', () => {goToHabit(div.id)})
+    }
+}
+
 async function display(){
     const globalUser = await getGlobal()
     userId = globalUser.id
@@ -168,7 +189,8 @@ async function display(){
     email.textContent = userData.email;
 
     const userHabits = await getUserHabits(userId);
-    habits.textContent = "Habits: " + userHabits.length;
+    viewHabits(userHabits)
+    // habits.textContent = "Habits: " + userHabits.length;
 }
 
 nameInput.addEventListener('click', showForm)
