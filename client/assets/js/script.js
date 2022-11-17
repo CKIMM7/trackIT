@@ -44,24 +44,23 @@ async function display () {
     await checkList(habits)
     await longestStreak(habits)
     await timeBeforeMidnight()
-    // await deadlines(habits)
-    
+
 }
 
-function timeBeforeMidnight() {
-    const midnight = new Date();
-    midnight.setHours(24,0,0,0);
-    const now = new Date()
-    // const ran = new Date("2016-07-25T00:00:00Z")
-    // const mnafter = ran.setHours(24,0,0,0);
-    const diffInHrs = Math.round((midnight - now) / 36e5 * 10) / 10;
-    const p = document.createElement('p')
-    p.textContent = `${diffInHrs} hours`
-    timeLeftSection.append(p)
-    console.log(diffInHrs)
+// function timeBeforeMidnight() {
+//     const midnight = new Date();
+//     midnight.setHours(24,0,0,0);
+//     const now = new Date()
+//     const ran = new Date("2016-07-25T00:00:00Z")
+//     const mnafter = ran.setHours(24,0,0,0);
+//     const diffInHrs = Math.round((midnight - now) / 36e5 * 10) / 10;
+//     const p = document.createElement('p')
+//     p.textContent = `${diffInHrs} hours`
+//     timeLeftSection.append(p)
+//     console.log(diffInHrs)
 
-    return diffInHrs
-}
+//     return diffInHrs
+// }
 
 async function streakCheck (habits) {
     for(let i = 0; i < habits.length; i++){
@@ -91,13 +90,16 @@ async function checkList (data) {
         div.id = data[i].id
         const name = document.createElement('p')
         name.textContent = data[i].name
-        const fire_icon = document.createElement('i')
-        fire_icon.className = 'fa-solid fa-fire'
-        const streak = document.createElement('p')
-        streak.textContent = data[i].streak
         div.append(name)
-        div.append(fire_icon)
-        div.append(streak)
+        if(parseInt(data[i].streak > 1)) {
+            const fire_icon = document.createElement('i')
+            fire_icon.className = 'fa-solid fa-fire'
+            const streak = document.createElement('p')
+            streak.textContent = data[i].streak
+            div.append(fire_icon)
+            div.append(streak)
+        }
+
         data[i].completed === true ? completedSection.append(div) : toDoSection.append(div)
 
         div.addEventListener('click', () => {goToHabit(div.id)})
@@ -113,18 +115,31 @@ async function longestStreak (data) {
 
     const longest = data.sort((a, b) => (a.streak < b.streak) ? 1 : -1)[0]
     console.log(longest)
-    const div = document.createElement('div')
-    div.className = 'habit'
-    const name = document.createElement('p')
-    name.textContent = longest.name
-    const fire_icon = document.createElement('i')
-    fire_icon.className = 'fa-solid fa-fire'
-    const streak = document.createElement('p')
-    streak.textContent = longest.streak
-    div.append(name)
-    div.append(fire_icon)
-    div.append(streak)
-    longestStreakSection.append(div)
+    if(longest.streak > 1) {
+        const div = document.createElement('div')
+        div.className = 'habit'
+        const name = document.createElement('p')
+        name.textContent = longest.name
+        const fire_icon = document.createElement('i')
+        fire_icon.className = 'fa-solid fa-fire'
+        const streak = document.createElement('p')
+        streak.textContent = longest.streak
+        div.append(name)
+        div.append(fire_icon)
+        div.append(streak)
+        longestStreakSection.append(div)
+    }
+    else {
+        const div = document.createElement('div')
+        div.className = 'habit'
+        const name = document.createElement('p')
+        name.textContent = 'No current streaks, work hard to get more!'
+        const fire_icon = document.createElement('i')
+        fire_icon.className = 'fa-solid fa-fire'
+        div.append(name)
+        div.append(fire_icon)
+        longestStreakSection.append(div)
+    }
 }
 
 

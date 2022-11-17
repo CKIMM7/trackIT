@@ -44,7 +44,8 @@ nav {
   }
 
   #nav-active {
-    background-color: #FFE699;
+    background-color: #ff9999;
+    padding: 20px;
   }
 
 /* Resets */
@@ -52,6 +53,7 @@ nav {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Roboto", monospace;
   transition: var(--transition);
 }
 
@@ -61,6 +63,7 @@ nav {
   color: black;
   font-weight: bolder;
   backdrop-filter: blur(10px);
+  
 }
 
 @keyframes gradient {
@@ -85,8 +88,11 @@ a {
   font-weight: bolder;
 }
 
-a:hover {
-  color: #FFE699;
+a:hover{
+  /* color: grad; */
+  background-color: #FFCCD2;
+  background-color: #ff9999;
+  padding: 20px;
 } 
 
 main {
@@ -95,7 +101,7 @@ main {
     margin: 5%;
     height: 70%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     border-radius: 10px;
 }
@@ -113,26 +119,98 @@ main {
     padding: 10px;
     border-bottom: 1px solid white;
 }
-
+header{
+  text-align: center;
+}
 .habit p {
     margin: 0 10px;
 }
 
-.habit-section {
-    background-color: #504f4f;
+/* .habit-section {
+    background-color: white;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 15px;
+    height: 90%;
+    width: 30%;
+    display: flex;
+    text-align: center;
+} */
+
+.habit-section {/* .stats-section */
+  position: relative;
+  background-color: aliceblue;
+  min-width: 190px;
+  min-height: 190px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(109, 10, 10, 0.474);
+  transition: 0.8s;
 }
 
 #stats-section {
-    background-color: #504f4f;
-    padding: 15px;
-    /* height: 250px; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    border-radius: 10px;
+  background-color: white;
+  padding: 15px;
+  height: 250px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around; */
+  border-radius: 20px;
+  transition: 0.8s;
+  min-width: 190px;
+  min-height: 190px;
+  box-shadow: 0 4px 12px rgba(109, 10, 10, 0.474);
 }
+
+
+
+#todo-section:hover {
+  min-height: 370px;
+  min-width: 350px;
+  background: #FFCCD2;
+  padding: 15px;
+  
+}
+
+#completed-section:hover {
+  min-height: 370px;
+  min-width: 350px;
+  background: #ceffcc;
+  padding: 15px;
+}
+
+#stats-section:hover {
+  min-height: 370px;
+  min-width: 350px;
+  background: #ccfcff;
+  padding: 15px;
+  /* transition: 0.8s; */
+}
+
+input {
+  background-color: #fff;
+  border-radius: 10px !important;
+  padding: 12px 15px 12px 15px !important;
+  width: 98%;
+  box-sizing: border-box;
+  /* border: none !important; */
+  border: 1px solid #FFCCD2 !important;
+  font-size: 16px !important;
+  color: #000 !important;
+  font-weight: 400;
+  margin: 10px ;
+  /* margin-right: 10px; */
+}
+
+input:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid #FF9292 !important;
+  outline-width: 0;
+  font-weight: 400;
+}
+
+
+
 
 .stats p {
     margin: 0 10px;
@@ -144,7 +222,7 @@ main {
 
 }
 
-#add-habit-form {
+/* #add-form {
   background-color: grey;
   position: absolute;
   left: 50%;
@@ -155,6 +233,18 @@ main {
   display: flex;
   flex-direction: column;
   display: none;
+} */
+#add-habit-form{
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%,-50%);
+  background: #FFE699;
+  border-radius: 10px;
+  /* position: fixed; */
+  z-index: 999;
+
 }
 
 #habitContainer {
@@ -167,7 +257,37 @@ main {
   border: 3px black solid;
 }
 
+#add-habit{
+  position: absolute;
+	color: black;
+	/* border-style: outset; */
+	/* border-color: #FFE699; */
+	height: 5%;
+	width: 12%;
+  margin-bottom: 1%;
+  /* margin-left: 1%; */
+	/* font:  15px roboto,sans-serif; */
+	text-shadow: none;
+  border-radius: 10px;
+  background-color: #fff;
+  /* padding: 8px 40px; */
+  cursor: pointer;
+  border: 2px solid #ff9292 !important;
+  text-align: center;
+}
 
+form>a:hover{
+  background:#f00 !important;
+  color: white !important;
+  cursor: pointer;
+  display: inline-block;
+ 
+}
+
+/* .habit {
+  background: #FFCCD2;
+  padding: 15px;
+} */
 
 /* 
 @media screen and (max-width: 900px) {

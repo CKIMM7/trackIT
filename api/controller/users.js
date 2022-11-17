@@ -107,7 +107,7 @@ const authorization = async (req, res, next) => {
 
     console.log(req.body.token)
 
-    const token = req.cookies.access_token;
+    const token = req.cookies.access_token || req.body.token
 
     
     console.log(`token`);
