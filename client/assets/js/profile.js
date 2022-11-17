@@ -27,8 +27,14 @@ editSubmitBtn.addEventListener('click', updateProfile);
 saveEmailBtn.addEventListener('click', updateEmail);
 savePassBtn.addEventListener('click', addNewSettings);
 
-cancelEditBtn.addEventListener('click', (e) => editProfSection.style.display = 'none');
-cancelSettBtn.addEventListener('click', (e) => settingsSection.style.display = 'none');
+cancelEditBtn.addEventListener('click', (e) => {
+    editProfSection.style.display = 'none';
+    displayMsg(1, false, 'pos');
+});
+cancelSettBtn.addEventListener('click', (e) => {
+    settingsSection.style.display = 'none';
+    resetMsg();
+});
 
 const userId = 6;
 
@@ -46,12 +52,11 @@ async function showProfileForm(e){
 // when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
-    console.log('save click')
     const data = await getItem('users', userId);
     data.name = nameInput.value;
-    // need to input pass as well cuz update expects pass? n
-    console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+    // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); 
+    displayMsg(1, true, 'pos');
 }
 
 function settings(e){
@@ -68,61 +73,71 @@ async function showSettings(e){
 // need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
-    console.log('save email')
     const data = await getItem('users', userId);
 
     // compare email to all users
     const allUsers = await getAll('users');
-    let sameEmail = false
-    sameEmail = allUsers.map(d => {
-        if(eEmailInput.value === d.email) return sameEmail = true;
-    })
+    let sameEmail = isSameEmail(allUsers)
+    // console.log('sameEmail: '+sameEmail)
 
     if(!sameEmail) {
-        console.log('not the same email')
-        errMsg(1, sameEmail)  // display err msg if true
-
+        displayMsg(1, sameEmail, 'err');
         data.email = eEmailInput.value;
-        console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
-        await update('users', data)
-    } else {
-        console.log('same email')
-        errMsg(1, sameEmail)
-    }
+        // console.log(`n: ${data.name}, e: ${data.email}, p: ${data.password}`);
+        await update('users', data);
+        console.log('email updated')
+        displayMsg(2, true, 'pos')
+    } else displayMsg(1, sameEmail, 'err')
+}
+
+function isSameEmail(users){
+    return users.find(d => eEmailInput.value === d.email) 
 }
 
 //to test original pass is sam / a
 //email sam3@gmail.com
 async function addNewSettings(e){
     e.preventDefault()
-    console.log('click')
     let stop = false
 
     // repeat passes not same then...
-    if(samePassInput.value !== newPassInput.value) stop = errMsg(3, true)
-    else stop = errMsg(3, false)
-    
+    if(samePassInput.value !== newPassInput.value) stop = displayMsg(3, true, 'err')
+    else stop = displayMsg(3, false, 'err')
+
     if(!stop){
-        const result = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
-        console.log(result) // returns undefined
-        
-        // if return false display an error <<<< still need to fix
-        if(!result) {
-            console.log('old pass not matched')
-            errMsg(2, false)
-        }
-        else {
-            console.log('matched')
-            errMsg(2, true)
-        }
+        const isPassed = await passwordCheck(userId, oldPassInput.value, newPassInput.value)
+        // console.log('p.isPassed: '+ isPassed.toString()) 
+        if(!isPassed) return displayMsg(2, true, 'err')
+        displayMsg(2, false, 'err')
+        displayMsg(3, true, 'pos')
+        resetPassFields();
     }
 }
 
-function errMsg(id, bool){
-    const htmlTag = document.getElementById(id);
+function displayMsg(id, bool, type){
+    const htmlTag = document.querySelector(`#${type}-msg-${id}`);
     if(bool) htmlTag.style.display = 'block';
     else htmlTag.style.display = 'none';
     return bool;
+}
+
+function resetMsg(){
+    let index = 0;
+    let type = ['err', 'pos']
+    while(index < 2){
+        for(let id=1; id <= 3; id++){
+            let htmlTag = document.querySelector(`#${type[index]}-msg-${id}`);
+            htmlTag.style.display = 'none';
+        }
+        index++;
+    }
+    return index; // use this to test reset
+}
+
+function resetPassFields(){
+    oldPassInput.value = null
+    newPassInput.value = null
+    samePassInput.value = null
 }
 
 async function display(){

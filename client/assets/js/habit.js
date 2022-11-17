@@ -83,7 +83,7 @@ async function changeCount (e) {
         if(habit.current_count > 0) habit.current_count --
         else console.log ('Cannot reduce')
     }
-    if(habit.current_count == habit.freq) habit.completed = true
+    if(habit.current_count == habit.freq) {habit.completed = true; habit.last_completed = new Date()}
     else habit.completed = false
     await update('habits', habit)
     location.reload()
@@ -91,8 +91,8 @@ async function changeCount (e) {
 
 async function updateProgress () {
     const habit = await getItem('habits', habit_id)
-    const perc = habit.current_count / habit.freq * 100
-    bar.style.width = `${perc}%`
+    const percentage = habit.current_count / habit.freq * 100
+    bar.style.width = `${percentage}%`
 }
 
 async function display () {
