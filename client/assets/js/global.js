@@ -68,4 +68,4 @@ async function displayHabits(data) {
 }
 
 
-getGlobal();
+// getGlobal();
