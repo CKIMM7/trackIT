@@ -34,20 +34,6 @@ describe('users endpoints', () => {
     // });
 
 
-    describe('add habit', () => {
-        test('it adds a habit', (done) => {
-            const data = {
-                name: "Test text", 
-                email: "test@test.com",
-                password: "password"
-            }
-            request(api)
-            .post('/habits')
-            .send(data)
-            .set('Content-Type', 'application/json')
-            .expect(201, done);
-        })
-    })
 
     describe('update habit', () => {
         test('it updates a user', (done) => {
