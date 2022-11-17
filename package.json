@@ -3,7 +3,7 @@
   "scripts": {
     "start": "cd api && node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --setupFiles ./tests/setup/config.js --watchAll --detectOpenHandles --runInBand --verbose",
+    "test": "cd api && jest --setupFiles ./tests/setup/config.js --watchAll --detectOpenHandles --runInBand --verbose",
     "unitTests": "jest --testPathPattern=/units/ --watchAll --verbose",
     "coverage": "jest --testPathPattern=/units/ --coverage"
   },
