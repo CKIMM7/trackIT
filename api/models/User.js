@@ -9,7 +9,6 @@ module.exports = class User {
         this.name = data.name;
         this.email = data.email;
         this.password = data.password;
-        this.habits = { name: data.habit_name, path: `/habits/${data.habit_id}`};
     }
 
     static get all(){
