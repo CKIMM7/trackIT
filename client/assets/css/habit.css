@@ -150,7 +150,8 @@ header{
 }
 
 #bar {
-  height: 30px;
+  height: 100%;
+  background-color: yellowgreen;
 }
 
 #btns{
@@ -185,11 +186,16 @@ header{
   flex-wrap: nowrap;
   /* padding: 75px; */
   width: 90%;
+  text-align: center;
   /* gap: 100px; */
 }
 
+#logo {
+  color: white;
+}
+
 #edit-habit-form {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   position: absolute;

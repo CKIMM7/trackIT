@@ -35,8 +35,8 @@ async function showHabitForm (e) {
     titleInput.value = data.name
     descInput.value = data.desc
     freqInput.value = data.freq
-    if (editHabitForm.style.display == 'block') editHabitForm.style.display = 'none'
-    else editHabitForm.style.display = 'block'
+    if (editHabitForm.style.display == 'flex') editHabitForm.style.display = 'none'
+    else editHabitForm.style.display = 'flex'
 
 }
 
@@ -129,7 +129,7 @@ async function display () {
     desc.textContent = habit.desc
     freq.textContent = habit.freq
     currCount.textContent = habit.current_count
-    streak.textContent = habit.streak
+    streak.textContent = habit.streak || 0
     const start = new Date(habit.start_date)
     startDate.textContent = formatDate(start)
     updateProgress(habit.current_count, habit.freq)

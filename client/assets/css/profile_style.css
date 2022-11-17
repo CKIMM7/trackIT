@@ -53,7 +53,8 @@ nav {
   }
 
   #nav-active {
-    background-color: #FFE699;
+    background-color: #ff9999;
+    padding: 20px;
   }
 
 /* Resets */
@@ -97,9 +98,16 @@ a {
   font-weight: bolder;
 }
 
-a:hover {
-  color: #FFE699;
+a:hover{
+  /* color: grad; */
+  background-color: #FFCCD2;
+  background-color: #ff9999;
+  padding: 20px;
 } 
+
+#logo {
+  color: white;
+}
 
 main {
     background-color: rgba(128, 128, 128, 0.57);
