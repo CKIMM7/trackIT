@@ -36,23 +36,23 @@ describe('habits endpoints', () => {
     });
 
 
-    describe('add habit', () => {
-        test('it adds a habit', (done) => {
-            const data = {
-                id: 1,
-                name: "Test text", 
-                desc: null,
-                freq: null,
-                start_date: null,
-                user_id: 1
-            }
-            request(api)
-            .post('/habits')
-            .send(data)
-            .set('Content-Type', 'application/json')
-            .expect(201, done);
-        })
-    })
+    // describe('add habit', () => {
+    //     test('it adds a habit', (done) => {
+    //         const data = {
+    //             id: 1,
+    //             name: "Test text", 
+    //             desc: null,
+    //             freq: null,
+    //             start_date: null,
+    //             user_id: 1
+    //         }
+    //         request(api)
+    //         .post('/habits')
+    //         .send(data)
+    //         .set('Content-Type', 'application/json')
+    //         .expect(201, done);
+    //     })
+    // })
 
     describe('update habit', () => {
         test('it updates a habit', (done) => {
