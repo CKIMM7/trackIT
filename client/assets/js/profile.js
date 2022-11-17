@@ -27,6 +27,7 @@ editSubmitBtn.addEventListener('click', updateProfile);
 saveEmailBtn.addEventListener('click', updateEmail);
 savePassBtn.addEventListener('click', addNewSettings);
 
+// --reset--
 cancelEditBtn.addEventListener('click', (e) => {
     editProfSection.style.display = 'none';
     displayMsg(1, false, 'pos');
@@ -41,6 +42,7 @@ const userId = 6;
 function editProfile(e){
     e.preventDefault()
     editProfSection.style.display = 'block';
+    settingsSection.style.display = 'none';
 }
 
 async function showProfileForm(e){
@@ -62,6 +64,7 @@ async function updateProfile (e) {
 function settings(e){
     e.preventDefault()
     settingsSection.style.display = 'block';
+    editProfSection.style.display = 'none';
 }
 
 async function showSettings(e){
