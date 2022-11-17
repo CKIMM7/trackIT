@@ -42,7 +42,7 @@ module.exports = class User {
             try {
                 const result = await db.query('SELECT habit.* FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
                 const habits = result.rows.map(data => new Habit(data))
-                console.log(habits)
+                // console.log(habits)
                 resolve(habits);
             } catch (err) {
                 console.log(err)
@@ -102,7 +102,7 @@ module.exports = class User {
                          }
                         else {
                             resolve(token)
-                            console.log(token)
+                            // console.log(token)
                         }
                     })
                     //resolve(token)
