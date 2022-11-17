@@ -14,11 +14,11 @@
 </head>
 <body>
     <nav>
-        <a href="#" class="logo">
-          <h1>
+        <!-- <a href="#" class="logo"> -->
+          <h1 id="logo">
             <span>trackIT</span>
           </h1>
-        </a>
+        <!-- </a> -->
         <ul>
             <li class="nav-item">
               <a href="#" id="nav-active" class="nav-link" >DASHBOARD</a>
@@ -30,11 +30,15 @@
    </nav>
    <div>
         <form id="add-habit-form">
+            <label for="title">Title</label>
             <input id="title" placeholder="Enter title..." type="text">
+            <label for="desc">Description</label>
             <input id="desc" placeholder="Enter Description..." type="text">
+            <label for="freq">How many times a day?</label>
             <input id="freq" placeholder="Enter Frequency..." type="number">
             <input type="submit" value="Add">
-            <a href="/dashboard">Cancel</a>
+
+            <button id="cancel-btn">Cancel</button>
         </form>
    </div>
     <main>
