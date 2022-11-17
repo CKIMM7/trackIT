@@ -10,9 +10,9 @@ const currentUser = async (req, res) => {
     const user = { cookie: req.cookies.access_token,
                        id: req.id,
                     email: req.email }
-        req.send(user)
+        req.status(200).send(user)
     } catch (err) {
-        res.send(err)
+        res.status(500).send(err)
     }
 }
 
@@ -49,8 +49,8 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const User = await User.create(req.body.name, req.body.email, req.body.password)
-        res.status(201).json(User)
+        const user = await User.create(req.body.name, req.body.email, req.body.password)
+        res.status(201).json(user)
     } catch(err) {
         res.status(404).json({err})
     }
@@ -58,10 +58,9 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        console.log('c.User.update: '+req.body)
         const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
-        console.log(`user ${user} updatedUser ${updatedUser}`)
+        // console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
         console.log(err)

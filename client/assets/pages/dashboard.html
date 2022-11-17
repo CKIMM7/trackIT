@@ -24,7 +24,7 @@
               <a href="#" id="nav-active" class="nav-link" >DASHBOARD</a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">PROFILE</a>
+              <a href="/profile" class="nav-link">PROFILE</a>
             </li>
         </ul>
    </nav>
@@ -34,13 +34,13 @@
             <input id="desc" placeholder="Enter Description..." type="text">
             <input id="freq" placeholder="Enter Frequency..." type="number">
             <input type="submit" value="Add">
+            <a href="/dashboard">Cancel</a>
         </form>
    </div>
     <main>
         <section id="todo-section" class="habit-section">
             <header>
-                <h2>To Do</h2>
-                <i class="fa-regular fa-clipboard"></i>
+                <h2>To Do   <i class="fa-regular fa-clipboard"></i></h2>               
             </header>  
             <!-- <div class="habit">
                 <p>No Caffeine</p>
@@ -50,8 +50,7 @@
         </section>
         <section id="completed-section" class="habit-section">
             <header>
-                <h2>Completed</h2>
-                <i class="fa-solid fa-check"></i>
+                <h2>Completed  <i class="fa-solid fa-check"></i></h2>                
             </header>
 <!--             
             <div class="habit">
@@ -70,7 +69,7 @@
                 <!-- <p>No Caffeine <i class="fa-solid fa-fire"></i> 31</p> -->
             </div>  
         </section>
-        <a id="add-habit" href="">Add Habit</a>
+        <button id="add-habit">Add Habit</button>
     </main>
 </body>
 </html>
