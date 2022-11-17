@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const server = require('../server');
@@ -83,24 +84,25 @@ const destroy = async (req, res) => {
 const login = async (req, res) => {
     //console.log(req.body)
     try {
-        const user = await User.login(req.body.email, req.body.password)
-        console.log(user);
-        //console.log(user)
+        const token = await User.login(req.body.email, req.body.password)
+        console.log('token')
+        console.log(token)
 
-        // const data = await jwt.verify(user, "some_secret")
+        // const data = await jwt.verify(token, "some_secret")
         //     console.log('jws:data')
         //     console.log(data)
     res
-    .cookie("access_token", user, {
+    .cookie("access_token", token, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
     })
     .status(200)
     .json({ message: "Logged in successfully 😊 👌",
-            user: user });
+            user: token });
 
     } catch(err) {
-        console.log(err)
+        console.log('error')
+        // console.log(err)
         res.status(404).json('error')
     }
 }
@@ -111,7 +113,7 @@ const authorization = async (req, res, next) => {
     const token = req.cookies.access_token || req.body.token;
     
     console.log(`token`);
-    console.log(token);
+    // console.log(token);
 
     //user does not have a token -> either new user or cookie has expired
     if (!token) {
@@ -165,8 +167,8 @@ const authorization = async (req, res, next) => {
 
     return next();
     
-    } catch {
-
+    } catch (err){
+        console.log(err)
         //if token is modified.
         //clear the cookie to avoid infinite redirects
         console.log('auth')
@@ -189,7 +191,7 @@ const habitCheck = async (req, res, next) => {
     try{
         console.log(req.id)
         const getHabits = await User.getHabits(req.id);
-        console.log(getHabits)
+        // console.log(getHabits)
         const user_id = req.id
         const habit_id = req.originalUrl.split('/')[2]
         const check = getHabits.find(obj => obj.id == habit_id)

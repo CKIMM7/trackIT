@@ -5,7 +5,11 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 
 const server = express();
-server.use(cors());
+const corsOptions = {
+    origin: true, //included origin as true
+    credentials: true, //included credentials as true
+};
+server.use(cors((corsOptions)));
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({secret: "Shh, its a secret!"}));

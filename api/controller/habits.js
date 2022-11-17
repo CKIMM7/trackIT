@@ -49,6 +49,7 @@ const destroy = async (req, res) => {
         
         res.status(204).json('Habit deleted')
     } catch(err){
+        console.log('Cant delete habit')
         console.log(err)
         res.status(500).json({err})
     }

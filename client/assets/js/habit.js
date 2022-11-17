@@ -25,6 +25,7 @@ const habit_id = window.location.href.split('/')[4]
 editHabitBtn.addEventListener('click', showHabitForm)
 exitBtn.addEventListener('click', showHabitForm)
 updateBtn.addEventListener('click', updateHabit)
+deleteHabitBtn.addEventListener('click', destroy)
 addBtn.addEventListener('click', changeCount)
 minusBtn.addEventListener('click', changeCount)
 
@@ -39,13 +40,20 @@ async function showHabitForm (e) {
 
 }
 
+async function destroy (e) {
+    e.preventDefault()
+    await deleteHabit(habit_id)
+    location.reload()
+}
+
+
 async function updateHabit (e) {
     e.preventDefault()
     const data = await getItem('habits', habit_id)
     data.name = titleInput.value
     data.desc = descInput.value
     data.freq = freqInput.value
-    update('habits', data)
+    await update('habits', data)
     location.reload()
 }
 
@@ -55,12 +63,12 @@ function addDays(date, days) {
     return result;
   }
 
-async function nextDeadline (date) {
-    console.log(date)
-    console.log(addDays(new Date(), 5))
-    if(addDays(new Date(), 4) < addDays(new Date(), 1909840)) console.log('Its before')
-    else console.log('Fail')
-}
+// async function nextDeadline (date) {
+//     console.log(date)
+//     console.log(addDays(new Date(), 5))
+//     if(addDays(new Date(), 4) < addDays(new Date(), 1909840)) console.log('Its before')
+//     else console.log('Fail')
+// }
 
 function formatDate (date) {
     let year = date.getFullYear().toString()
@@ -105,7 +113,7 @@ async function display () {
     streak.textContent = habit.streak
     startDate.textContent = habit.start_date
     updateProgress()
-    nextDeadline()
+    // nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
 }

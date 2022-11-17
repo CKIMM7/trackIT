@@ -1,17 +1,6 @@
 // const url = 'https://trackit-sillicon-alley.herokuapp.com'
 const url = 'http://localhost:3000'
 
-const signUpBtn = document.querySelector('#signUpBtn');
-const nameInputSignUp = document.querySelector('#nameSignUp');
-const emailInputSignUp = document.querySelector('#emailSignUp');
-const passwordInputSignUp = document.querySelector('#psw');
-
-console.log(nameInputSignUp)
-console.log(emailInputSignUp)
-console.log(passwordInputSignUp)
-console.log(signUpBtn)
-
-signUpBtn.addEventListener('click', signup);
 
 async function getAll(category){
     try {
@@ -97,7 +86,6 @@ async function deleteHabit(id){
         console.log(`Deleting ${id}`)
         const options = { method: 'DELETE' }
         await fetch(`${url}/habits/${id}`, options);
-        // window.location.hash = `#books`
     } catch (err) {
         console.warn(err);
     }

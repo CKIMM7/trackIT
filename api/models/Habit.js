@@ -77,9 +77,14 @@ module.exports = class Habit {
         return new Promise (async (resolve, reject) => {
             try {
                 console.log(`Server delete ${this.id}`)
-                const result = await db.query(`DELETE FROM habit WHERE id = $1;`, [this.id])
+                
+                const result = await db.query(`DELETE FROM user_habits WHERE habit_id = $1;`, [this.id])
+                const result2 = await db.query(`DELETE FROM habit WHERE id = $1;`, [this.id])
+                
+
                 resolve("Habit was deleted");
             } catch (err) {
+                console.log(err)
                 reject("Error deleting habit")
             }
         })
