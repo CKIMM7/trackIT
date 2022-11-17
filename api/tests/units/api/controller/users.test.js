@@ -126,87 +126,160 @@ describe('Users controller', () => {
     })
 
     // // err: not a function?  <<<<<<
-    // describe('update', () => {
-    //     const testData = { id: userId, name: name };
-    //     const mockReq = { body: testData };
+    describe.skip('update', () => {
+        let testData = { id: userId, name: 'newName', email: 'newTest@gmail.com', password: 'newPass' };
+        let mockReq = { body: testData };
 
-    //     jest.spyOn(User, 'update').mockResolvedValue(testData);
+        // jest.spyOn(User, 'getUser')
+        //     .mockResolvedValue({ id: userId, email: email });
 
-    //     test('update users info with a 200 status code', async () => {
-    //         await usersController.update(mockReq, mockRes);
-    //         expect(mockStatus).toHaveBeenCalledWith(200);
-    //         expect(mockJson).toHaveBeenCalledWith(testData);
-    //     })
-    //     test('it returns error message with a 500 status code', async () => {
-    //         return await usersController.update(mockReq, mockRes).catch(e =>
-    //             expect(e).toEqual({
-    //                 status: 500,
-    //                 error: 'reject("Error updating user'
-    //             })
-    //         );
-    //     })
-    // })
+        jest.spyOn(User, 'update')
+            .mockResolvedValue(testData);
 
-    // // err: not a function? <<<<<
-    // describe('destroy', () => {
-    //     test('delete a user with a 204 status code', async() => {
-    //         jest.spyOn(User.prototype, 'delete')
-    //             .mockResolvedValue("User was deleted");
+        test('update users info with a 200 status code', async () => {
+            // let testData2 = { id: userId, email: email };
+            // let mockReq2 = { params: { id: userId } }
+            // const testUser = await usersController.getUser(mockReq2, mockRes);
+
+            await usersController.update(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(new User(testData));
+        })
+        test('it returns error message with a 500 status code', async () => {
+            email = '';
+            return await usersController.update(mockReq, mockRes).catch(e =>
+                expect(e).toEqual({
+                    status: 500,
+                    error: "Error updating user"
+                })
+            );
+        })
+    })
+
+    // err: status code 500
+    describe.skip('destroy', () => {
+        const mockReq = { params: { id: userId } }
+
+        jest.spyOn(User.prototype, 'delete')
+            .mockResolvedValue(userId);
+
+        test('delete a user with a 204 status code', async () => {
+            await usersController.destroy(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(204);
+            expect(mockJson).toHaveBeenCalledWith('User deleted');
+        })
+        test('it returns error message with a 500 status code', async () => {
+            userId = 0;
+            return await usersController.destroy(mockReq, mockRes).catch(e =>
+                expect(e).toEqual({
+                    status: 500,
+                    error: 'Error deleting user'
+                })
+            );
+        })
+    })
+
+    // fail: 500 status code
+    // how to test cookie?
+    describe.skip('login', () => {
+        let testData = { email: email, password: password };
+        let mockReq = { body: testData };
+        const mockCookie = jest.fn();
+        const testCookie = jest.fn(() => {
+            mockRes.cookie("access_token", user, {
+                httpOnly: false,
+                secure: process.env.NODE_ENV === "production",
+              })
+        })
+
+        jest.spyOn(User, 'login')
+            .mockResolvedValue(testData);
             
-    //         const mockReq = { params: { id: 1 } }
-    //         await usersController.delete(mockReq, mockRes);
-    //         expect(mockStatus).toHaveBeenCalledWith(204);
-    //     })
-    // })
+        test('login user with a 200 status code', async () => {
+            await usersController.login(mockReq, mockRes);
+            //cookie?
+            expect(mockCookie).toBe(testCookie)
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson)
+                .toHaveBeenCalledWith({message: "Logged in successfully 😊 👌", user: new User(testData) });
+        })
+        test('it returns error message with a 404 status code', async () => {
+            email = '';
+            return await usersController.login(mockReq, mockRes).catch(e =>
+                expect(e).toEqual({
+                    status: 404,
+                    error: 'error'
+                })
+            );
+        })
+    })
+
+    describe.skip('authorization', () => {
+        const mockToken = jest.fn();
+        const testToken = jest.fn(() => { return req.cookies.access_token } );
+
+        test('if user has no token redirect to home page', async () => {
+            expect(mockRes).toEqual('https://trackit-sillicon-alley.netlify.app/');
+        })
+        test('if user has a token', async () => {
+            expect(mockToken).toEqual(testToken)
+
+            //try and catch
+        }) 
+    })
+
+    describe.skip('returnGlobal', () => {
+        test('try and catch..', async () => {
+            try {
+                expect(mockStatus).toHaveBeenCalledWith(200);
+                expect(mockJson).toHaveBeenCalledWith(testData);
+            } catch(err){
+                return (null, mockRes).catch(e =>
+                    expect(e).toEqual({
+                        status: 500,
+                        error: `${e}`
+                    })
+                );
+            }
+        }) 
+        
+    }) 
+
+    /// below needs to be done
+    // // still need to edit <<<<<<<
+    describe('habitCheck', () => {
+        test('returns a ??? with a 200 status code', async() => {
+            const testData = [];
+
+            jest.spyOn(User, 'getHabits')
+                .mockResolvedValue(testData);
+
+            await usersController.getHabits(null, mockRes)
+            expect(mockStatus).toHaveBeenCalledWith(200);
+            expect(mockJson).toHaveBeenCalledWith(testData);
+        })
+    })
 
     // // fail: 500 status code
-    // describe.skip('login', () => {
-    //     test('login user with a 200 status code', async() => {
-    //         const testData = { email: 'test1@mail.com', password: 'pass1' };
-    //         const mockReq = { body: testData };
+    describe.skip('signup', () => {
+        test('signup new user with a 201 status code', async() => {
+            const testData = { name: 'user1', email: 'test1@mail.com', password: 'pass1' };
+            const mockReq = { body: testData };
 
-    //         jest.spyOn(User, 'login')
-    //             .mockResolvedValue(testData);
-                
-    //         await usersController.update(mockReq, mockRes);
-    //         expect(mockStatus).toHaveBeenCalledWith(200);
-    //         expect(mockJson).toHaveBeenCalledWith(new User(testData));
-    //     })
-    // })
+            jest.spyOn(User, 'signup')
+                .mockResolvedValue(testData);
 
-    // // fail: 500 status code
-    // describe.skip('signup', () => {
-    //     test('signup new user with a 201 status code', async() => {
-    //         const testData = { name: 'user1', email: 'test1@mail.com', password: 'pass1' };
-    //         const mockReq = { body: testData };
+            await usersController.update(mockReq, mockRes);
+            expect(mockStatus).toHaveBeenCalledWith(201);
+            expect(mockJson).toHaveBeenCalledWith(new User(testData)); 
+        })
 
-    //         jest.spyOn(User, 'signup')
-    //             .mockResolvedValue(testData);
+        test.skip('password has been hashed', () => {
 
-    //         await usersController.update(mockReq, mockRes);
-    //         expect(mockStatus).toHaveBeenCalledWith(201);
-    //         expect(mockJson).toHaveBeenCalledWith(new User(testData)); 
-    //     })
+        })
+    })
 
-    //     test.skip('password has been hashed', () => {
+    describe.skip('checkPassword', () => {
 
-    //     })
-    // })
-
-    // // still need to edit <<<<<<<<
-    // describe.skip('getHabits', () => {
-    //     test('returns a list of users habits with a 200 status code', async() => {
-    //         const testData = [];
-
-    //         jest.spyOn(User, 'getHabits')
-    //             .mockResolvedValue(testData);
-    //         await usersController.getHabits(null, mockRes)
-    //         expect(mockStatus).toHaveBeenCalledWith(200);
-    //         expect(mockJson).toHaveBeenCalledWith(testData);
-    //     } )
-    // })
-
-
-
-
+    })
 })

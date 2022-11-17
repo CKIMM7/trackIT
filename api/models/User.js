@@ -199,6 +199,7 @@ module.exports = class User {
                 // console.log('m.user.result: '+result.rows[0])
                 resolve(new User( result.rows[0]));
             } catch (err) {
+                console.log(err)
                 reject("Error updating user")
             }
         })
@@ -210,6 +211,7 @@ module.exports = class User {
                 const result = await db.query(`DELETE FROM users WHERE id = $1;`, [id])
                 resolve("User was deleted")
             } catch (err) {
+                console.log(err)
                 reject("Error deleting user")
             }
         })

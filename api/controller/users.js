@@ -60,7 +60,7 @@ const update = async (req, res) => {
     try {
         const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
-        // console.log(`user ${user} updatedUser ${updatedUser}`)
+        console.log(`user ${user} updatedUser ${updatedUser}`)
         res.status(200).json(updatedUser)
     } catch(err){
         console.log(err)
@@ -71,7 +71,7 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
     try {
         const user = await User.findById(parseInt(req.params.id))
-        await user.destroy()
+        await user.delete(user.id)
         res.status(204).json('User deleted')
     } catch(err){
         res.status(500).json({err})
@@ -154,9 +154,9 @@ const authorization = async (req, res, next) => {
 
 const habitCheck = async (req, res, next) => {
     try{
-        console.log(req.id)
+        // console.log(req.id)
         const getHabits = await User.getHabits(req.id);
-        console.log(getHabits)
+        // console.log(getHabits)
         const user_id = req.id
         const habit_id = req.originalUrl.split('/')[2]
         const check = getHabits.find(obj => obj.id == habit_id)
