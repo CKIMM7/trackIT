@@ -170,10 +170,10 @@ async function login (e) {
         const token = await response.json();
         console.log(token);
 
-        document.cookie = `access_token=${token.user}`;
+        document.cookie = `access_token=${token.user}`; 
 
         //client side reload and make the user go through auth
-        location.reload();
+        //location.reload();
 
         //when to path / and make the user go through auth.
         window.location.href = url;
