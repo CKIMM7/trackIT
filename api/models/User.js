@@ -14,7 +14,7 @@ module.exports = class User {
     static get all(){
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT * FROM users;')
+                const result = await db.query('SELECT * FROM user_habits;')
                 const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
@@ -76,7 +76,7 @@ module.exports = class User {
 
             try {
                 const user = await User.findByEmail(email)
-                console.log(user);
+                // console.log(user);
 
                 
         
@@ -87,9 +87,10 @@ module.exports = class User {
                 //if user authenticates successfully
                 if (!!authed){
                     const user_habits = await User.getHabits(1)
-                    console.log(`habits ${user_habits}`)
+                    // console.log(`habits ${user_habits}`)
 
                     const payload = { email: user.email, id: user.id, habits: user_habits};
+
 
                     const secret = 'some_secret'; //load from .env files
                     const options = { expiresIn: 3600 }
@@ -99,8 +100,9 @@ module.exports = class User {
                             throw new Error('No user with this email')
                          }
                         else {
+                            console.log('Test')
                             resolve(token)
-                            console.log(token)
+                            // console.log(token)
                         }
                     })
                     //resolve(token)
@@ -108,6 +110,7 @@ module.exports = class User {
                     throw new Error('Wrong password') 
                 }
             } catch (err) {
+                console.log(err)
                 reject(err)
             }
 

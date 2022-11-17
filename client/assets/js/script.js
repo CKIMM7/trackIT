@@ -20,14 +20,14 @@ console.log(emailInputSignUp)
 console.log(passwordInputSignUp)
 console.log(signUpBtn)
 
-// signUpBtn.addEventListener('click', signup);
+signUpBtn.addEventListener('click', signup);
 
 
 const user_id = 2
 const habit_id = 2
 
-addHabitForm.addEventListener('submit', addHabit)
-addHabitBtn.addEventListener('click', showForm)
+// addHabitForm.addEventListener('submit', addHabit)
+// addHabitBtn.addEventListener('click', showForm)
 
 
 function showForm (e) {
