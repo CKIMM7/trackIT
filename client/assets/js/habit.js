@@ -12,7 +12,7 @@ const minusBtn = document.querySelector('#minus-btn')
 const title = document.querySelector('#title')
 const desc = document.querySelector('#desc')
 const freq = document.querySelector('#freq')
-const deadline = document.querySelector('#next-deadline')
+const currCount = document.querySelector('#next-deadline')
 const streak = document.querySelector('#streak')
 const progress = document.querySelector('#progress')
 const bar = document.querySelector('#bar')
@@ -76,22 +76,32 @@ async function changeCount (e) {
     const habit = await getItem('habits', habit_id)
     console.log(habit)
     if (e.target.id === 'add-btn') {
-        if(habit.current_count < habit.freq) {console.log(habit.current_count); habit.current_count ++; console.log(habit.current_count); }
+        if(habit.current_count < habit.freq) {
+            console.log(`Current: ${currCount.textContent}`); 
+            habit.current_count ++; 
+            currCount.textContent = parseInt(currCount.textContent) + 1
+            updateProgress(currCount.textContent, habit.freq)
+            console.log(`Current After: ${currCount.textContent}`)
+        }
         else console.log ('Reached Max')
     }
     else {
-        if(habit.current_count > 0) habit.current_count --
+        if(habit.current_count > 0) {
+            habit.current_count --
+            currCount.textContent = parseInt(currCount.textContent) - 1
+            updateProgress(currCount.textContent, habit.freq)
+        }
         else console.log ('Cannot reduce')
     }
     if(habit.current_count == habit.freq) {habit.completed = true; habit.last_completed = new Date()}
     else habit.completed = false
     await update('habits', habit)
-    location.reload()
+    // location.reload()
 }
 
-async function updateProgress () {
+async function updateProgress (curr,freq) {
     const habit = await getItem('habits', habit_id)
-    const percentage = habit.current_count / habit.freq * 100
+    const percentage = curr / freq * 100
     bar.style.width = `${percentage}%`
 }
 
@@ -101,10 +111,10 @@ async function display () {
     title.textContent = habit.name
     desc.textContent = habit.desc
     freq.textContent = habit.freq
-    deadline.textContent = habit.current_count
+    currCount.textContent = habit.current_count
     streak.textContent = habit.streak
     startDate.textContent = habit.start_date
-    updateProgress()
+    updateProgress(habit.current_count, habit.freq)
     nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
