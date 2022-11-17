@@ -66,13 +66,44 @@ async function display () {
     console.log(await getItem('users',1))
     await checkList(habits)
     await longestStreak(habits)
-    // await deadlines()
+    // await timeBeforeMidnight()
+    // await deadlines(habits)
     
 }
 
-// async function streakCheck () {
-//     if(new Date () < (lastcompleted + freq)) {}
-//     else streak = 0
+function timeBeforeMidnight() {
+    const midnight = new Date();
+    midnight.setHours(24,0,0,0);
+    const now = new Date()
+    const ran = new Date("2016-07-25T00:00:00Z")
+    // const mnafter = ran.setHours(24,0,0,0);
+    const diffInHrs = Math.round((midnight - ran) / 36e5 * 10) / 10;
+    console.log(diffInHrs)
+    return diffInHrs
+}
+
+async function streakCheck (habits) {
+    for(let i = 0; i < habits.length; i++){
+        const last_date = new Date(habits[i].last_completed)
+        const midnight = last_date.setHours(24,0,0,0);
+        const now = new Date()
+        let timeToMidnight = Math.round((midnight - now) / 36e5 * 10) / 10;
+        
+        if (timeToMidnight < 0) habits[i].completed = false
+
+        if(current_count == freq && timeToMidnight > 0 && last_date.getDate() != now.getDate()) {
+            habits[i].streak ++
+            habits[i].lastcompleted = today
+        }
+        else if (current_count < freq && timeToMidnight < 0) {
+            habits[i].streak = 0
+        }
+    }
+
+}
+
+// async function resetComplete () {
+//     if (current_date > (lastcompleted + 24hrs)) habit_id.complete = false
 // }
 
 // async function pseudo () {
@@ -139,8 +170,24 @@ async function longestStreak (data) {
     longestStreakSection.append(div)
 }
 
-async function deadlines () {
-    
-}
+// async function deadlines (data) {
+
+//     for(let i = 0; i < data.length; i++){
+//         const div = document.createElement('div')
+//         div.className = 'habit'
+//         div.id = data[i].id
+//         const name = document.createElement('p')
+//         name.textContent = data[i].name
+//         const streak = document.createElement('p')
+//         streak.textContent = new Date()
+//         div.append(name)
+//         div.append(streak)
+//         deadlinesSection.append(div)
+
+//         div.addEventListener('click', () => {goToHabit(div.id)})
+//     }
+// }
+
 
 display()
+console.log(timeBeforeMidnight())

@@ -4,12 +4,12 @@ VALUES
     ('Tom', 'tomriddle190@gmail.com', 'pass1'),
     ('Katie', 'katie@me.com', 'pass2');
 
-INSERT INTO habit (name, description, frequency, current_count, start_date, streak, completed)
+INSERT INTO habit (name, description, frequency, current_count, start_date, last_completed, streak, completed)
 VALUES
-    ( 'Drink h20 a day', null, 1, 0, '2022-11-01', 3, false ),
-    ( 'Gym', 'Hit 7 stones', 3, 2, '2022-10-01', 5, false ),
-    ( 'Read chapter a day', null, 1, 1, '2022-09-30', 3, true ),
-    ( 'No caffiene =v=', null, 2, 0,'2022-09-30', null,  false );
+    ( 'Drink h20 a day', null, 1, 0, '2022-11-01', null, 3, false ),
+    ( 'Gym', 'Hit 7 stones', 3, 2, '2022-10-01', null, 5, false ),
+    ( 'Read chapter a day', null, 1, 1, '2022-09-30', null, 3, true ),
+    ( 'No caffiene =v=', null, 2, 0,'2022-09-30', null, null,  false );
 
 INSERT INTO user_habits (user_id, habit_id) 
 VALUES
