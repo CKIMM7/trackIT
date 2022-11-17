@@ -1,11 +1,15 @@
+if(process.env.NODE_ENV !== 'development') {
+    console.log('sdaf')
+    require('dotenv').config()
+  }
+
+console.log(process.env.HOST)
+
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
-
-require('dotenv').config();
-console.log(process.env.NODE_ENV)
 
 
 const server = express();
