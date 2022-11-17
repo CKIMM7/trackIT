@@ -7,11 +7,12 @@ const mockStatus = jest.fn(code => ({ send: mockSend, json: mockJson }))
 const mockRes = { status: mockStatus }
 
 describe('Users controller', () => {
-    const userId = 1;
-    let email, password;
+    let userId = 1;
+    let name, email, password;
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
+        name: 'user1';
         email = 'test1@mail.com';
         password = 'pass1';
     });
@@ -33,7 +34,7 @@ describe('Users controller', () => {
     // })
 
     describe('displayAll', () => {
-        const testData = ['user1', 'user2', 'user3'];
+        let testData = ['user1', 'user2', 'user3'];
 
         // (object, methodName, accessType?)
         jest.spyOn(User, 'all', 'get')
@@ -45,6 +46,7 @@ describe('Users controller', () => {
             expect(mockJson).toHaveBeenCalledWith(testData);
         })
         test('it returns error message with a 500 status code', async () => {
+            testData.push('user4');
             return await usersController.displayAll(null, mockRes).catch(e =>
                 expect(e).toEqual({
                     status: 500,
@@ -55,8 +57,8 @@ describe('Users controller', () => {
     })
 
     describe('getUser', () => {
-        const testData = {id: userId, email: email};
-        const mockReq = { params: { id: userId } }
+        let testData = {id: userId, email: email};
+        let mockReq = { params: { id: userId } }
 
         jest.spyOn(User, 'getUser')
             .mockResolvedValue(testData)
@@ -67,7 +69,8 @@ describe('Users controller', () => {
             expect(mockJson).toHaveBeenCalledWith(testData);
         })
         test('it returns error message with a 404 status code', async () => {
-            return await usersController.displayAll(mockReq, mockRes).catch(e =>
+            userId = 2;
+            return await usersController.getUser(mockReq, mockRes).catch(e =>
                 expect(e).toEqual({
                     status: 404,
                     error: "Error retrieving user"
@@ -77,19 +80,20 @@ describe('Users controller', () => {
     })
 
     describe('getHabits', () => {
-        const testData = {id: userId, email: email};
-        const mockReq = { params: { id: userId } }
+        let testData = {id: userId, email: email};
+        let mockReq = { params: { id: userId } }
 
         jest.spyOn(User, 'getHabits')
             .mockResolvedValue(testData)
 
         test('return user\'s habits by id with a 200 status code', async () => {  
-            await usersController.getUser(mockReq, mockRes);
+            await usersController.getHabits(mockReq, mockRes);
             expect(mockStatus).toHaveBeenCalledWith(200);
             expect(mockJson).toHaveBeenCalledWith(testData);
         })
         test('it returns error message with a 404 status code', async () => {
-            return await usersController.displayAll(mockReq, mockRes).catch(e =>
+            userId = 2;
+            return await usersController.getHabits(mockReq, mockRes).catch(e =>
                 expect(e).toEqual({
                     status: 404,
                     error: "Error retrieving user"
@@ -98,10 +102,9 @@ describe('Users controller', () => {
         })
     })  
 
-    // // error here <<<<<<<
     describe('create', () => {
-        const testData = { name: 'user4', email: 'test4@mail.com', password: 'pass4' };
-        const mockReq = { body: testData }
+        let testData = { name: 'user4', email: 'test4@mail.com', password: 'pass4' };
+        let mockReq = { body: testData }
         
         jest.spyOn(User, 'create')
             .mockResolvedValue(new User(testData));
@@ -111,20 +114,36 @@ describe('Users controller', () => {
             expect(mockStatus).toHaveBeenCalledWith(201);
             expect(mockJson).toHaveBeenCalledWith(new User(testData));
         })
-        //Error creating user:
+        test('it returns error message with a 404 status code', async () => {
+            email = 'test1@mail.com'
+            return await usersController.create(mockReq, mockRes).catch(e =>
+                expect(e).toEqual({
+                    status: 404,
+                    error: `Error creating user: ${e}`
+                })
+            );
+        })
     })
 
     // // err: not a function?  <<<<<<
     // describe('update', () => {
-    //     test('update users info with a 200 status code', async () => {
-    //         const testData = { id: 1, name: 'user1' };
-    //         const mockReq = { body: testData };
+    //     const testData = { id: userId, name: name };
+    //     const mockReq = { body: testData };
 
-    //         jest.spyOn(User, 'update')
-    //             .mockResolvedValue(testData);
+    //     jest.spyOn(User, 'update').mockResolvedValue(testData);
+
+    //     test('update users info with a 200 status code', async () => {
     //         await usersController.update(mockReq, mockRes);
     //         expect(mockStatus).toHaveBeenCalledWith(200);
     //         expect(mockJson).toHaveBeenCalledWith(testData);
+    //     })
+    //     test('it returns error message with a 500 status code', async () => {
+    //         return await usersController.update(mockReq, mockRes).catch(e =>
+    //             expect(e).toEqual({
+    //                 status: 500,
+    //                 error: 'reject("Error updating user'
+    //             })
+    //         );
     //     })
     // })
 

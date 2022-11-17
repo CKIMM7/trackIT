@@ -49,8 +49,8 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const User = await User.create(req.body.name, req.body.email, req.body.password)
-        res.status(201).json(User)
+        const user = await User.create(req.body.name, req.body.email, req.body.password)
+        res.status(201).json(user)
     } catch(err) {
         res.status(404).json({err})
     }
