@@ -140,19 +140,6 @@ function resetMsg(){
     return index; // use this to test reset
 }
 
-function resetMsg(){
-    let index = 0;
-    let type = ['err', 'pos']
-    while(index < 2){
-        for(let id=1; id <= 3; id++){
-            let htmlTag = document.querySelector(`#${type[index]}-msg-${id}`);
-            htmlTag.style.display = 'none';
-        }
-        index++;
-    }
-    return index; // use this to test reset
-}
-
 function resetPassFields(){
     oldPassInput.value = null
     newPassInput.value = null
