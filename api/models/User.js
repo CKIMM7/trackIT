@@ -1,4 +1,5 @@
 const db = require('../dbConfig');
+const Habit = require('./Habit')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SQL = require('sql-template-strings');
@@ -40,8 +41,9 @@ module.exports = class User {
     static getHabits (id) {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT users.name AS user, habit.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
+                const result = await db.query('SELECT habit.* FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
+                const habits = result.rows.map(data => new Habit(data))
+                console.log(habits)
                 resolve(habits);
             } catch (err) {
                 console.log(err)

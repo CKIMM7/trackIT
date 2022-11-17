@@ -1,19 +1,14 @@
-
 const main = document.querySelector('main')
 const toDoSection = document.querySelector('#todo-section')
 const completedSection = document.querySelector('#completed-section')
 const longestStreakSection = document.querySelector('#longest-streak')
-const deadlinesSection = document.querySelector('#deadlines')
+const timeLeftSection = document.querySelector('#time-section')
 const addHabitForm = document.querySelector('#add-habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
-const deleteHabitBtn = document.querySelector('#delete-btn')
 
-
-const user_id = 2
-const habit_id = 2
 
 addHabitForm.addEventListener('submit', addHabit)
 addHabitBtn.addEventListener('click', showForm)
@@ -24,15 +19,6 @@ function showForm (e) {
     addHabitForm.style.display = 'block';
 }
 
-async function showHabitForm (e) {
-    e.preventDefault()
-    const data = await getItem('habits',habit_id)
-    titleInput.value = data.name
-    descInput.value = data.desc
-    freqInput.value = data.freq
-    showForm(e)
-
-}
 
 async function addHabit (e) {
     e.preventDefault()
@@ -50,23 +36,14 @@ async function addHabit (e) {
     postHabit(data)
 }
 
-async function updateHabit (e) {
-    e.preventDefault()
-    const data = await getItem('habits', habit_id)
-    data.name = titleInput.value
-    data.desc = descInput.value
-    data.freq = freqInput.value
-    update('habits', data)
-}
 
 async function display () {
     const userData = await getGlobal()
     const habits = await getUserHabits(userData.id)
-    console.log("Client")
-    console.log(await getItem('users',1))
+    console.log(habits)
     await checkList(habits)
     await longestStreak(habits)
-    // await timeBeforeMidnight()
+    await timeBeforeMidnight()
     // await deadlines(habits)
     
 }
@@ -75,10 +52,14 @@ function timeBeforeMidnight() {
     const midnight = new Date();
     midnight.setHours(24,0,0,0);
     const now = new Date()
-    const ran = new Date("2016-07-25T00:00:00Z")
+    // const ran = new Date("2016-07-25T00:00:00Z")
     // const mnafter = ran.setHours(24,0,0,0);
-    const diffInHrs = Math.round((midnight - ran) / 36e5 * 10) / 10;
+    const diffInHrs = Math.round((midnight - now) / 36e5 * 10) / 10;
+    const p = document.createElement('p')
+    p.textContent = `${diffInHrs} hours`
+    timeLeftSection.append(p)
     console.log(diffInHrs)
+
     return diffInHrs
 }
 
@@ -102,30 +83,6 @@ async function streakCheck (habits) {
 
 }
 
-// async function resetComplete () {
-//     if (current_date > (lastcompleted + 24hrs)) habit_id.complete = false
-// }
-
-// async function pseudo () {
-//     const lastcompleted;
-//     if (habit.last_completed) lastcompleted = habit.last_completed
-//     else lastcompleted = start_date
-//     if(new Date () < (lastcompleted + freq)) {
-//         streak + 1
-//         completed = !completed
-//         lastcompleted = today
-//     }
-// }
-
-// async function changeColumn (habit_id) {
-//     const data = await getItem('habits', habit_id)
-
-//     if (data.completed === false) data.last_completed = new Date()   
-//     data.completed = !data.completed
-
-//     await update('habits', data)
-//     location.reload()
-// }
 
 async function checkList (data) {
     for(let i = 0; i < data.length; i++){
@@ -170,24 +127,6 @@ async function longestStreak (data) {
     longestStreakSection.append(div)
 }
 
-// async function deadlines (data) {
-
-//     for(let i = 0; i < data.length; i++){
-//         const div = document.createElement('div')
-//         div.className = 'habit'
-//         div.id = data[i].id
-//         const name = document.createElement('p')
-//         name.textContent = data[i].name
-//         const streak = document.createElement('p')
-//         streak.textContent = new Date()
-//         div.append(name)
-//         div.append(streak)
-//         deadlinesSection.append(div)
-
-//         div.addEventListener('click', () => {goToHabit(div.id)})
-//     }
-// }
-
 
 display()
-console.log(timeBeforeMidnight())
+
