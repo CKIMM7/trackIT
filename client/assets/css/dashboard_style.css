@@ -88,7 +88,7 @@ a {
   font-weight: bolder;
 }
 
-a:hover {
+a:hover{
   /* color: grad; */
   background-color: #FFCCD2;
   background-color: #ff9999;
@@ -136,7 +136,7 @@ header{
     text-align: center;
 } */
 
-.habit-section{
+.habit-section {/* .stats-section */
   position: relative;
   background-color: aliceblue;
   min-width: 190px;
@@ -146,10 +146,43 @@ header{
   transition: 0.8s;
 }
 
+#stats-section {
+  background-color: white;
+  padding: 15px;
+  height: 250px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-around; */
+  border-radius: 20px;
+  transition: 0.8s;
+  min-width: 190px;
+  min-height: 190px;
+  box-shadow: 0 4px 12px rgba(109, 10, 10, 0.474);
+}
 
-.habit-section:hover{
+
+
+#todo-section:hover {
   min-height: 370px;
   min-width: 350px;
+  background: #FFCCD2;
+  padding: 15px;
+  
+}
+
+#completed-section:hover {
+  min-height: 370px;
+  min-width: 350px;
+  background: #ceffcc;
+  padding: 15px;
+}
+
+#stats-section:hover {
+  min-height: 370px;
+  min-width: 350px;
+  background: #ccfcff;
+  padding: 15px;
+  /* transition: 0.8s; */
 }
 
 input {
@@ -175,15 +208,9 @@ input:focus {
   outline-width: 0;
   font-weight: 400;
 }
-#stats-section {
-    background-color: white;
-    padding: 15px;
-    /* height: 250px; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    border-radius: 10px;
-}
+
+
+
 
 .stats p {
     margin: 0 10px;
@@ -195,7 +222,7 @@ input:focus {
 
 }
 
-/* #add-habit-form {
+/* #add-form {
   background-color: grey;
   position: absolute;
   left: 50%;
@@ -238,7 +265,7 @@ input:focus {
 	height: 5%;
 	width: 12%;
   margin-bottom: 1%;
-  margin-left: 3%;
+  /* margin-left: 1%; */
 	/* font:  15px roboto,sans-serif; */
 	text-shadow: none;
   border-radius: 10px;
@@ -257,6 +284,10 @@ form>a:hover{
  
 }
 
+/* .habit {
+  background: #FFCCD2;
+  padding: 15px;
+} */
 
 /* 
 @media screen and (max-width: 900px) {
