@@ -5,6 +5,7 @@ const longestStreakSection = document.querySelector('#longest-streak')
 const timeLeftSection = document.querySelector('#time-section')
 const addHabitForm = document.querySelector('#add-habit-form')
 const addHabitBtn = document.querySelector('#add-habit')
+const cancelBtn = document.querySelector('#cancel-btn')
 const titleInput = document.querySelector('#title')
 const descInput = document.querySelector('#desc')
 const freqInput = document.querySelector('#freq')
@@ -12,11 +13,14 @@ const freqInput = document.querySelector('#freq')
 
 addHabitForm.addEventListener('submit', addHabit)
 addHabitBtn.addEventListener('click', showForm)
+cancelBtn.addEventListener('click', showForm)
 
 
 function showForm (e) {
     e.preventDefault()
-    addHabitForm.style.display = 'block';
+    if (addHabitForm.style.display == 'flex') addHabitForm.style.display = 'none'
+    else addHabitForm.style.display = 'flex'
+    
 }
 
 
