@@ -1,6 +1,7 @@
 console.log('global')
 // const ul = document.querySelector('#habitContainer')
-
+// const url = 'http://localhost:3000'
+const url = 'http://trackit-sillicon-alley.herokuapp.com/'
 
 let globalObject
 
@@ -17,7 +18,7 @@ async function getGlobal() {
             body: JSON.stringify({token})
         }
         
-        const response = await fetch(`http://localhost:3000/auth`, options);
+        const response = await fetch(`${url}auth`, options);
         const data = await response.json();
         console.log(data)
         globalObject = data;
@@ -50,7 +51,7 @@ async function displayHabits(data) {
         desc.textContent = `desc: ${data.desc}`
         freq.textContent = `frequency: ${data.freq}`
         id.textContent = `habbit id: ${data.id}`
-        link.href = `http://localhost:3000/habit/${data.id}`
+        link.href = `${url}habit/${data.id}`
         link.textContent = `go here`
         name.textContent = `name: ${data.name}`
         start_Date.textContent = `start date: ${data.start_Date}`
