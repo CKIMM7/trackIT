@@ -195,7 +195,7 @@ h2{
   z-index: 2;
 }
 
-#settings-btn{
+#settings-btn, #edit-cancel, #submit-name, #save-email, #save, #pass-cancel{
   /* position: absolute; */
   top: 240px;
   right: 100px;
@@ -339,10 +339,10 @@ h3{
   margin-bottom: 10px;
   font-size: 30px;
 }
-#pass-cancel:hover, #edit-cancel:hover{
+/* #pass-cancel:hover, #edit-cancel:hover{
   background:#f00 !important;
   color: white !important;
-}
+} */
 /* #edit-profile{
 
 } */
