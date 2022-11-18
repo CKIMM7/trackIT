@@ -63,6 +63,7 @@ async function updateProfile (e) {
     // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); 
     displayMsg(1, true, 'pos');
+    location.reload()
 }
 
 function settings(e){
