@@ -1,6 +1,10 @@
 const User = require('../../../../models/User');
 const pg = require('pg');
 jest.mock('pg');
+const bcrypt = require('bcrypt')
+jest.mock('bcrypt')
+const bcryptCompare = jest.fn().mockResolvedValue(true);
+
 
 const db = require('../../../../dbConfig');
 
@@ -98,9 +102,6 @@ describe('User', () => {
     //     })
     // });
 
-    //habit check
-
-    //passwordcheck
 
     
 })
