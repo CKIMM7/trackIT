@@ -25,7 +25,7 @@ client.connect(function(err) {
 // pool.query(seeds, () => console.log('Dev database seeded'));
 
 
-pool.query(`SELECT * FROM user_habits;`, (err, res) => {
+pool.query(`SELECT * FROM user_habits;`, async (err, res) => {
   if (err) {
       console.log("Error - Failed to select all from Users");
       console.log(err);

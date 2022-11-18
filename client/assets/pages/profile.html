@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/986b088578.js" crossorigin="anonymous"></script>
     <script src="../assets/js/requests.js" defer></script>
+    <script src="../assets/js/global.js" defer></script>
     <script src="../assets/js/profile.js" defer></script>
     <link rel="stylesheet" href="../assets/css/profile_style.css">
     <title>Profile</title>
 </head>
 <body>
     <nav>
-        <a href="#" class="logo">
-          <h1>
+
+          <h1 id="logo">
             <span>trackIT</span>
           </h1>
-        </a>
+
         <ul>
             <li class="nav-item">
               <a href="/dashboard" id="nav-link" class="nav-link" >DASHBOARD</a>
@@ -51,13 +52,22 @@
         <p id="pos-msg-3">Success</p>
     </section>
     <main>
-        <section>
-            <h2 id="profile-name">John Doe</h2>
-            <p id="email">email</p>
-            <button id="edit-btn">Edit name</button>
-            <button id="settings-btn">Settings</button>
-            <p id="habits">Habits: 0</p>
-        </section>
+            <header>
+              <h2 id="profile-name"></h2>
+              <p id="email"></p>
+              <div id="buttons">
+                <button id="edit-btn">Edit Name</button>
+                <button id="settings-btn">Settings</button>
+              </div>
+
+            </header>
+
+
+              <h3>Habits</h3>
+              <div id="habit-section">
+              </div>
+
+
     </main>
 </body>
 </html>

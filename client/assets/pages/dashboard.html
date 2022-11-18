@@ -14,11 +14,11 @@
 </head>
 <body>
     <nav>
-        <a href="#" class="logo">
-          <h1>
+        <!-- <a href="#" class="logo"> -->
+          <h1 id="logo">
             <span>trackIT</span>
           </h1>
-        </a>
+        <!-- </a> -->
         <ul>
             <li class="nav-item">
               <a href="#" id="nav-active" class="nav-link" >DASHBOARD</a>
@@ -30,20 +30,21 @@
    </nav>
    <div>
         <form id="add-habit-form">
-            <input id="title" placeholder="Enter title..." type="text">
+            <label for="title">Title</label>
+            <input id="title" placeholder="Enter Title..." type="text">
+            <label for="desc">Description</label>
             <input id="desc" placeholder="Enter Description..." type="text">
+            <label for="freq">How many times a day?</label>
             <input id="freq" placeholder="Enter Frequency..." type="number">
-            <input type="submit" value="Add">
+            <input id="form-add" type="submit" value="Add">
+
+            <button id="cancel-btn">Cancel</button>
         </form>
    </div>
     <main>
         <section id="todo-section" class="habit-section">
             <header>
-                <h2>To Do</h2>
-                <i class="fa-regular fa-clipboard"></i>
-                <ul id='habitContainer'>
-                    <li class="eachHabit">run every day</li>
-                </ul>
+                <h2>To Do   <i class="fa-regular fa-clipboard"></i></h2>               
             </header>  
             <!-- <div class="habit">
                 <p>No Caffeine</p>
@@ -53,8 +54,7 @@
         </section>
         <section id="completed-section" class="habit-section">
             <header>
-                <h2>Completed</h2>
-                <i class="fa-solid fa-check"></i>
+                <h2>Completed  <i class="fa-solid fa-check"></i></h2>                
             </header>
 <!--             
             <div class="habit">
@@ -64,16 +64,16 @@
             </div> -->
         </section>
         <section id="stats-section">
+            <div id="time-section" class="stats">
+                <h3>Time Left</h3>
+                <!-- <p>No Caffeine - 6 Hours</p> -->
+            </div>
             <div id="longest-streak" class="stats">
                 <h3>Longest Streak</h3>
                 <!-- <p>No Caffeine <i class="fa-solid fa-fire"></i> 31</p> -->
-            </div>
-            <div id="deadlines" class="stats">
-                <h3>Deadlines</h3>
-                <!-- <p>No Caffeine - 6 Hours</p> -->
-            </div>
+            </div>  
         </section>
-        <a id="add-habit" href="">Add Habit</a>
+        <button id="add-habit">Add Habit</button>
     </main>
 </body>
 </html>

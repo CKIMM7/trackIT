@@ -1,6 +1,6 @@
 const editBtn = document.querySelector('#edit-btn');
 const settingsBtn = document.querySelector('#settings-btn');
-
+const habitSection = document.querySelector('#habit-section')
 const editProfSection = document.querySelector('#edit-profile');
 const settingsSection = document.querySelector('#settings');
 
@@ -27,6 +27,7 @@ editSubmitBtn.addEventListener('click', updateProfile);
 saveEmailBtn.addEventListener('click', updateEmail);
 savePassBtn.addEventListener('click', addNewSettings);
 
+// --reset--
 cancelEditBtn.addEventListener('click', (e) => {
     editProfSection.style.display = 'none';
     displayMsg(1, false, 'pos');
@@ -36,14 +37,17 @@ cancelSettBtn.addEventListener('click', (e) => {
     resetMsg();
 });
 
-const userId = 6;
+
 
 function editProfile(e){
     e.preventDefault()
     editProfSection.style.display = 'block';
+    settingsSection.style.display = 'none';
 }
 
 async function showProfileForm(e){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId)
     nameInput.value = data.name
     editProfile(e)
@@ -52,19 +56,25 @@ async function showProfileForm(e){
 // when submit pressed update name only
 async function updateProfile (e) {
     e.preventDefault()
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
     data.name = nameInput.value;
     // console.log(`id: ${data.id} n: ${data.name}, e: ${data.email}, p: ${data.password}`);
     update('users', data); 
     displayMsg(1, true, 'pos');
+    location.reload()
 }
 
 function settings(e){
     e.preventDefault()
     settingsSection.style.display = 'block';
+    editProfSection.style.display = 'none';
 }
 
 async function showSettings(e){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
     eEmailInput.value = data.email;
     settings(e);
@@ -73,6 +83,8 @@ async function showSettings(e){
 // need to add compare email not same as someone elses
 async function updateEmail(e){
     e.preventDefault()
+    const globalUser = await getGlobal()
+    userId = globalUser.id
     const data = await getItem('users', userId);
 
     // compare email to all users
@@ -117,6 +129,9 @@ async function addNewSettings(e){
 function displayMsg(id, bool, type){
     const htmlTag = document.querySelector(`#${type}-msg-${id}`);
     if(bool) htmlTag.style.display = 'block';
+
+
+
     else htmlTag.style.display = 'none';
     return bool;
 }
@@ -140,7 +155,30 @@ function resetPassFields(){
     samePassInput.value = null
 }
 
+async function goToHabit (id) {
+    console.log(id)
+    window.location.href = `/habit/${id}`
+}
+
+async function viewHabits (data) {
+    for(let i = 0; i < data.length; i++){
+        const div = document.createElement('div')
+        div.className = 'habit'
+        div.id = data[i].id
+        const name = document.createElement('p')
+        name.textContent = data[i].name
+        div.append(name)
+
+        habitSection.append(div)
+
+        div.addEventListener('click', () => {goToHabit(div.id)})
+    }
+}
+
 async function display(){
+    const globalUser = await getGlobal()
+    userId = globalUser.id
+
     const name = document.querySelector('#profile-name');
     const email = document.querySelector('#email');
     const habits = document.querySelector('#habits');
@@ -152,7 +190,16 @@ async function display(){
     email.textContent = userData.email;
 
     const userHabits = await getUserHabits(userId);
-    habits.textContent = "Habits: " + userHabits.length;
+    viewHabits(userHabits)
+    // habits.textContent = "Habits: " + userHabits.length;
+}
+
+nameInput.addEventListener('click', showForm)
+
+
+function showForm (e) {
+    e.preventDefault()
+    editHabitForm.style.display = 'block';
 }
 
 display();

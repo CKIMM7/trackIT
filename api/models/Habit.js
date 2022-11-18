@@ -9,6 +9,7 @@ module.exports = class Habit {
         this.desc = data.description;
         this.freq = data.frequency;
         this.start_date = data.start_date;
+        this.last_completed = data.last_completed;
         this.current_count = data.current_count;
         this.streak = data.streak;
         this.completed = data.completed;
@@ -52,7 +53,7 @@ module.exports = class Habit {
 
                 const result2 = await db.query(`INSERT INTO user_habits (user_id, habit_id) VALUES ($1, $2) RETURNING *;`, [user_id, result.rows[0].id])
 
-                resolve(new Habit(result2.rows[0]));
+                resolve(new Habit(result.rows[0]));
             } catch (err) {
                 console.log(err)
                 reject("Error creating habit")

@@ -2,9 +2,22 @@
 body {
     color: #000;
     overflow-x: hidden;
-    height: 100%;
-    background-image: linear-gradient(to right, #FF9292,#FFE699);
-    /* background-repeat: no-repeat; */
+    background: linear-gradient(-45deg, #FFE699, #FFF9B6, #FFCCD2, #FF9292);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 input, textarea {

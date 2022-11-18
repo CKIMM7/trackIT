@@ -1,4 +1,5 @@
 const db = require('../dbConfig');
+const Habit = require('./Habit')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const SQL = require('sql-template-strings');
@@ -18,6 +19,7 @@ module.exports = class User {
                 const users = result.rows.map(d => new User(d))
                 resolve(users);
             } catch (err) {
+                console.log(err)
                 reject("Error retrieving authors")
             }
         })
@@ -39,8 +41,9 @@ module.exports = class User {
     static getHabits (id) {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = await db.query('SELECT users.name AS user, habit.* as habit FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
-                const habits = result.rows.map(data => ({ id: data.id, name: data.name, desc: data.description, freq: data.frequency, start_date: data.start_date, last_completed: data.last_completed, streak: data.streak, completed: data.completed }))
+                const result = await db.query('SELECT habit.* FROM user_habits JOIN users on users.id = user_habits.user_id JOIN habit ON habit.id = user_habits.habit_id WHERE user_id = $1;', [ id ])
+                const habits = result.rows.map(data => new Habit(data))
+                // console.log(habits)
                 resolve(habits);
             } catch (err) {
                 console.log(err)
@@ -190,11 +193,10 @@ module.exports = class User {
     update(data){
         return new Promise (async (resolve, reject) => {
             try {
-                console.log('--modeller update')
                 const { id, name, email, password } = data;
-                console.log(`m.user.update.data.id ${data.id}`)
+                // console.log(`m.user.update.data.id ${data.id}`)
                 const result = await db.query(`UPDATE users SET name = $2, email = $3, password = $4 WHERE id = $1 RETURNING *;`, [ id, name, email, password ])
-                console.log('m.user.result: '+result.rows[0])
+                // console.log('m.user.result: '+result.rows[0])
                 resolve(new User( result.rows[0]));
             } catch (err) {
                 console.log(err)
@@ -209,6 +211,7 @@ module.exports = class User {
                 const result = await db.query(`DELETE FROM users WHERE id = $1;`, [id])
                 resolve("User was deleted")
             } catch (err) {
+                console.log(err)
                 reject("Error deleting user")
             }
         })

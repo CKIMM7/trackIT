@@ -12,7 +12,7 @@ const minusBtn = document.querySelector('#minus-btn')
 const title = document.querySelector('#title')
 const desc = document.querySelector('#desc')
 const freq = document.querySelector('#freq')
-const deadline = document.querySelector('#next-deadline')
+const currCount = document.querySelector('#next-deadline')
 const streak = document.querySelector('#streak')
 const progress = document.querySelector('#progress')
 const bar = document.querySelector('#bar')
@@ -35,8 +35,8 @@ async function showHabitForm (e) {
     titleInput.value = data.name
     descInput.value = data.desc
     freqInput.value = data.freq
-    if (editHabitForm.style.display == 'block') editHabitForm.style.display = 'none'
-    else editHabitForm.style.display = 'block'
+    if (editHabitForm.style.display == 'flex') editHabitForm.style.display = 'none'
+    else editHabitForm.style.display = 'flex'
 
 }
 
@@ -55,6 +55,12 @@ async function updateHabit (e) {
     data.freq = freqInput.value
     await update('habits', data)
     location.reload()
+}
+
+async function destroy (e) {
+    e.preventDefault()
+    await deleteHabit(habit_id)
+    window.location.href = '/dashboard'
 }
 
 function addDays(date, days) {
@@ -84,23 +90,43 @@ async function changeCount (e) {
     const habit = await getItem('habits', habit_id)
     console.log(habit)
     if (e.target.id === 'add-btn') {
-        if(habit.current_count < habit.freq) {console.log(habit.current_count); habit.current_count ++; console.log(habit.current_count); }
+        if(habit.current_count < habit.freq) {
+            console.log(`Current: ${currCount.textContent}`); 
+            habit.current_count ++; 
+            currCount.textContent = parseInt(currCount.textContent) + 1
+            updateProgress(currCount.textContent, habit.freq)
+            console.log(`Current After: ${currCount.textContent}`)
+        }
         else console.log ('Reached Max')
     }
     else {
-        if(habit.current_count > 0) habit.current_count --
+        if(habit.current_count > 0) {
+            habit.current_count --
+            currCount.textContent = parseInt(currCount.textContent) - 1
+            updateProgress(currCount.textContent, habit.freq)
+        }
         else console.log ('Cannot reduce')
     }
     if(habit.current_count == habit.freq) {habit.completed = true; habit.last_completed = new Date()}
     else habit.completed = false
     await update('habits', habit)
-    location.reload()
+    // location.reload()
 }
 
-async function updateProgress () {
+async function updateProgress (curr,freq) {
     const habit = await getItem('habits', habit_id)
-    const percentage = habit.current_count / habit.freq * 100
+    const percentage = curr / freq * 100
     bar.style.width = `${percentage}%`
+}
+
+function formatDate (date) {
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let hour = date.getHours()
+    let minute = date.getMinutes()
+ 
+    return `${hour.toString()}:${minute.toString()} ${day.toString()}/${month.toString()}/${year.toString()}`
 }
 
 async function display () {
@@ -109,15 +135,15 @@ async function display () {
     title.textContent = habit.name
     desc.textContent = habit.desc
     freq.textContent = habit.freq
-    deadline.textContent = habit.current_count
-    streak.textContent = habit.streak
-    startDate.textContent = habit.start_date
-    updateProgress()
-    // nextDeadline()
+    currCount.textContent = habit.current_count
+    streak.textContent = habit.streak || 0
+    const start = new Date(habit.start_date)
+    startDate.textContent = formatDate(start)
+    updateProgress(habit.current_count, habit.freq)
+    nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
 }
 
-getHabit(1)
 
 display()

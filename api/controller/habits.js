@@ -13,9 +13,10 @@ const getHabit = async (req, res) => {
     try {
         const habit = await Habit.findHabit(parseInt(req.params.id))
         // const isUsersHabit = await habit.belongsToUser(document.cookie)
-
+        console.log()
         res.status(200).json(habit)
     } catch(err){
+        console.log(req.params)
         res.status(404).json({err})
     }
 }
@@ -26,6 +27,7 @@ const create = async (req, res) => {
         const habit = await Habit.create(req.body)
         res.status(201).json(habit)
     } catch(err) {
+        console.log(err)
         res.status(404).json({err})
     }
 }
@@ -34,6 +36,7 @@ const update = async (req, res) => {
     try {
         const habit = await Habit.findHabit(parseInt(req.params.id))
         const updatedHabit = await habit.update(req.body)
+        console.log(updatedHabit)
         res.status(200).json(updatedHabit)
     } catch(err){
         console.log(err)

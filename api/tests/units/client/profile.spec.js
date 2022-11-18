@@ -1,21 +1,27 @@
 const fs = require('fs');
 const path = require('path');
 global.fetch = require('jest-fetch-mock');
-let app = require('../../../../client/assets/js/profile');
+// global.fetch = require('jest-environment-jsdom');
+const profile = require('../../../../client/assets/js/profile');
 
-describe('requests.js', () => {
+jest.mock('../../../../client/assets/js/profile')
+
+const editBtn = jest.fn();
+
+describe('profile.js', () => {
     beforeEach(() => {
         fetch.enableMocks();
+        const userId = 1;
     })
 
-    afterEach(() => {
-        fetch.resetMocks();
-    })
+    afterEach(() => fetch.resetMocks())
 
     // test display, eventlisteners, results
 
-    test('userId', () => {
-
+    test('there is a userId', () => {
+        expect(userId).toBe(1);
     })
+
+    
 
 });
