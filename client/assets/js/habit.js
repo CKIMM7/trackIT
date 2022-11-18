@@ -145,6 +145,7 @@ function formatDate (date) {
 async function display () {
     const habit = await getItem('habits',habit_id)
     console.log("Client")
+    console.log(habit)
     title.textContent = habit.name
     desc.textContent = habit.desc
     freq.textContent = habit.freq

@@ -178,7 +178,7 @@ async function viewHabits (data) {
 async function display(){
     const globalUser = await getGlobal()
     userId = globalUser.id
-
+    console.log(globalUser)
     const name = document.querySelector('#profile-name');
     const email = document.querySelector('#email');
     const habits = document.querySelector('#habits');
