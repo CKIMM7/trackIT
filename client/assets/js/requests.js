@@ -1,5 +1,5 @@
-const url = 'https://trackit-sillicon-alley.herokuapp.com'
-//const url = 'http://localhost:3000'
+// const url = 'https://trackit-sillicon-alley.herokuapp.com'
+const url = 'http://localhost:3000'
 
 
 async function getAll(category){

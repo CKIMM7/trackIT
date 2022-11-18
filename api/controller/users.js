@@ -20,13 +20,8 @@ const currentUser = async (req, res) => {
 const displayAll = async (req, res) => {
     // console.log(req.cookies.access_token);
     try {
-<<<<<<< HEAD
         const users = await User.all;
         res.status(200).json(users);
-=======
-        const user = await User.all;
-        res.status(200).json(user);
->>>>>>> frontend
     } catch (err) {
         console.log(err)
         res.status(500).send(err);
@@ -36,10 +31,6 @@ const displayAll = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const user = await User.getUser(parseInt(req.params.id))
-<<<<<<< HEAD
-
-=======
->>>>>>> frontend
         res.status(200).json(user)
     } catch(err){
         console.log(err)
@@ -59,13 +50,8 @@ const getHabits = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const users = await User.create(req.body.name, req.body.email, req.body.password)
-        res.status(201).json(users)
-=======
         const user = await User.create(req.body.name, req.body.email, req.body.password)
         res.status(201).json(user)
->>>>>>> frontend
     } catch(err) {
         res.status(404).json({err})
     }
@@ -73,10 +59,6 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-<<<<<<< HEAD
-        console.log('c.users.update: '+req.body)
-=======
->>>>>>> frontend
         const user = await User.getUser(parseInt(req.body.id))
         const updatedUser = await user.update(req.body)
         console.log(`user ${user} updatedUser ${updatedUser}`)
@@ -90,11 +72,7 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
     try {
         const user = await User.findById(parseInt(req.params.id))
-<<<<<<< HEAD
-        await user.destroy()
-=======
         await user.delete(user.id)
->>>>>>> frontend
         res.status(204).json('User deleted')
     } catch(err){
         res.status(500).json({err})
@@ -104,11 +82,7 @@ const destroy = async (req, res) => {
 const login = async (req, res) => {
     //console.log(req.body)
     try {
-<<<<<<< HEAD
         const token = await User.login(req.body.email, req.body.password)
-=======
-        const user = await User.login(req.body.email, req.body.password)
->>>>>>> frontend
         console.log('token')
         console.log(token)
 
@@ -134,16 +108,8 @@ const login = async (req, res) => {
 
 const authorization = async (req, res, next) => {
 
-<<<<<<< HEAD
     //console.log(req.body.token)
     const token = req.cookies.access_token || req.body.token;
-=======
-    console.log(req.body.token)
-
-    const token = req.cookies.access_token || req.body.token
-
-    
->>>>>>> frontend
     console.log(`token`);
     console.log(token);
 
@@ -224,11 +190,6 @@ const habitCheck = async (req, res, next) => {
 const signup = async (req, res) => {
 
     try {
-<<<<<<< HEAD
-        const findUser = await User.findByEmail(req.body.email);
-        console.log(findUser);
-        res.status(404).json({err: `${findUser.email} exists`});
-=======
         let userExists = true;
         const findUser = await User.findByEmail(req.body.email)
         .then(data => { 
@@ -250,7 +211,6 @@ const signup = async (req, res) => {
         }
 
         res.status(200).json(findUser);
->>>>>>> frontend
         
     } catch(err) {
         console.log(`no user`)
@@ -264,11 +224,7 @@ const signup = async (req, res) => {
 const checkPassword = async (req, res) => {
     try {
         console.log('--controller')
-<<<<<<< HEAD
-        console.log('c.users.body.id: '+req.body.id)
-=======
         console.log('c.User.body.id: '+req.body.id)
->>>>>>> frontend
         const user = await User.getUser(req.body.id)
         console.log('user id: '+user.id)
         const test = await user.passwordCheck(req.body.oldPass)

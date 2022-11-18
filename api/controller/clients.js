@@ -2,7 +2,7 @@ const path = require('path');
 
 const landingPage = async (req, res) => {
 
-    console.log(path.join(__dirname, '../../client/newlogin.html'))
+    // console.log(path.join(__dirname, '../../client/newlogin.html'))
     try {
 
         res.sendFile(path.join(__dirname, '../../client/index.html'))
