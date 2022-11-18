@@ -200,7 +200,7 @@ header{
   justify-content: center;
   position: absolute;
   top: 50%;
-  left: 55%;
+  left: 50%;
   transform: translate(-50%,-50%);
   background: #FFE699;
   border-radius: 10px;
