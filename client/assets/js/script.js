@@ -117,6 +117,8 @@ async function goToHabit (id) {
 
 async function longestStreak (data) {
 
+    if(data.length>0){
+        console.log(data)
     const longest = data.sort((a, b) => (a.streak < b.streak) ? 1 : -1)[0]
     console.log(longest)
     if(longest.streak > 1) {
@@ -132,7 +134,18 @@ async function longestStreak (data) {
         div.append(fire_icon)
         div.append(streak)
         longestStreakSection.append(div)
+    } else {
+        const div = document.createElement('div')
+        div.className = 'habit'
+        const name = document.createElement('p')
+        name.textContent = 'No current streaks, work hard to get more!'
+        const fire_icon = document.createElement('i')
+        fire_icon.className = 'fa-solid fa-fire'
+        div.append(name)
+        div.append(fire_icon)
+        longestStreakSection.append(div)
     }
+}
     else {
         const div = document.createElement('div')
         div.className = 'habit'

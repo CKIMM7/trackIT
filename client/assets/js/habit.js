@@ -107,7 +107,20 @@ async function changeCount (e) {
         }
         else console.log ('Cannot reduce')
     }
-    if(habit.current_count == habit.freq) {habit.completed = true; habit.last_completed = new Date()}
+    if(habit.current_count == habit.freq) {
+        habit.completed = true; 
+        console.log(habit.last_completed)
+        const now = new Date()
+        const last_date = new Date(habit.last_completed)
+        habit.last_completed = new Date()
+        console.log(habit.last_completed)
+
+        console.log(last_date.getDate())
+        console.log(now.getDate())
+        if(last_date.getDate() != now.getDate()){
+            habit.streak ++
+        }
+    }
     else habit.completed = false
     await update('habits', habit)
     // location.reload()
@@ -140,7 +153,7 @@ async function display () {
     const start = new Date(habit.start_date)
     startDate.textContent = formatDate(start)
     updateProgress(habit.current_count, habit.freq)
-    nextDeadline()
+    // nextDeadline()
     // nextDeadline.textContent = habit.start_date
 
 }

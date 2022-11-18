@@ -47,7 +47,7 @@ module.exports = class Habit {
                 console.log("---Server----")
                 console.log(data)
                 const { name, desc, freq, start_date, user_id} = data;
-                const result = await db.query(`INSERT INTO habit (name, description, frequency, current_count, start_date, streak, completed) VALUES ($1, $2, $3, 0, $4, null, false) RETURNING *;`, [name, desc, freq, start_date])
+                const result = await db.query(`INSERT INTO habit (name, description, frequency, current_count, start_date, last_completed, streak, completed) VALUES ($1, $2, $3, 0, $4, null, 0, false) RETURNING *;`, [name, desc, freq, start_date])
                 
                 console.log(result.rows[0])
 
@@ -64,9 +64,9 @@ module.exports = class Habit {
     update (data) {
         return new Promise (async (resolve, reject) => {
             try {
-                const { name, desc, freq, start_date, current_count, streak, completed, id } = data;
+                const { name, desc, freq, start_date, current_count, streak, completed, id, last_completed } = data;
                 console.log("Updating")
-                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, current_count = $5, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, current_count, streak, completed, id])
+                const result = await db.query(`UPDATE habit SET name = $1, description = $2, frequency = $3, start_date = $4, current_count = $5, last_completed = $9, streak = $6, completed = $7 WHERE id = $8;`, [name, desc, freq, start_date, current_count, streak, completed, id, last_completed])
                 resolve(result.rows[0]);
             } catch (err) {
                 reject("Error updating habit")
