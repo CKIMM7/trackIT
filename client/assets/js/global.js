@@ -1,7 +1,7 @@
 console.log('global')
 // const ul = document.querySelector('#habitContainer')
 // const url = 'http://localhost:3000'
-const url = 'http://trackit-sillicon-alley.herokuapp.com/'
+// const url = 'http://trackit-sillicon-alley.herokuapp.com/'
 
 let globalObject
 
